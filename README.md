@@ -24,3 +24,7 @@ This project depends on a local site running an instance of the dot com brxm pro
 ```bash
 VUE_APP_BRXM_ENDPOINT=http://localhost:8080/site/resourceapi
 ```
+
+## WIP Documentation
+
+https://github.com/visitscotland/business-events-poc/wiki
