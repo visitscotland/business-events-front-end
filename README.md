@@ -1,20 +1,12 @@
-# Nuxt 3 Minimal Starter
-
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+# Business Events Bloomreach Integration Proof of Concept
 
 ## Setup
 
 Make sure to install the dependencies:
 
 ```bash
-# yarn
-yarn install
-
 # npm
 npm install
-
-# pnpm
-pnpm install
 ```
 
 ## Development Server
@@ -25,18 +17,14 @@ Start the development server on `http://localhost:3000`
 npm run dev
 ```
 
-## Production
+## Dependencies 
 
-Build the application for production:
-
-```bash
-npm run build
-```
-
-Locally preview production build:
+This project depends on a local site running an instance of the dot com brxm project, with the resource api enabled. It should contain a .env file pointing to the api on that instance, for example:
 
 ```bash
-npm run preview
+VUE_APP_BRXM_ENDPOINT=http://localhost:8080/site/resourceapi
 ```
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+## WIP Documentation
+
+https://github.com/visitscotland/business-events-poc/wiki
