@@ -31,12 +31,16 @@
     import { toRefs, provide } from 'vue';
     import { Component, Page } from '@bloomreach/spa-sdk';
 
-    import ListLinksModule from './ListLinksModule.vue';
-    import MultiImageLinksModule from './MultiImageLinksModule.vue';
+    import ListLinksModule from '../ListLinksModule.vue';
+    import MultiImageLinksModule from '../MultiImageLinksModule.vue';
 
     const props = defineProps<{ component: Component, page: Page }>();
 
     const { component, page } = toRefs(props);
+
+    // console.log('Main Children');
+
+    // console.log(component.value.getChildren());
 
     let documentData = {},
         pageItems = [],

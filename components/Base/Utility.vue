@@ -1,6 +1,6 @@
 <template>
     <div>
-        <p>This is the top</p>
+        <p>This is the utility menu</p>
     </div>
 </template>
 
