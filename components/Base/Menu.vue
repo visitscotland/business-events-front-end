@@ -16,7 +16,7 @@
     import { toRefs } from 'vue';
     import { Component, Page } from '@bloomreach/spa-sdk';
 
-    import MenuItem from '../MenuItem.vue';
+    import MenuItem from '../Utils/MenuItem.vue';
 
     const props = defineProps<{ component: Component, page: Page }>();
 

@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts" setup>
-    import { toRefs, provide } from 'vue';
+    import { toRefs } from 'vue';
 
     import { MenuItem } from '@bloomreach/spa-sdk';
 

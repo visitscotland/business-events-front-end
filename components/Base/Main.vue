@@ -1,28 +1,19 @@
 <template>
-    <h1>{{ documentData.displayName }}</h1>
-    <div v-html="documentData.introduction.value" />
-
-    <Image
-        v-if="heroImage && documentData.theme !== 'simple'"
-        :image=imageRef
-        style="max-width: 50%"
-    />
-
-    <div v-for="item in pageItems">
-        <ListLinksModule
-            v-if="item.type==='ListLinksModule'"
-            :module="item"
+    <div>
+        <General
+            v-if="pageName === 'general-page'"
+            :page=page
+            :component=component
         />
-        <MultiImageLinksModule
-            v-else-if="item.type==='MultiImageLinksModule'"
-            :module="item"
-        />
-        <span
-            style="color: red"
+        <div
             v-else
         >
-            {{ item.type }}
-        </span>
+            <span
+                style="color: red"
+            >
+                Page type: {{ pageName }}
+            </span>
+        </div>
     </div>
 </template>
 
@@ -30,23 +21,16 @@
     import { toRefs, provide } from 'vue';
     import { Component, Page } from '@bloomreach/spa-sdk';
 
-    import Image from '../Image.vue';
-
-    import ListLinksModule from '../ListLinksModule.vue';
-    import MultiImageLinksModule from '../MultiImageLinksModule.vue';
+    import General from '../PageTypes/General.vue';
 
     const props = defineProps<{ component: Component, page: Page }>();
 
     const { component, page } = toRefs(props);
 
-    let documentData = null,
-        pageItems = [],
-        heroImage = null;
+    let pageName = '';
 
     if (page.value) {
-        documentData = page.value.getDocument().getData();
-        pageItems = component.value.getModels().pageItems;
-        heroImage = documentData.heroImage.$ref;
+        pageName = page.value.getComponent().model.name;
     }
 
     provide('page', page.value);
