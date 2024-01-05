@@ -3,12 +3,13 @@
         :href="formattedLink"
         :data-type="linkObj.label"
     >
-        <img
+
+        <Image
             v-if="linkImage && showImage"
-            :src="linkImage.getOriginal().getUrl()"
-            alt=""
+            :imageRef=linkImage
             style="max-width: 150px"
         />
+
         {{ linkObj.label }}
     </a>
 </template>
@@ -17,6 +18,8 @@
     import { computed, inject} from 'vue';
     
     import { Link } from '@bloomreach/spa-sdk';
+
+    import Image from 'Image.vue';
     
     const props = defineProps<{ linkObj: Link, showImage?: Boolean }>();
     const { linkObj } = props;
@@ -30,6 +33,6 @@
     let linkImage = {};
 
     if (page) {
-        linkImage = page.getContent(linkObj.image.cmsImage.$ref);
+        linkImage = linkObj.image.cmsImage.$ref;
     }
 </script>

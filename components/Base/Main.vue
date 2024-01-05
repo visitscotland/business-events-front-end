@@ -2,10 +2,9 @@
     <h1>{{ documentData.displayName }}</h1>
     <div v-html="documentData.introduction.value" />
 
-    <img
+    <Image
         v-if="heroImage && documentData.theme !== 'simple'"
-        :src="heroImage.getOriginal().getUrl()"
-        alt=""
+        :image=imageRef
         style="max-width: 50%"
     />
 
@@ -31,6 +30,8 @@
     import { toRefs, provide } from 'vue';
     import { Component, Page } from '@bloomreach/spa-sdk';
 
+    import Image from '../Image.vue';
+
     import ListLinksModule from '../ListLinksModule.vue';
     import MultiImageLinksModule from '../MultiImageLinksModule.vue';
 
@@ -38,18 +39,14 @@
 
     const { component, page } = toRefs(props);
 
-    // console.log('Main Children');
-
-    // console.log(component.value.getChildren());
-
-    let documentData = {},
+    let documentData = null,
         pageItems = [],
-        heroImage = '';
+        heroImage = null;
 
     if (page.value) {
         documentData = page.value.getDocument().getData();
         pageItems = component.value.getModels().pageItems;
-        heroImage = page.value.getContent(documentData.heroImage.$ref);
+        heroImage = documentData.heroImage.$ref;
     }
 
     provide('page', page.value);
