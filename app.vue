@@ -19,9 +19,6 @@
 <script setup>
 import axios from 'axios';
 
-import { TYPE_CONTAINER_INLINE } from '@bloomreach/spa-sdk';
-
-import Utility from './components/Base/Utility.vue';
 import Menu from './components/Base/Menu.vue';
 import Footer from './components/Base/Footer.vue';
 import Main from './components/Base/Main.vue';
@@ -39,7 +36,6 @@ const configuration = {
 };
 
 const mapping = {
-    'utility': Utility,
     'menu': Menu,
     'main': Main,
     'footer': Footer,
