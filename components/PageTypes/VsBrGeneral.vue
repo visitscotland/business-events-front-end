@@ -25,12 +25,14 @@
 
     const { component, page } = toRefs(props);
 
-    let documentData = null,
-        pageItems = [],
-        heroImage = null;
+    let document : any = {},
+        documentData : any = {},
+        pageItems : any[] = [],
+        heroImage = '';
 
     if (page.value) {
-        documentData = page.value.getDocument().getData();
+        document = page.value.getDocument();
+        documentData = document.getData();
         pageItems = component.value.getModels().pageItems;
         heroImage = documentData.heroImage.$ref;
     }
