@@ -3,31 +3,38 @@
         class="menu-container"
     >
         <ul>
-            <MenuItem
-                v-for="menuItem in menuData.items"
+            <VsBrMenuItem
+                v-for="menuItem in menuItems"
                 :item="menuItem"
             >
-            </MenuItem>
+            </VsBrMenuItem>
         </ul>
     </div>
 </template>
 
 <script lang="ts" setup>
     import { toRefs } from 'vue';
-    import { Component, Page } from '@bloomreach/spa-sdk';
+    import { Component, Page, MenuItem } from '@bloomreach/spa-sdk';
 
-    import MenuItem from '../Utils/MenuItem.vue';
+    import VsBrMenuItem from '../Utils/VsBrMenuItem.vue';
 
     const props = defineProps<{ component: Component, page: Page }>();
 
     const { component, page } = toRefs(props);
 
-    let menu = {},
-        menuData = {};
+    let menu = {
+            $ref: '',
+        },
+        menuData : any = {},
+        menuItems : MenuItem[] = [];
 
     if (page.value) {
         menu = component.value.getModels().menu;
         menuData = page.value.getContent(menu.$ref);
+        if (menuData) {
+            menuItems = menuData['items'];
+        }
+        
     }
 </script>
 

@@ -19,9 +19,9 @@
 <script setup>
 import axios from 'axios';
 
-import Menu from './components/Base/Menu.vue';
-import Footer from './components/Base/Footer.vue';
-import Main from './components/Base/Main.vue';
+import VsBrMenu from './components/Base/VsBrMenu.vue';
+import VsBrFooter from './components/Base/VsBrFooter.vue';
+import VsBrMain from './components/Base/VsBrMain.vue';
 
 // Get url of current page.
 const route = useRoute().path;
@@ -36,8 +36,8 @@ const configuration = {
 };
 
 const mapping = {
-    'menu': Menu,
-    'main': Main,
-    'footer': Footer,
+    'menu': VsBrMenu,
+    'main': VsBrMain,
+    'footer': VsBrFooter,
 };
 </script>

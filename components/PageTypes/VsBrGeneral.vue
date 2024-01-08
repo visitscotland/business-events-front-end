@@ -2,13 +2,13 @@
     <h1>{{ documentData.displayName }}</h1>
     <div v-html="documentData.introduction.value" />
 
-    <Image
+    <VsBrImage
         v-if="heroImage && documentData.theme !== 'simple'"
         :imageRef=heroImage
         style="max-width: 50%"
     />
 
-    <ModuleBuilder
+    <VsBrModuleBuilder
         :modules=pageItems
     />
 </template>
@@ -17,9 +17,9 @@
     import { toRefs } from 'vue';
     import { Component, Page } from '@bloomreach/spa-sdk';
 
-    import Image from '../Utils/Image.vue';
+    import VsBrImage from '../Utils/VsBrImage.vue';
 
-    import ModuleBuilder from '../Modules/ModuleBuilder.vue';
+    import VsBrModuleBuilder from '../Modules/VsBrModuleBuilder.vue';
 
     const props = defineProps<{ component: Component, page: Page }>();
 

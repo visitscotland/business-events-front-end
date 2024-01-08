@@ -1,6 +1,6 @@
 <template>
     <div>
-        <General
+        <VsBrGeneral
             v-if="pageName === 'general-page'"
             :page=page
             :component=component
@@ -21,16 +21,18 @@
     import { toRefs, provide } from 'vue';
     import { Component, Page } from '@bloomreach/spa-sdk';
 
-    import General from '../PageTypes/General.vue';
+    import VsBrGeneral from '../PageTypes/VsBrGeneral.vue';
 
     const props = defineProps<{ component: Component, page: Page }>();
 
     const { component, page } = toRefs(props);
 
-    let pageName = '';
+    let pageComponent : any = {},
+        pageName = '';
 
     if (page.value) {
-        pageName = page.value.getComponent().model.name;
+        pageComponent = page.value.getComponent();
+        pageName = pageComponent.model.name;
     }
 
     provide('page', page.value);

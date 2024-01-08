@@ -1,10 +1,10 @@
 <template>
     <div v-for="item in modules">
-        <ListLinksModule
+        <VsBrListLinksModule
             v-if="item.type==='ListLinksModule'"
             :module="item"
         />
-        <MultiImageLinksModule
+        <VsBrMultiImageLinksModule
             v-else-if="item.type==='MultiImageLinksModule'"
             :module="item"
         />
@@ -18,8 +18,8 @@
 </template>
 
 <script lang="ts" setup>
-    import ListLinksModule from '../Modules/ListLinksModule.vue';
-    import MultiImageLinksModule from '../Modules/MultiImageLinksModule.vue';
+    import VsBrListLinksModule from '../Modules/VsBrListLinksModule.vue';
+    import VsBrMultiImageLinksModule from '../Modules/VsBrMultiImageLinksModule.vue';
 
     const props = defineProps<{
         modules: Object[],

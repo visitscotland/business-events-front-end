@@ -19,7 +19,7 @@
     
     import { Link } from '@bloomreach/spa-sdk';
 
-    import Image from './Image.vue';
+    import VsBrImage from './VsBrImage.vue';
     
     const props = defineProps<{ linkObj: Link, showImage?: Boolean }>();
     const { linkObj } = props;
