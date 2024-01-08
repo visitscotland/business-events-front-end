@@ -7,18 +7,18 @@
 </template>
 
 <script lang="ts" setup>
-    import { Content, Page } from '@bloomreach/spa-sdk';
+    import { Page } from '@bloomreach/spa-sdk';
 
     const props = defineProps<{
-        imageRef: String,
+        image: any,
     }>();
 
-    const { imageRef } = props;
+    const { image } = props;
 
     const page: Page | undefined = inject('page');
-    let imageValue: Content | undefined;
+    let imageValue: any;
 
     if (page) {
-        imageValue = page.getContent(imageRef);
+        imageValue = page.getContent(image.$ref);
     }
 </script>

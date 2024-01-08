@@ -4,9 +4,9 @@
         :data-type="linkObj.label"
     >
 
-        <Image
+        <VsBrImage
             v-if="linkImage && showImage"
-            :imageRef=linkImage
+            :image=linkImage
             style="max-width: 150px"
         />
 
@@ -16,12 +16,10 @@
 
 <script lang="ts" setup>
     import { computed, inject} from 'vue';
-    
-    import { Link } from '@bloomreach/spa-sdk';
 
     import VsBrImage from './VsBrImage.vue';
     
-    const props = defineProps<{ linkObj: Link, showImage?: Boolean }>();
+    const props = defineProps<{ linkObj: any, showImage?: Boolean }>();
     const { linkObj } = props;
 
     const page = inject('page');
@@ -33,6 +31,6 @@
     let linkImage = {};
 
     if (page) {
-        linkImage = linkObj.image.cmsImage.$ref;
+        linkImage = linkObj.image.cmsImage;
     }
 </script>

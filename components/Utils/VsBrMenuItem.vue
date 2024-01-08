@@ -33,11 +33,9 @@
 </template>
 
 <script lang="ts" setup>
-    import { toRefs } from 'vue';
-
     import { MenuItem } from '@bloomreach/spa-sdk';
 
     const props = defineProps<{ item : MenuItem }>();
 
-    const { item } = toRefs(props);
+    const item : any = props.item;
 </script>

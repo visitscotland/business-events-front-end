@@ -4,7 +4,7 @@
 
     <VsBrImage
         v-if="heroImage && documentData.theme !== 'simple'"
-        :imageRef=heroImage
+        :image=heroImage
         style="max-width: 50%"
     />
 
@@ -28,12 +28,12 @@
     let document : any = {},
         documentData : any = {},
         pageItems : any[] = [],
-        heroImage = '';
+        heroImage = {};
 
     if (page.value) {
         document = page.value.getDocument();
         documentData = document.getData();
         pageItems = component.value.getModels().pageItems;
-        heroImage = documentData.heroImage.$ref;
+        heroImage = documentData.heroImage;
     }
 </script>
