@@ -20,7 +20,7 @@
     import VsBrLink from '../Utils/VsBrLink.vue';
 
     const props = defineProps<{ module: Object }>();
-    const { module } = props;
+    const module : any = props.module;
     
 </script>
 

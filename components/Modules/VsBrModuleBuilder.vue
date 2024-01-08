@@ -22,7 +22,7 @@
     import VsBrMultiImageLinksModule from '../Modules/VsBrMultiImageLinksModule.vue';
 
     const props = defineProps<{
-        modules: Object[],
+        modules: any[],
     }>();
 
     const { modules } = props;
