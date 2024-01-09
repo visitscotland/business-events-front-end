@@ -3,6 +3,12 @@
         class="menu-container"
     >
         <ul>
+            <li v-for="link in languageLinks">
+                <a href="#" @click.prevent="toggleLanguage(link.url)">{{ link.displayName }}</a>
+            </li>
+        </ul>
+        <hr>
+        <ul>
             <VsBrMenuItem
                 v-for="menuItem in menuItems"
                 :item="menuItem"
@@ -26,15 +32,19 @@
             $ref: '',
         },
         menuData : any = {},
-        menuItems : MenuItem[] = [];
+        menuItems : MenuItem[] = [],
+        languageLinks : any = {};
 
     if (page.value) {
         menu = component.value.getModels().menu;
         menuData = page.value.getContent(menu.$ref);
-        if (menuData) {
-            menuItems = menuData['items'];
-        }
-        
+        menuItems = menuData.items;
+
+        languageLinks = component.value.getModels().localizedURLs;
+    }
+
+    function toggleLanguage(newUrl : string): void {
+        console.log(newUrl);
     }
 </script>
 

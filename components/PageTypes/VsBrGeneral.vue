@@ -1,5 +1,5 @@
 <template>
-    <h1>{{ documentData.displayName }}</h1>
+    <h1>{{ documentData.title }}</h1>
     <div v-html="documentData.introduction.value" />
 
     <VsBrImage

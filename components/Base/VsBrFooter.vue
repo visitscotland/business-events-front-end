@@ -2,7 +2,7 @@
     <div>
         <ul>
             <VsBrMenuItem
-                v-for="menuItem in menuData.items"
+                v-for="menuItem in menuItems"
                 :item="menuItem"
             >
             </VsBrMenuItem>
@@ -32,19 +32,23 @@
             $ref: '',
         },
         menuData : any = {},
+        menuItems : MenuItem[] = [],
         utilityData : any = {},
         utilityMenuItems : MenuItem[] = [];
 
     if (page.value) {
         menu = component.value.getModels().menu;
-        menuData = page.value.getContent(menu.$ref);
+        if (menu) {
+            menuData = page.value.getContent(menu.$ref);
+            menuItems = menuData.items;
+        }
 
         let children : any[] = [];
 
         children = component.value.getChildren();
 
         for (let x = 0; x < children.length; x++) {
-            if (children[x].model.name === 'utility') {
+            if (children[x].model.name === 'utility' && children[x].model.models.menu) {
                 utilityData = page.value.getContent(children[x].model.models.menu.$ref);
                 utilityMenuItems = utilityData.items;
             }

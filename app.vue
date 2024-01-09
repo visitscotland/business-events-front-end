@@ -29,9 +29,29 @@ const route = useRoute().path;
 // Get API endpoint from the server side.
 const { data: endpoint } = await useFetch('/api/getEndpoint');
 
+let locale = '/site/resourceapi';
+
+const localeStrings = [
+    'fr-fr',
+    'es-es',
+    'nl-nl',
+    'de-de',
+];
+
+let deLocalisedRoute = route;
+
+for (let x = 0; x < localeStrings.length; x++) {
+    if (route.indexOf(localeStrings[x]) !== -1) {
+        locale = `/site/${localeStrings[x]}/resourceapi`;
+        deLocalisedRoute = deLocalisedRoute.replace(`/${localeStrings[x]}`, '');
+    }
+}
+
+const localisedEndpoint = endpoint.value + locale;
+
 const configuration = {
-    path: route,
-    endpoint: endpoint.value,
+    path: deLocalisedRoute,
+    endpoint: localisedEndpoint,
     httpClient: axios,
 };
 
