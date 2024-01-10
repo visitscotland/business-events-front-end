@@ -1,22 +1,24 @@
 <template>
     <br-page :configuration="configuration" :mapping="mapping">
-        <template v-slot="props">
+        <template #default>
             <header>
-                <br-component component="menu"/>
+                <br-component component="menu" />
             </header>
             <hr>
             <section class="content">
-                <br-component component="main"/>
+                <br-component component="main" />
             </section>
             <hr>
             <footer>
-                <br-component component="footer"/>
+                <br-component component="footer" />
             </footer>
         </template>
     </br-page>
 </template>
 
 <script setup>
+/* eslint vue/component-name-in-template-casing: 0 */
+
 import axios from 'axios';
 
 import VsBrMenu from './components/Base/VsBrMenu.vue';
@@ -41,7 +43,7 @@ const localeStrings = [
 let deLocalisedRoute = route;
 
 for (let x = 0; x < localeStrings.length; x++) {
-    if (route.indexOf(localeStrings[x]) !== -1) {
+    if (route.includes(localeStrings[x])) {
         locale = `/site/${localeStrings[x]}/resourceapi`;
         deLocalisedRoute = deLocalisedRoute.replace(`/${localeStrings[x]}`, '');
     }
@@ -56,8 +58,8 @@ const configuration = {
 };
 
 const mapping = {
-    'menu': VsBrMenu,
-    'main': VsBrMain,
-    'footer': VsBrFooter,
+    menu: VsBrMenu,
+    main: VsBrMain,
+    footer: VsBrFooter,
 };
 </script>
