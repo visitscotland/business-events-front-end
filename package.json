@@ -6,7 +6,8 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "commit": "cz"
   },
   "devDependencies": {
     "nuxt": "^3.4.1"
@@ -15,9 +16,16 @@
     "@bloomreach/spa-sdk": "^20.0.0",
     "@bloomreach/vue3-sdk": "^20.0.0",
     "axios": "^1.3.5",
+    "commitizen": "^4.3.0",
+    "cz-conventional-changelog": "^3.3.0",
     "sass": "^1.62.0"
   },
   "overrides": {
     "vue": "latest"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
