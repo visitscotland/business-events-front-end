@@ -10,9 +10,13 @@
     "commit": "cz",
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
-    "release:major": "standard-version --release-as major"
+    "release:major": "standard-version --release-as major",
+    "lint": "eslint ."
   },
   "devDependencies": {
+    "@nuxt/eslint-config": "^0.2.0",
+    "@nuxtjs/eslint-config-typescript": "^12.1.0",
+    "eslint": "^8.56.0",
     "nuxt": "^3.4.1"
   },
   "dependencies": {
