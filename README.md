@@ -5,8 +5,8 @@
 Make sure to install the dependencies:
 
 ```bash
-# npm
-npm install
+# yarn
+yarn install
 ```
 
 ## Development Server
@@ -14,7 +14,7 @@ npm install
 Start the development server on `http://localhost:3000`
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 ## Dependencies 
