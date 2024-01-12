@@ -4,7 +4,7 @@
     >
         <ul>
             <li v-for="(link, index) in languageLinks" :key="index">
-                <a href="#" @click.prevent="toggleLanguage(link.url)">{{ link.displayName }}</a>
+                <a href="#" @click.prevent="toggleLanguage()">{{ link.displayName }}</a>
             </li>
         </ul>
         <hr>
@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 import { toRefs } from 'vue';
-import {
+import type {
     Component, Page, MenuItem,
 } from '@bloomreach/spa-sdk';
 

@@ -35,7 +35,7 @@
 </template>
 
 <script lang="ts" setup>
-import { MenuItem } from '@bloomreach/spa-sdk';
+import type { MenuItem } from '@bloomreach/spa-sdk';
 
 const props = defineProps<{ item : MenuItem }>();
 

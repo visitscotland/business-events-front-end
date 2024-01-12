@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 import { toRefs } from 'vue';
-import {
+import type {
     Component, Page, MenuItem,
 } from '@bloomreach/spa-sdk';
 

@@ -19,7 +19,7 @@
 
 <script lang="ts" setup>
 import { toRefs, provide } from 'vue';
-import { Component, Page } from '@bloomreach/spa-sdk';
+import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import VsBrGeneral from '../PageTypes/VsBrGeneral.vue';
 

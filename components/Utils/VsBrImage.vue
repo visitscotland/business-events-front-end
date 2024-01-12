@@ -10,7 +10,7 @@
 <script lang="ts" setup>
 /* eslint no-undef: 0 */
 
-import { Page } from '@bloomreach/spa-sdk';
+import type { Page } from '@bloomreach/spa-sdk';
 
 const props = defineProps<{
     image: any,

@@ -15,7 +15,7 @@
 
 <script lang="ts" setup>
 import { toRefs } from 'vue';
-import { Component, Page } from '@bloomreach/spa-sdk';
+import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import VsBrImage from '../Utils/VsBrImage.vue';
 
