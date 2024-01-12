@@ -1,11 +1,14 @@
 <template>
-    <div v-for="item in modules">
+    <div
+        v-for="(item, index) in modules"
+        :key="index"
+    >
         <VsBrListLinksModule
-            v-if="item.type==='ListLinksModule'"
+            v-if="item.type === 'ListLinksModule'"
             :module="item"
         />
         <VsBrMultiImageLinksModule
-            v-else-if="item.type==='MultiImageLinksModule'"
+            v-else-if="item.type === 'MultiImageLinksModule'"
             :module="item"
         />
         <span
@@ -18,12 +21,12 @@
 </template>
 
 <script lang="ts" setup>
-    import VsBrListLinksModule from '../Modules/VsBrListLinksModule.vue';
-    import VsBrMultiImageLinksModule from '../Modules/VsBrMultiImageLinksModule.vue';
+import VsBrListLinksModule from './VsBrListLinksModule.vue';
+import VsBrMultiImageLinksModule from './VsBrMultiImageLinksModule.vue';
 
-    const props = defineProps<{
-        modules: any[],
-    }>();
+const props = defineProps<{
+    modules: any[],
+}>();
 
-    const { modules } = props;
+const { modules } = props;
 </script>

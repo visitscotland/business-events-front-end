@@ -3,22 +3,25 @@
         v-bind="$attrs"
         v-if="imageValue"
         :src="imageValue.getOriginal().getUrl()"
-    />
+        :alt="imageValue.altText"
+    >
 </template>
 
 <script lang="ts" setup>
-    import { Page } from '@bloomreach/spa-sdk';
+/* eslint no-undef: 0 */
 
-    const props = defineProps<{
-        image: any,
-    }>();
+import { Page } from '@bloomreach/spa-sdk';
 
-    const { image } = props;
+const props = defineProps<{
+    image: any,
+}>();
 
-    const page: Page | undefined = inject('page');
-    let imageValue: any;
+const { image } = props;
 
-    if (page) {
-        imageValue = page.getContent(image.$ref);
-    }
+const page: Page | undefined = inject('page');
+let imageValue: any;
+
+if (page) {
+    imageValue = page.getContent(image.$ref);
+}
 </script>

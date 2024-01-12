@@ -1,6 +1,11 @@
 module.exports = {
     root: true,
-    extends: ['@nuxtjs/eslint-config-typescript'],
+    extends: [
+        '@nuxtjs/eslint-config-typescript',
+        'eslint:recommended',
+        'plugin:vue/vue3-essential',
+        '@vue/eslint-config-airbnb',
+    ],
     rules: {
         indent: [
             'warn',

@@ -11,15 +11,16 @@
     "release:patch": "standard-version --release-as patch",
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint": "eslint ./**/*.{js,vue,ts}",
+    "lint:fix": "yarn lint --fix"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^0.2.0",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "eslint": "^8.56.0",
     "husky": "^8.0.3",
-    "nuxt": "^3.4.1"
+    "nuxt": "^3.4.1",
+    "@vue/eslint-config-airbnb": "^7.0.0"
   },
   "dependencies": {
     "@bloomreach/spa-sdk": "^20.0.0",

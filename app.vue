@@ -18,6 +18,7 @@
 
 <script setup>
 /* eslint vue/component-name-in-template-casing: 0 */
+/* eslint no-undef: 0 */
 
 import axios from 'axios';
 

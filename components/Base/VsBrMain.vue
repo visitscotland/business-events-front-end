@@ -2,8 +2,8 @@
     <div>
         <VsBrGeneral
             v-if="pageName === 'general-page'"
-            :page=page
-            :component=component
+            :page="page"
+            :component="component"
         />
         <div
             v-else
@@ -18,22 +18,23 @@
 </template>
 
 <script lang="ts" setup>
-    import { toRefs, provide } from 'vue';
-    import { Component, Page } from '@bloomreach/spa-sdk';
+import { toRefs, provide } from 'vue';
+import { Component, Page } from '@bloomreach/spa-sdk';
 
-    import VsBrGeneral from '../PageTypes/VsBrGeneral.vue';
+import VsBrGeneral from '../PageTypes/VsBrGeneral.vue';
 
-    const props = defineProps<{ component: Component, page: Page }>();
+const props = defineProps<{ component: Component, page: Page }>();
 
-    const { component, page } = toRefs(props);
+const { component, page } = toRefs(props);
 
-    let pageComponent : any = {},
-        pageName = '';
+let pageComponent : any = {
+};
+let pageName = '';
 
-    if (page.value) {
-        pageComponent = page.value.getComponent();
-        pageName = pageComponent.model.name;
-    }
+if (page.value) {
+    pageComponent = page.value.getComponent();
+    pageName = pageComponent.model.name;
+}
 
-    provide('page', page.value);
+provide('page', page.value);
 </script>

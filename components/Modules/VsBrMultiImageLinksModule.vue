@@ -6,24 +6,24 @@
         <span>links</span>
         <span>---</span>
         <div
-            v-for="link in module.links"
+            v-for="(link, index) in module.links"
+            :key="index"
             class="image-link"
         >
             <VsBrLink
-                :linkObj="link"
-                :showImage=true
-            >
-            </VsBrLink>
+                :link-obj="link"
+                :show-image="true"
+            />
         </div>
     </div>
 </template>
 
 <script lang="ts" setup>
-    import VsBrLink from '../Utils/VsBrLink.vue';
+import VsBrLink from '../Utils/VsBrLink.vue';
 
-    const props = defineProps<{ module: Object }>();
-    const module : any = props.module;
-    
+const props = defineProps<{ module: Object }>();
+const module : any = props.module;
+
 </script>
 
 <style>

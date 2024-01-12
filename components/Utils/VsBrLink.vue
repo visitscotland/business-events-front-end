@@ -6,7 +6,7 @@
 
         <VsBrImage
             v-if="linkImage && showImage"
-            :image=linkImage
+            :image="linkImage"
             style="max-width: 150px"
         />
 
@@ -15,22 +15,23 @@
 </template>
 
 <script lang="ts" setup>
-    import { computed, inject} from 'vue';
+import { computed, inject } from 'vue';
 
-    import VsBrImage from './VsBrImage.vue';
-    
-    const props = defineProps<{ linkObj: any, showImage?: Boolean }>();
-    const { linkObj } = props;
+import VsBrImage from './VsBrImage.vue';
 
-    const page = inject('page');
+const props = defineProps<{ linkObj: any, showImage?: Boolean }>();
+const { linkObj } = props;
 
-    // There is presumably a built in way to do this. Page.rewriteLinks seems to only work on
-    // an html block rather than a string.
-    const formattedLink = computed(() => linkObj.link.replace('/site/resourceapi', ''));
+const page = inject('page');
 
-    let linkImage = {};
+// There is presumably a built in way to do this. Page.rewriteLinks seems to only work on
+// an html block rather than a string.
+const formattedLink = computed(() => linkObj.link.replace('/site/resourceapi', ''));
 
-    if (page) {
-        linkImage = linkObj.image.cmsImage;
-    }
+let linkImage = {
+};
+
+if (page) {
+    linkImage = linkObj.image.cmsImage;
+}
 </script>
