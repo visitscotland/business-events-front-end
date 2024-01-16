@@ -32,4 +32,7 @@ export default defineNuxtConfig({
     },
     modules: [],
     css: ['@/assets/styles/main.scss'],
+    build: {
+        transpile: ['bootstrap-vue-next'],
+    },
 });
