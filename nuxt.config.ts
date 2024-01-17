@@ -31,7 +31,10 @@ export default defineNuxtConfig({
         },
     },
     modules: [],
-    css: ['@/assets/styles/main.scss'],
+    css: [
+        '@/assets/styles/main.scss',
+        '@visitscotland/component-library/dist/style.css',
+    ],
     build: {
         transpile: ['bootstrap-vue-next'],
     },
