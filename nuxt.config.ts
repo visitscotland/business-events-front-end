@@ -38,6 +38,8 @@ export default defineNuxtConfig({
         '@visitscotland/component-library/dist/style.css',
     ],
     build: {
-        transpile: ['bootstrap-vue-next'],
+        transpile: [
+            'bootstrap-vue-next',
+        ],
     },
 });

@@ -1,20 +1,30 @@
 <template>
-    <div
-        class="menu-container"
-    >
-        <ul>
-            <li v-for="(link, index) in languageLinks" :key="index">
-                <a href="#" @click.prevent="toggleLanguage()">{{ link.displayName }}</a>
-            </li>
-        </ul>
-        <hr>
-        <ul>
-            <VsBrMenuItem
-                v-for="(menuItem, index) in menuItems"
-                :key="index"
-                :item="menuItem"
-            />
-        </ul>
+    <div>
+        <header>
+            <!-- TODO - dropdown label -->
+            <VsGlobalMenu
+                active-site="https://www.visitscotland.com"
+            >
+                <template #third-menu-item>
+                    <VsGlobalMenuLanguage>
+                        <VsGlobalMenuLanguageItem
+                            v-for="link in languageLinks"
+                            :key="link.language"
+                            :language-link="link.url"
+                            :language-name="link.displayName"
+                            :language="link.locale"
+                        />
+                    </VsGlobalMenuLanguage>
+                </template>
+            </VsGlobalMenu>
+            <ul>
+                <VsBrMenuItem
+                    v-for="(menuItem, index) in menuItems"
+                    :key="index"
+                    :item="menuItem"
+                />
+            </ul>
+        </header>
     </div>
 </template>
 
@@ -23,6 +33,12 @@ import { toRefs } from 'vue';
 import type {
     Component, Page, MenuItem,
 } from '@bloomreach/spa-sdk';
+
+import {
+    VsGlobalMenu,
+    VsGlobalMenuLanguage,
+    VsGlobalMenuLanguageItem,
+} from '@visitscotland/component-library/dist/vs-component-library.mjs';
 
 import VsBrMenuItem from '../Utils/VsBrMenuItem.vue';
 
@@ -46,16 +62,4 @@ if (page.value) {
 
     languageLinks = component.value.getModels().localizedURLs;
 }
-
-function toggleLanguage(): void {
-    // console.log(newUrl);
-}
 </script>
-
-<style>
-    .menu-container {
-        border: 1px solid black;
-        max-height: 300px;
-        overflow-y: scroll;
-    }
-</style>
