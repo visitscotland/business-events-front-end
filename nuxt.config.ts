@@ -30,7 +30,9 @@ export default defineNuxtConfig({
             ],
         },
     },
-    modules: [],
+    modules: [
+        '@pinia/nuxt',
+    ],
     css: [
         '@/assets/styles/main.scss',
         '@visitscotland/component-library/dist/style.css',

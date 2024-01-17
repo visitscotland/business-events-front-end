@@ -1,13 +1,21 @@
 <template>
-    <h1>{{ documentData.title }}</h1>
-    <div v-html="documentData.introduction.value" />
-
-    <VsBrImage
-        v-if="heroImage && documentData.theme !== 'simple'"
-        :image="heroImage"
-        style="max-width: 50%"
+    <VsBrPageIntro
+        v-if="documentData.theme === 'Top-Level'"
+        :content="documentData"
+        :hero-image="heroImage"
+        :light-background="true"
     />
-
+    <!-- TODO - Background colour conditional on PSR -->
+    <VsBrPageIntro
+        v-if="documentData.theme === 'Standard'"
+        :content="documentData"
+        :light-background="true"
+    />
+    <VsBrPageIntro
+        v-if="documentData.theme === 'Simple'"
+        :content="documentData"
+        :light-background="true"
+    />
     <VsBrModuleBuilder
         :modules="pageItems"
     />
@@ -17,8 +25,7 @@
 import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
-import VsBrImage from '../Utils/VsBrImage.vue';
-
+import VsBrPageIntro from '../Modules/VsBrPageIntro.vue';
 import VsBrModuleBuilder from '../Modules/VsBrModuleBuilder.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();

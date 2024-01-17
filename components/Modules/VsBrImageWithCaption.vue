@@ -1,0 +1,85 @@
+<template>
+    <!-- TODO - latitude, longitude, toggle-button-text, video, play-button-text -->
+    <VsImageWithCaption
+        :variant="variant"
+        :is-hero-image="isHero"
+        :mobile-overlap="mobileOverlap"
+        :is-video="isVideo"
+        :show-toggle="showToggle"
+    >
+        <!-- TODO - Move all srcset logic into component library with mixin for consistency -->
+        <VsImg
+            :src="imageValue.getOriginal().getUrl()"
+            :alt="noAltText ? '' : imageValue.altText"
+            :use-lazy-loading="useLazyLoading"
+        />
+
+        <template
+            #img-caption
+        >
+            <!-- TODO - latitude, longitude -->
+            <VsCaption
+                :variant="variant"
+                :text-align="alignment"
+            >
+                <template
+                    #caption
+                >
+                    {{ imageValue.description }}
+                </template>
+
+                <!-- TODO - image source -->
+            </VsCaption>
+        </template>
+    </VsImageWithCaption>
+</template>
+
+<script lang="ts" setup>
+import { toRefs, inject } from 'vue';
+
+import type { Page } from '@bloomreach/spa-sdk';
+
+import {
+    VsImageWithCaption,
+    VsImg,
+    VsCaption,
+} from '@visitscotland/component-library/dist/vs-component-library.mjs';
+
+const props = defineProps<{
+    image: any,
+    variant: string,
+    isHero: boolean,
+    isVideo: boolean,
+    mobileOverlap?: boolean,
+    alignment?: string,
+    videoId?: string,
+    videoTitle?: string,
+    smallPlayButton?: boolean,
+    useLazyLoading: boolean,
+    noAltText?: boolean,
+    showToggle?: boolean,
+}>();
+
+const {
+    image,
+    variant,
+    isHero,
+    isVideo,
+    mobileOverlap,
+    alignment,
+    // videoId,
+    // videoTitle,
+    // smallPlayButton,
+    useLazyLoading,
+    noAltText,
+    showToggle,
+} = toRefs(props);
+
+const page: Page | undefined = inject('page');
+let imageValue: any;
+
+if (page) {
+    imageValue = page.getContent(image.value.$ref);
+}
+
+</script>
