@@ -10,14 +10,16 @@
         <!-- TODO - Move all srcset logic into component library with mixin for consistency -->
         <VsImg
             :src="imageValue.getOriginal().getUrl()"
-            :alt="noAltText ? '' : imageValue.altText"
+            :alt="noAltText ? '' : imageData.altText"
             :use-lazy-loading="useLazyLoading"
         />
 
         <template
             #img-caption
         >
-            <!-- TODO - latitude, longitude -->
+            <!-- TODO - latitude & longitude don't seem to be available for hero images, it comes
+            down as a raw ImageSet without that info. Images in links have them but we need them
+            here-->
             <VsCaption
                 :variant="variant"
                 :text-align="alignment"
@@ -25,7 +27,36 @@
                 <template
                     #caption
                 >
-                    {{ imageValue.description }}
+                    {{ imageData.description }}
+                </template>
+
+                <template
+                    v-if="imageData.source"
+                    #toggle-icon
+                >
+                    <VsIcon
+                        :name="imageData.source + '-filled'"
+                        size="md"
+                    />
+                </template>
+
+                <template
+                    #credit
+                >
+                    <template
+                        v-if="imageData.source"
+                    >
+                        <VsSocialCreditLink
+                            :credit="imageData.credit"
+                            :social-post-url="imageData.postUrl || ''"
+                            :source="imageData.source"
+                        />
+                    </template>
+                    <template
+                        v-if="!imageData.source"
+                    >
+                        &copy; {{ imageData.credit }}
+                    </template>
                 </template>
 
                 <!-- TODO - image source -->
@@ -43,6 +74,8 @@ import {
     VsImageWithCaption,
     VsImg,
     VsCaption,
+    VsSocialCreditLink,
+    VsIcon,
 } from '@visitscotland/component-library/dist/vs-component-library.mjs';
 
 const props = defineProps<{
@@ -77,9 +110,11 @@ const {
 
 const page: Page | undefined = inject('page');
 let imageValue: any;
+let imageData: any;
 
 if (page) {
     imageValue = page.getContent(image.value.$ref);
+    imageData = imageValue.model.data;
 }
 
 </script>

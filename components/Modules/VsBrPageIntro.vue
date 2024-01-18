@@ -26,6 +26,14 @@
 
         <!-- TODO - Share Button -->
 
+        <template
+            #vs-intro-content
+        >
+            <div
+                v-html="content.introduction.value"
+            />
+        </template>
+
         <!-- TODO - Itinerary Summary -->
     </VsPageIntro>
 </template>
