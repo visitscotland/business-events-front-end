@@ -4,7 +4,6 @@
             <header>
                 <br-component component="menu" />
             </header>
-            <hr>
             <section class="content">
                 <br-component component="main" />
             </section>
