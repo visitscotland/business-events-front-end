@@ -1,5 +1,6 @@
 <template>
     <div
+        class="vs-module-wrapper__outer"
         v-for="(item, index) in modules"
         :key="index"
     >

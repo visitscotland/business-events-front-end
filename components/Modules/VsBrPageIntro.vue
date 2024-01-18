@@ -8,7 +8,10 @@
 
         <!-- TODO - Hero Video -->
 
-        <template #vs-intro-hero>
+        <template
+            #vs-intro-hero
+            v-if="heroImage"
+        >
             <VsBrImageWithCaption
                 :is-video="false"
                 :is-hero="true"
