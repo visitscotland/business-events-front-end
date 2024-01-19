@@ -6,11 +6,19 @@
         :light-background="true"
     />
     <!-- TODO - Background colour conditional on PSR -->
-    <VsBrPageIntro
-        v-if="documentData.theme === 'Standard'"
-        :content="documentData"
-        :light-background="true"
-    />
+
+    <template v-if="documentData.theme === 'Standard'">
+        <VsBrPageIntro
+            v-if="documentData.theme === 'Standard'"
+            :content="documentData"
+            :light-background="true"
+        />
+
+        <VsBrIntroImage
+            :image="heroImage"
+        />
+    </template>
+
     <VsBrPageIntro
         v-if="documentData.theme === 'Simple'"
         :content="documentData"
@@ -26,6 +34,7 @@ import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import VsBrPageIntro from '../Modules/VsBrPageIntro.vue';
+import VsBrIntroImage from '../Modules/VsBrIntroImage.vue';
 import VsBrModuleBuilder from '../Modules/VsBrModuleBuilder.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();

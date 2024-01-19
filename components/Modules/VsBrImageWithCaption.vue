@@ -88,7 +88,7 @@ const props = defineProps<{
     videoId?: string,
     videoTitle?: string,
     smallPlayButton?: boolean,
-    useLazyLoading: boolean,
+    useLazyLoading?: boolean,
     noAltText?: boolean,
     showToggle?: boolean,
 }>();
