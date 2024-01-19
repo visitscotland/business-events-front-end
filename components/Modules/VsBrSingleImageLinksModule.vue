@@ -57,7 +57,7 @@
                         variant="on-dark"
                         :key="index"
                         :type="link.type.toLowerCase()"
-                        :href="link.link"
+                        :href="formatLink(link.link)"
                     >
                         {{ link.label }}
                     </VsLinkListItem>
@@ -74,6 +74,8 @@ import {
     VsCol,
     VsLinkListItem,
 } from '@visitscotland/component-library/dist/vs-component-library.mjs';
+
+import formatLink from '../../composables/formatLink.ts';
 
 import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
 
