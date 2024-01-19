@@ -1,16 +1,23 @@
 <template>
-    <br-page :configuration="configuration" :mapping="mapping">
+    <br-page
+        :configuration="configuration"
+        :mapping="mapping"
+    >
         <template #default>
-            <header>
-                <br-component component="menu" />
-            </header>
-            <section class="content">
-                <br-component component="main" />
-            </section>
-            <hr>
-            <footer>
-                <br-component component="footer" />
-            </footer>
+            <div
+                :class="!isMounted ? 'no-js' : ''"
+            >
+                <header>
+                    <br-component component="menu" />
+                </header>
+                <section class="content">
+                    <br-component component="main" />
+                </section>
+                <hr>
+                <footer>
+                    <br-component component="footer" />
+                </footer>
+            </div>
         </template>
     </br-page>
 </template>
@@ -40,6 +47,8 @@ const localeStrings = [
     'de-de',
 ];
 
+let isMounted = false;
+
 let deLocalisedRoute = route;
 
 for (let x = 0; x < localeStrings.length; x++) {
@@ -62,4 +71,8 @@ const mapping = {
     main: VsBrMain,
     footer: VsBrFooter,
 };
+
+onMounted(() => {
+    isMounted = true;
+});
 </script>
