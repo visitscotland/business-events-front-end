@@ -1,5 +1,5 @@
 <template>
-    <!-- TODO - theme, error-message, itinerary, themes -->
+    <!-- TODO - theme, error-message, itinerary, themes, video links -->
     <VsMegalinks
         :title="module.title"
         variant="link-list"
@@ -8,21 +8,23 @@
             v-if="module.introduction"
             #vs-megalinks-intro
         >
-            {{ module.introduction.value }}
+            <div
+                v-html="module.introduction.value"
+            />
         </template>
 
         <VsRow>
             <VsCol
-                v-for="(link, index) in links"
+                v-for="(link, index) in module.links"
                 :key="index"
                 cols="12"
                 md="6"
             >
                 <VsMegalinkLinkList
-                    :img-src="link.image"
+                    :img-src="link.image ? link.image : ''"
                     :theme="link.theme"
-                    :link-type="link.type"
-                    :link-url="link.url"
+                    :type="link.type"
+                    :href="link.url"
                     :error-message="link['error-message']"
                 >
                     <template #vs-link-list-heading>
@@ -53,6 +55,8 @@ import {
     VsCol,
 } from '@visitscotland/component-library/dist/vs-component-library.mjs';
 
+import formatLink from '../../composables/formatLink.ts';
+
 const props = defineProps<{ module: Object }>();
 const module : any = props.module;
 const page: Page | undefined = inject('page');
@@ -70,7 +74,7 @@ if (page && module.links) {
             image: image?.getOriginal().getUrl(),
             theme: 'light',
             type: nextLink.type.toLowerCase(),
-            url: nextLink.link,
+            url: formatLink(nextLink.link),
             'error-message': '',
             label: nextLink.label,
             teaser: nextLink.teaser,

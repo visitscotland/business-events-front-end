@@ -80,9 +80,9 @@ import {
 
 const props = defineProps<{
     image: any,
-    variant: string,
-    isHero: boolean,
-    isVideo: boolean,
+    variant?: string,
+    isHero?: boolean,
+    isVideo?: boolean,
     mobileOverlap?: boolean,
     alignment?: string,
     videoId?: string,
