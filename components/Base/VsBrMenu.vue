@@ -3,7 +3,7 @@
         <header>
             <!-- TODO - dropdown label -->
             <VsGlobalMenu
-                active-site="https://www.visitscotland.com"
+                active-site="https://businessevents.visitscotland.com/"
             >
                 <template #third-menu-item>
                     <VsGlobalMenuLanguage>
