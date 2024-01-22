@@ -1,8 +1,9 @@
 <template>
-    <!-- TODO - theme, error-message, itinerary, themes, video links -->
+    <!-- TODO - error-message, itinerary, themes, video links -->
     <VsMegalinks
         :title="module.title"
         variant="link-list"
+        :theme="theme"
     >
         <template
             v-if="module.introduction"
@@ -15,14 +16,14 @@
 
         <VsRow>
             <VsCol
-                v-for="(link, index) in module.links"
+                v-for="(link, index) in links"
                 :key="index"
                 cols="12"
                 md="6"
             >
                 <VsMegalinkLinkList
                     :img-src="link.image ? link.image : ''"
-                    :theme="link.theme"
+                    :theme="theme"
                     :type="link.type"
                     :href="link.url"
                     :error-message="link['error-message']"
@@ -33,6 +34,7 @@
 
                     <template
                         #vs-link-list-content
+                        v-if="module.teaserVisible"
                     >
                         <p>{{ link.teaser }}</p>
                     </template>
@@ -57,8 +59,10 @@ import {
 
 import formatLink from '../../composables/formatLink.ts';
 
-const props = defineProps<{ module: Object }>();
-const module : any = props.module;
+const props = defineProps<{ module: Object, theme: string }>();
+const module: any = props.module;
+const theme: string = props.theme;
+
 const page: Page | undefined = inject('page');
 const links: any[] = [];
 
@@ -72,7 +76,6 @@ if (page && module.links) {
 
         links.push({
             image: image?.getOriginal().getUrl(),
-            theme: 'light',
             type: nextLink.type.toLowerCase(),
             url: formatLink(nextLink.link),
             'error-message': '',
@@ -80,6 +83,8 @@ if (page && module.links) {
             teaser: nextLink.teaser,
         });
     }
+
+    console.log(links);
 }
 
 </script>

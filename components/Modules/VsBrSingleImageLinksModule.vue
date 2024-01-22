@@ -2,6 +2,7 @@
     <VsMegalinks
         :title="module.title"
         variant="single-image"
+        :theme="theme"
     >
         <template
             v-if="module.introduction"
@@ -15,11 +16,9 @@
         <VsCol
             cols="12"
         >
-            <!-- TODO - theme calc -->
-
             <VsMegalinkSingleImage
                 :title="module.innerTitle"
-                theme="dark"
+                :theme="theme"
                 :button-link="module.cta && module.cta.link ? module.cta.link : ''"
                 :alternate="module.alignment === 'left' ? true : false"
             >
@@ -54,7 +53,7 @@
                     <!-- TODO - Video links -->
                     <VsLinkListItem
                         v-for="(link, index) in module.links"
-                        variant="on-dark"
+                        :variant="theme === 'light' ? 'primary' : 'on-dark'"
                         :key="index"
                         :type="link.type.toLowerCase()"
                         :href="formatLink(link.link)"
@@ -79,8 +78,9 @@ import formatLink from '../../composables/formatLink.ts';
 
 import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
 
-const props = defineProps<{ module: Object }>();
-const module : any = props.module;
+const props = defineProps<{ module: Object, theme: string }>();
+const module: any = props.module;
+const theme: string = props.theme;
 
 </script>
 

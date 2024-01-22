@@ -18,10 +18,6 @@ const themeCalculator = (
     }
 
     if (module) {
-        if (module.themeIndex) {
-            return colourScheme[module.themeIndex];
-        }
-
         if (module.type === 'ICentreModule') {
             return 'grey';
         }
