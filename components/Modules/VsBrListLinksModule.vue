@@ -83,8 +83,6 @@ if (page && module.links) {
             teaser: nextLink.teaser,
         });
     }
-
-    console.log(links);
 }
 
 </script>
