@@ -1,6 +1,6 @@
 <template>
     <VsPageIntro
-        :background="lightBackground ? 'light' : 'dark'"
+        :background="lightBackground ? themeCalculator(1) : themeCalculator(0)"
         :hero-intro="heroImage ? true : false"
         :is-itinerary="itinerary ? true : false"
     >
@@ -45,6 +45,8 @@
 import { toRefs } from 'vue';
 
 import { VsPageIntro } from '@visitscotland/component-library/dist/vs-component-library.mjs';
+
+import themeCalculator from '../../composables/themeCalculator.ts';
 
 import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
 

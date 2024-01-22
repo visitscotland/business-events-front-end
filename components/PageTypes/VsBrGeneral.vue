@@ -3,7 +3,7 @@
         v-if="documentData.theme === 'Top-Level'"
         :content="documentData"
         :hero-image="heroImage"
-        :light-background="true"
+        :light-background="firstModuleIsLink ? false : true"
     />
     <!-- TODO - Background colour conditional on PSR -->
 
@@ -49,10 +49,22 @@ let pageItems : any[] = [];
 let heroImage = {
 };
 
+let firstModuleIsLink = false;
+
 if (page.value) {
     document = page.value.getDocument();
     documentData = document.getData();
     pageItems = component.value.getModels().pageItems;
     heroImage = documentData.heroImage;
+
+    if (pageItems.length
+        && (
+            pageItems[0].type === 'ListLinksModule'
+            || pageItems[0].type === 'MultiImageLinksModule'
+            || pageItems[0].type === 'SingleImageLinksModule'
+        )
+    ) {
+        firstModuleIsLink = true;
+    }
 }
 </script>
