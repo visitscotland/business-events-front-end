@@ -92,7 +92,7 @@
             link-alt-text=""
         >
             <template #copyright>
-                © 2024 VisitScotland. All rights reserved.
+                VisitScotland. All rights reserved.
             </template>
         </VsFooterCopyright>
     </VsFooter>

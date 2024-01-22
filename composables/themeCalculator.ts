@@ -23,7 +23,7 @@ const themeCalculator = (
         }
 
         if (module.type === 'TravelInformationModule') {
-            return 'grey';
+            return 'dark';
         }
     }
 
