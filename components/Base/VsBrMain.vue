@@ -6,7 +6,7 @@
             :component="component"
         />
         <VsBr404
-            v-if="pageName === 'pagenotfound'"
+            v-else-if="pageName === 'pagenotfound'"
             :page="page"
             :component="component"
         />

@@ -7,16 +7,9 @@
             <div
                 :class="!isMounted ? 'no-js' : ''"
             >
-                <header>
-                    <br-component component="menu" />
-                </header>
-                <section class="content">
-                    <br-component component="main" />
-                </section>
-                <hr>
-                <footer>
-                    <br-component component="footer" />
-                </footer>
+                <br-component component="menu" />
+                <br-component component="main" />
+                <br-component component="footer" />
             </div>
         </template>
     </br-page>
