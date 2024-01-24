@@ -53,10 +53,30 @@ for (let x = 0; x < localeStrings.length; x++) {
 
 const localisedEndpoint = endpoint.value + locale;
 
+const PREVIEW_TOKEN_KEY = 'token';
+const PREVIEW_SERVER_ID_KEY = 'server-id';
+
+let authorizationToken = '';
+let serverId = '';
+
+if (window && window.location) {
+    const searchParams = new URLSearchParams(window.location.search);
+    authorizationToken = searchParams.get(PREVIEW_TOKEN_KEY);
+    serverId = searchParams.get(PREVIEW_SERVER_ID_KEY);
+}
+
 const configuration = {
     path: deLocalisedRoute,
     endpoint: localisedEndpoint,
     httpClient: axios,
+    ...(authorizationToken ? {
+        authorizationToken,
+    } : {
+    }),
+    ...(serverId ? {
+        serverId,
+    } : {
+    }),
 };
 
 const mapping = {
@@ -69,3 +89,13 @@ onMounted(() => {
     isMounted = true;
 });
 </script>
+
+<style lang="scss">
+    .has-edit-button {
+        position: relative;
+
+        &.vs-sticky-nav {
+            top: 0;
+        }
+    }
+</style>

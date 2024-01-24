@@ -1,5 +1,5 @@
 <template>
-    <div class="vs-sticky-nav">
+    <div class="vs-sticky-nav" :class="{ 'has-edit-button': page.isPreview() }">
         <header>
             <!-- TODO - dropdown label -->
             <VsGlobalMenu
@@ -22,6 +22,7 @@
                 Confirm href value
                 All labels
             -->
+            <BrManageMenuButton :menu="menuData" />
             <VsMeganav
                 href="/"
                 menu-toggle-alt-text=""
@@ -137,6 +138,7 @@
 <script lang="ts" setup>
 import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
+import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
 import {
     VsGlobalMenu,

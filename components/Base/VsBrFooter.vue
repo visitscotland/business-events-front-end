@@ -1,5 +1,5 @@
 <template>
-    <VsFooter>
+    <VsFooter :class="{ 'has-edit-button': page.isPreview() }">
         <template #accordion-items>
             <VsCol
                 v-for="(menuItem, index) in menuItems"
@@ -53,6 +53,9 @@
             </VsCol>
         </template>
 
+        <span style="color: white">Test menu button</span>
+        <BrManageMenuButton :menu="menuData" />
+
         <template #social-menu>
             <!-- TODO - Social labels -->
             <VsFooterSocialMenu>
@@ -74,6 +77,7 @@
             :key="index"
         >
             <VsFooterUtilityList>
+                <BrManageMenuButton :menu="utilityData" />
                 <VsFooterNavListItem
                     v-for="(utilityItem, childIndex) in utilityMenu.children"
                     :key="childIndex"
@@ -101,6 +105,7 @@
 <script lang="ts" setup>
 import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
+import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
 import {
     VsFooter,
