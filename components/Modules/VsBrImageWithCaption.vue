@@ -80,17 +80,44 @@ import {
 
 const props = defineProps<{
     image: any,
-    variant?: string,
-    isHero?: boolean,
-    isVideo?: boolean,
-    mobileOverlap?: boolean,
-    alignment?: string,
+    variant: {
+        type: string,
+        default: 'fullwidth',
+    },
+    isHero: {
+        type: boolean,
+        default: false,
+    },
+    isVideo: {
+        type: boolean,
+        default: false,
+    },
+    mobileOverlap: {
+        type: boolean,
+        default: false,
+    },
+    alignment: {
+        type: string,
+        default: 'left',
+    },
     videoId?: string,
     videoTitle?: string,
-    smallPlayButton?: boolean,
-    useLazyLoading?: boolean,
-    noAltText?: boolean,
-    showToggle?: boolean,
+    smallPlayButton: {
+        type: boolean,
+        default: false,
+    },
+    useLazyLoading: {
+        type: boolean,
+        default: true,
+    },
+    noAltText: {
+        type: boolean,
+        default: false,
+    },
+    showToggle: {
+        type: boolean,
+        default: true,
+    },
 }>();
 
 const {
