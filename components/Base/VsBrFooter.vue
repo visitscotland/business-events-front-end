@@ -53,7 +53,6 @@
             </VsCol>
         </template>
 
-        <span style="color: white">Test menu button</span>
         <BrManageMenuButton :menu="menuData" />
 
         <template #social-menu>
