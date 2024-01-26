@@ -11,6 +11,7 @@ VUE_APP_BRXM_ENDPOINT=http://localhost:8080/site/resourceapi
 It also currently requires a local install of the component library, linked directly into the project. This step will no longer be necessary when the exported component library is published.
 
 In the component library project: https://github.com/visitscotland/vs-component-library
+On this branch: https://github.com/visitscotland/vs-component-library/tree/spike/287-investigate-exporting-components
 
 ```bash
 yarn install
