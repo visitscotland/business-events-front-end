@@ -78,47 +78,34 @@ import {
     VsIcon,
 } from '@visitscotland/component-library/dist/vs-component-library.mjs';
 
-const props = defineProps<{
+interface IProps {
     image: any,
-    variant: {
-        type: string,
-        default: 'fullwidth',
-    },
-    isHero: {
-        type: boolean,
-        default: false,
-    },
-    isVideo: {
-        type: boolean,
-        default: false,
-    },
-    mobileOverlap: {
-        type: boolean,
-        default: false,
-    },
-    alignment: {
-        type: string,
-        default: 'left',
-    },
+    variant?: string,
+    isHero?: boolean,
+    isVideo?: boolean,
+    mobileOverlap?: boolean,
+    alignment?: string
     videoId?: string,
     videoTitle?: string,
-    smallPlayButton: {
-        type: boolean,
-        default: false,
-    },
-    useLazyLoading: {
-        type: boolean,
-        default: true,
-    },
-    noAltText: {
-        type: boolean,
-        default: false,
-    },
-    showToggle: {
-        type: boolean,
-        default: true,
-    },
-}>();
+    smallPlayButton?: boolean
+    useLazyLoading?: boolean,
+    noAltText?: boolean
+    showToggle?: boolean
+};
+
+const props = withDefaults(defineProps<IProps>(), {
+    variant: '',
+    isHero: false,
+    isVideo: false,
+    mobileOverlap: false,
+    alignment: 'left',
+    smallPlayButton: false,
+    useLazyLoading: true,
+    noAltText: false,
+    showToggle: true,
+    videoId: '',
+    videoTitle: '',
+});
 
 const {
     image,
