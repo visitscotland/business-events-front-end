@@ -15,7 +15,8 @@ In the component library project: https://github.com/visitscotland/vs-component-
 ```bash
 yarn install
 yarn build:vite-only
-git link```
+git link
+```
 
 Then back in this project:
 
