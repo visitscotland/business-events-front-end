@@ -44,22 +44,24 @@ const { modules } = props;
 const themeCount = 3;
 let currentMegaLinkSection = -1;
 
-for (let x = 0; x < modules.length; x++) {
-    let newThemeIndex = 1;
+if (modules) {
+    for (let x = 0; x < modules.length; x++) {
+        let newThemeIndex = 1;
 
-    if (
-        modules[x].type === 'ListLinksModule'
-        || modules[x].type === 'MultiImageLinksModule'
-        || modules[x].type === 'SingleImageLinksModule'
-    ) {
-        if (modules[x].title || currentMegaLinkSection === -1) {
-            currentMegaLinkSection += 1;
+        if (
+            modules[x].type === 'ListLinksModule'
+            || modules[x].type === 'MultiImageLinksModule'
+            || modules[x].type === 'SingleImageLinksModule'
+        ) {
+            if (modules[x].title || currentMegaLinkSection === -1) {
+                currentMegaLinkSection += 1;
+            }
+
+            newThemeIndex = currentMegaLinkSection % themeCount;
         }
 
-        newThemeIndex = currentMegaLinkSection % themeCount;
+        modules[x].themeIndex = newThemeIndex;
+        modules[x].themeValue = themeCalculator(newThemeIndex, module);
     }
-
-    modules[x].themeIndex = newThemeIndex;
-    modules[x].themeValue = themeCalculator(newThemeIndex, module);
 }
 </script>

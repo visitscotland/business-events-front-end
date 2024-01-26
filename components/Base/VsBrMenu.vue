@@ -3,7 +3,9 @@
         <header>
             <!-- TODO - dropdown label -->
             <VsGlobalMenu
-                active-site="https://businessevents.visitscotland.com/"
+                :active-site="configStore.isBusinessEvents
+                    ? 'https://businessevents.visitscotland.com/'
+                    : 'https://www.visitscotland.com/'"
             >
                 <template #third-menu-item>
                     <VsGlobalMenuLanguage>
@@ -140,6 +142,8 @@ import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
+import useConfigStore from '~/stores/configStore.ts';
+
 import {
     VsGlobalMenu,
     VsGlobalMenuLanguage,
@@ -164,6 +168,8 @@ let menuData : any = {
 let menuItems : any[] = [];
 let languageLinks : any = {
 };
+
+const configStore = useConfigStore();
 
 if (page.value) {
     menu = component.value.getModels().menu;

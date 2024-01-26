@@ -26,6 +26,8 @@
 import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
+import useConfigStore from '~/stores/configStore.ts';
+
 import VsBrGeneral from '../PageTypes/VsBrGeneral.vue';
 import VsBr404 from '../PageTypes/VsBr404.vue';
 
@@ -37,9 +39,15 @@ let pageComponent : any = {
 };
 let pageName = '';
 
+const configStore = useConfigStore();
+
 if (page.value) {
     pageComponent = page.value.getComponent();
     pageName = pageComponent.model.name;
+
+    const componentModels = component.value.getModels();
+
+    configStore.isBusinessEvents = componentModels['business-events'];
 }
 
 provide('page', page.value);

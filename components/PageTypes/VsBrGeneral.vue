@@ -57,7 +57,9 @@ if (page.value) {
     pageItems = component.value.getModels().pageItems;
     heroImage = documentData.heroImage;
 
-    if (pageItems.length
+    console.log(`Preview: ${page.value.isPreview()}`);
+
+    if (pageItems && pageItems.length
         && (
             pageItems[0].type === 'ListLinksModule'
             || pageItems[0].type === 'MultiImageLinksModule'
