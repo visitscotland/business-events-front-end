@@ -2,15 +2,16 @@
 
 ## Dependencies 
 
-This project depends on a local site running an instance of the dot com brxm project, with the resource api enabled. It should contain a .env file pointing to the api on that instance, for example:
+This project depends on a local site running an instance of the dot com brxm project, with the resource api enabled (current working branch https://github.com/visitscotland/dot-com-brxm/tree/business-events-2024 ). It should contain a .env file pointing to the api on that instance, for example:
 
 ```bash
-VUE_APP_BRXM_ENDPOINT=http://localhost:8080/site/resourceapi
+VUE_APP_BRXM_ENDPOINT=http://businessevents.local:8080
 ```
 
 It also currently requires a local install of the component library, linked directly into the project. This step will no longer be necessary when the exported component library is published.
 
 In the component library project: https://github.com/visitscotland/vs-component-library
+
 On this branch: https://github.com/visitscotland/vs-component-library/tree/spike/287-investigate-exporting-components
 
 ```bash
