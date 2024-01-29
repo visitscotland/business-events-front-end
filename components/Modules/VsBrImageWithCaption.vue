@@ -76,7 +76,7 @@ import {
     VsCaption,
     VsSocialCreditLink,
     VsIcon,
-} from '@visitscotland/component-library/dist/vs-component-library.mjs';
+} from '@visitscotland/component-library/components';
 
 interface IProps {
     image: any,

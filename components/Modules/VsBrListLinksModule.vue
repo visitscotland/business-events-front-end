@@ -55,7 +55,7 @@ import {
     VsMegalinkLinkList,
     VsRow,
     VsCol,
-} from '@visitscotland/component-library/dist/vs-component-library.mjs';
+} from '@visitscotland/component-library/components';
 
 import formatLink from '../../composables/formatLink.ts';
 

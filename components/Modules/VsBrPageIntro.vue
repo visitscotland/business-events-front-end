@@ -71,7 +71,7 @@ import {
     VsPageIntro,
     VsBreadcrumb,
     VsBreadcrumbItem,
-} from '@visitscotland/component-library/dist/vs-component-library.mjs';
+} from '@visitscotland/component-library/components';
 
 import themeCalculator from '../../composables/themeCalculator.ts';
 
