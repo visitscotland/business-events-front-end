@@ -21,6 +21,29 @@
             />
         </template>
 
+        <template #vs-intro-breadcrumb>
+            <VsBreadcrumb>
+                <VsBreadcrumbItem
+                    key="Place"
+                    href="#"
+                    text="Place"
+                    :active="false"
+                />
+                <VsBreadcrumbItem
+                    key="Holder"
+                    href="#"
+                    text="Holder"
+                    :active="false"
+                />
+                <VsBreadcrumbItem
+                    key="Breadcrumb"
+                    href="#"
+                    text="Breadcrumb"
+                    :active="true"
+                />
+            </VsBreadcrumb>
+        </template>
+
         <template #vs-intro-heading>
             {{ content.title }}
         </template>
@@ -44,7 +67,11 @@
 <script lang="ts" setup>
 import { toRefs } from 'vue';
 
-import { VsPageIntro } from '@visitscotland/component-library/dist/vs-component-library.mjs';
+import {
+    VsPageIntro,
+    VsBreadcrumb,
+    VsBreadcrumbItem,
+} from '@visitscotland/component-library/dist/vs-component-library.mjs';
 
 import themeCalculator from '../../composables/themeCalculator.ts';
 
