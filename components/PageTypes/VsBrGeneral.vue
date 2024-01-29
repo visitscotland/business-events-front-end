@@ -24,14 +24,43 @@
         :content="documentData"
         :light-background="true"
     />
+
+    <!-- TODO - labels -->
+    <VsProductSearch
+        v-if="productSearch.position === 'Top'"
+    >
+        <template #vs-module-heading>
+            {{ productSearch.title }}
+        </template>
+
+        <template #vs-module-intro>
+            {{ productSearch.description }}
+        </template>
+    </VsProductSearch>
+
     <VsBrModuleBuilder
         :modules="pageItems"
     />
+
+    <!-- TODO - labels -->
+    <VsProductSearch
+        v-if="productSearch.position === 'Bottom'"
+    >
+        <template #vs-module-heading>
+            {{ productSearch.title }}
+        </template>
+
+        <template #vs-module-intro>
+            {{ productSearch.description }}
+        </template>
+    </VsProductSearch>
 </template>
 
 <script lang="ts" setup>
 import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
+
+import { VsProductSearch } from '@visitscotland/component-library/components';
 
 import VsBrPageIntro from '../Modules/VsBrPageIntro.vue';
 import VsBrIntroImage from '../Modules/VsBrIntroImage.vue';
@@ -46,6 +75,8 @@ let document : any = {
 let documentData : any = {
 };
 let pageItems : any[] = [];
+let productSearch : any = {
+};
 let heroImage = {
 };
 
@@ -54,10 +85,10 @@ let firstModuleIsLink = false;
 if (page.value) {
     document = page.value.getDocument();
     documentData = document.getData();
-    pageItems = component.value.getModels().pageItems;
+    const componentModels = component.value.getModels();
+    pageItems = componentModels.pageItems;
+    productSearch = componentModels.psrWidget;
     heroImage = documentData.heroImage;
-
-    console.log(`Preview: ${page.value.isPreview()}`);
 
     if (pageItems && pageItems.length
         && (
