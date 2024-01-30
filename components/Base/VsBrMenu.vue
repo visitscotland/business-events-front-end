@@ -38,8 +38,9 @@
                     <VsMegaNavTopMenuItem
                         v-for="(menuItem, index) in menuItems"
                         :key="index"
-                        :href="menuItem.getUrl()"
+                        :href="menuItem.getUrl() ? menuItem.getUrl() : menuItem.model.name "
                         :cta-text="menuItem.model.cta"
+                        :has-dropdown="menuItem.children.length ? true : false"
                     >
                         <template #button-content>
                             {{ menuItem.model.title }}
