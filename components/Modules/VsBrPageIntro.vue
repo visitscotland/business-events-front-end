@@ -19,29 +19,18 @@
             />
         </template>
 
-        <!-- TODO - Real breadcrumb data -->
+        <!-- TODO
+            Social schema
+            Breadcrumb schema
+            Real breadcrumb data
+            Home label
+        -->
 
         <template #vs-intro-breadcrumb>
-            <VsBreadcrumb>
-                <VsBreadcrumbItem
-                    key="Place"
-                    href="#"
-                    text="Place"
-                    :active="false"
-                />
-                <VsBreadcrumbItem
-                    key="Holder"
-                    href="#"
-                    text="Holder"
-                    :active="false"
-                />
-                <VsBreadcrumbItem
-                    key="Breadcrumb"
-                    href="#"
-                    text="Breadcrumb"
-                    :active="true"
-                />
-            </VsBreadcrumb>
+            <VsBrBreadcrumb
+                :breadcrumb="breadcrumb"
+                :is-home="isHome"
+            />
         </template>
 
         <template #vs-intro-heading>
@@ -65,17 +54,16 @@
 </template>
 
 <script lang="ts" setup>
-import { toRefs } from 'vue';
+import { inject, toRefs } from 'vue';
 
-import {
-    VsPageIntro,
-    VsBreadcrumb,
-    VsBreadcrumbItem,
-} from '@visitscotland/component-library/components';
+import { VsPageIntro } from '@visitscotland/component-library/components';
 
 import themeCalculator from '../../composables/themeCalculator.ts';
 
 import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
+import VsBrBreadcrumb from './VsBrBreadcrumb.vue';
+
+const page: any = inject('page');
 
 const props = defineProps<{
     content: any,
@@ -85,4 +73,15 @@ const props = defineProps<{
 }>();
 
 const { content, lightBackground, heroImage, itinerary } = toRefs(props);
+
+let breadcrumb;
+let isHome;
+
+if (page) {
+    const pageContent : any = page.getContent(page.model.root);
+    const pageModels : any = pageContent.models;
+
+    isHome = pageModels.isHome;
+    breadcrumb = pageModels.breadcrumb.items;
+}
 </script>
