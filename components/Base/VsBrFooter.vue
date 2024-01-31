@@ -56,17 +56,16 @@
         <BrManageMenuButton :menu="menuData" />
 
         <template #social-menu>
-            <!-- TODO - Social labels -->
             <VsFooterSocialMenu>
                 <template #title>
                     Find us on
                 </template>
 
                 <VsFooterSocialItem
-                    v-for="(item, index) in socialMenu"
+                    v-for="(link, key, index) in configStore.socialLinks"
                     :key="index"
-                    :href="item.url"
-                    :icon="item.icon"
+                    :href="link"
+                    :icon="key"
                 />
             </vsfootersocialmenu>
         </template>
@@ -106,6 +105,8 @@ import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
+import useConfigStore from '~/stores/configStore.ts';
+
 import {
     VsFooter,
     VsFooterAccordionItem,
@@ -122,6 +123,8 @@ import {
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { component, page } = toRefs(props);
+
+const configStore = useConfigStore();
 
 let menu = {
     $ref: '',
@@ -155,24 +158,5 @@ if (page.value) {
         }
     }
 }
-
-const socialMenu = [
-    {
-        url: 'https://www.facebook.com/visitscotland/',
-        icon: 'facebook',
-    },
-    {
-        url: 'https://twitter.com/VisitScotland',
-        icon: 'twitter',
-    },
-    {
-        url: 'https://www.youtube.com/channel/UC1FdvQG5MFwzv0PY6dMsaFg',
-        icon: 'youtube',
-    },
-    {
-        url: 'https://www.instagram.com/visitscotland/',
-        icon: 'instagram',
-    },
-];
 
 </script>

@@ -4,8 +4,6 @@
         :hero-intro="heroImage ? true : false"
         :is-itinerary="itinerary ? true : false"
     >
-        <!-- TODO - Breadcrumb -->
-
         <!-- TODO - Hero Video -->
 
         <template
@@ -20,6 +18,8 @@
                 :image="heroImage"
             />
         </template>
+
+        <!-- TODO - Real breadcrumb data -->
 
         <template #vs-intro-breadcrumb>
             <VsBreadcrumb>

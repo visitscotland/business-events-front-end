@@ -48,6 +48,7 @@ if (page.value) {
     const componentModels = component.value.getModels();
 
     configStore.isBusinessEvents = componentModels['business-events'];
+    configStore.socialLinks = componentModels['social-links'];
 }
 
 provide('page', page.value);

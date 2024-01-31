@@ -21,7 +21,6 @@
             </VsGlobalMenu>
 
             <!-- TODO
-                Confirm href value
                 All labels
             -->
             <BrManageMenuButton :menu="menuData" />
