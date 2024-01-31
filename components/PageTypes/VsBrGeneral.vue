@@ -3,9 +3,8 @@
         v-if="documentData.theme === 'Top-Level'"
         :content="documentData"
         :hero-image="heroImage"
-        :light-background="firstModuleIsLink ? false : true"
+        :light-background="(productSearch.position === 'Top' || !firstModuleIsLink) ? true : false"
     />
-    <!-- TODO - Background colour conditional on PSR -->
 
     <template v-if="documentData.theme === 'Standard'">
         <VsBrPageIntro
@@ -60,6 +59,8 @@
 import { toRefs } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 
+import useConfigStore from '~/stores/configStore.ts';
+
 import { VsProductSearch } from '@visitscotland/component-library/components';
 
 import VsBrPageIntro from '../Modules/VsBrPageIntro.vue';
@@ -68,7 +69,7 @@ import VsBrModuleBuilder from '../Modules/VsBrModuleBuilder.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
-const { component, page } = toRefs(props);
+const { page } = toRefs(props);
 
 let document : any = {
 };
@@ -80,14 +81,15 @@ let productSearch : any = {
 let heroImage = {
 };
 
+const configStore = useConfigStore();
+
 let firstModuleIsLink = false;
 
 if (page.value) {
     document = page.value.getDocument();
     documentData = document.getData();
-    const componentModels = component.value.getModels();
-    pageItems = componentModels.pageItems;
-    productSearch = componentModels.psrWidget;
+    pageItems = configStore.pageItems;
+    productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
 
     if (pageItems && pageItems.length

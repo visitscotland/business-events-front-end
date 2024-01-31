@@ -49,6 +49,8 @@ if (page.value) {
 
     configStore.isBusinessEvents = componentModels['business-events'];
     configStore.socialLinks = componentModels['social-links'];
+    configStore.productSearch = componentModels.psrWidget;
+    configStore.pageItems = componentModels.pageItems;
 }
 
 provide('page', page.value);
