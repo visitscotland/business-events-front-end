@@ -74,8 +74,8 @@ const props = defineProps<{
 
 const { content, lightBackground, heroImage, itinerary } = toRefs(props);
 
-let breadcrumb;
-let isHome;
+let breadcrumb : [];
+let isHome : boolean;
 
 if (page) {
     const pageContent : any = page.getContent(page.model.root);

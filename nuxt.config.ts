@@ -32,7 +32,11 @@ export default defineNuxtConfig({
     },
     modules: [
         '@pinia/nuxt',
+        'nuxt-jsonld',
     ],
+    'nuxt-jsonld': {
+        disableOptionsAPI: true,
+    },
     css: [
         '@/assets/styles/main.scss',
         '@visitscotland/component-library/components/style.css',
