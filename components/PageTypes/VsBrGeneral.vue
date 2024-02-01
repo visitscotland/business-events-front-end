@@ -1,14 +1,25 @@
 <template>
+    <template v-if="documentData.blog">
+        <VsBrPageIntro
+            :content="documentData"
+            :light-background="true"
+            :blog="documentData.blog"
+        />
+
+        <VsBrIntroImage
+            :image="heroImage"
+        />
+    </template>
+
     <VsBrPageIntro
-        v-if="documentData.theme === 'Top-Level'"
+        v-else-if="documentData.theme === 'Top-Level'"
         :content="documentData"
         :hero-image="heroImage"
         :light-background="(productSearch.position === 'Top' || !firstModuleIsLink) ? true : false"
     />
 
-    <template v-if="documentData.theme === 'Standard'">
+    <template v-else-if="documentData.theme === 'Standard'">
         <VsBrPageIntro
-            v-if="documentData.theme === 'Standard'"
             :content="documentData"
             :light-background="true"
         />
@@ -19,7 +30,7 @@
     </template>
 
     <VsBrPageIntro
-        v-if="documentData.theme === 'Simple'"
+        v-else-if="documentData.theme === 'Simple'"
         :content="documentData"
         :light-background="true"
     />

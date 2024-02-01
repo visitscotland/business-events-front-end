@@ -37,7 +37,16 @@
             {{ content.title }}
         </template>
 
-        <!-- TODO - Blog Details -->
+        <template
+            #vs-blog-data
+            v-if="blog"
+        >
+            <VsBlogDetails
+                :blog-author="blogAuthor"
+                :blog-publish-date="blogDate"
+                :blog-read-time="blogTime"
+            />
+        </template>
 
         <!-- TODO - Share Button -->
 
@@ -56,7 +65,7 @@
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue';
 
-import { VsPageIntro } from '@visitscotland/component-library/components';
+import { VsPageIntro, VsBlogDetails } from '@visitscotland/component-library/components';
 
 import themeCalculator from '../../composables/themeCalculator.ts';
 
@@ -70,12 +79,17 @@ const props = defineProps<{
     lightBackground: boolean,
     heroImage?: any,
     itinerary?: any,
+    blog?: any,
 }>();
 
-const { content, lightBackground, heroImage, itinerary } = toRefs(props);
+const { content, lightBackground, heroImage, itinerary, blog } = toRefs(props);
 
 let breadcrumb : [];
 let isHome : boolean;
+
+let blogAuthor : any;
+let blogTime : string;
+let blogDate : string;
 
 if (page) {
     const pageContent : any = page.getContent(page.model.root);
@@ -83,5 +97,30 @@ if (page) {
 
     isHome = pageModels.isHome;
     breadcrumb = pageModels.breadcrumb.items;
+
+    if (blog.value) {
+        blogAuthor = page.getContent(blog.value.author);
+
+        if (blogAuthor && blogAuthor.model && blogAuthor.model.data) {
+            blogAuthor = blogAuthor.model.data.displayName;
+        }
+
+        // TODO - localised labels for minute/s
+
+        if (blog.value.readingTime > 1) {
+            blogTime = `${blog.value.readingTime} minutes`;
+        } else {
+            blogTime = `${blog.value.readingTime} minute`;
+        }
+
+        blogDate = new Date(blog.value.publishDate).toLocaleString(
+            'en-US',
+            {
+                year: 'numeric',
+                day: 'numeric',
+                month: 'long',
+            },
+        );
+    }
 }
 </script>
