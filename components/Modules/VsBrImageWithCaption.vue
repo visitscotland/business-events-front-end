@@ -94,7 +94,7 @@ interface IProps {
 };
 
 const props = withDefaults(defineProps<IProps>(), {
-    variant: '',
+    variant: 'fullwidth',
     isHero: false,
     isVideo: false,
     mobileOverlap: false,

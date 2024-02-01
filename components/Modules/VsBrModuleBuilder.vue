@@ -19,6 +19,10 @@
             :module="item"
             :theme="item.themeValue"
         />
+        <VsBrArticleModule
+            v-else-if="item.type === 'ArticleModule'"
+            :module="item"
+        />
         <span
             style="color: red"
             v-else
@@ -32,6 +36,7 @@
 import VsBrListLinksModule from './VsBrListLinksModule.vue';
 import VsBrMultiImageLinksModule from './VsBrMultiImageLinksModule.vue';
 import VsBrSingleImageLinksModule from './VsBrSingleImageLinksModule.vue';
+import VsBrArticleModule from './VsBrArticleModule.vue';
 
 import themeCalculator from '../../composables/themeCalculator.ts';
 
