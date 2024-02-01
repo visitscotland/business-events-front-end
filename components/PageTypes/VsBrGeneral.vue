@@ -25,34 +25,20 @@
     />
 
     <!-- TODO - labels -->
-    <VsProductSearch
+    <VsBrProductSearch
         v-if="productSearch.position === 'Top'"
-    >
-        <template #vs-module-heading>
-            {{ productSearch.title }}
-        </template>
-
-        <template #vs-module-intro>
-            {{ productSearch.description }}
-        </template>
-    </VsProductSearch>
+        class="mb-9 mb-lg-12 pt-9"
+    />
 
     <VsBrModuleBuilder
         :modules="pageItems"
     />
 
     <!-- TODO - labels -->
-    <VsProductSearch
+    <VsBrProductSearch
         v-if="productSearch.position === 'Bottom'"
-    >
-        <template #vs-module-heading>
-            {{ productSearch.title }}
-        </template>
-
-        <template #vs-module-intro>
-            {{ productSearch.description }}
-        </template>
-    </VsProductSearch>
+        class="mt-9 mt-lg-12"
+    />
 </template>
 
 <script lang="ts" setup>
@@ -61,11 +47,10 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import { VsProductSearch } from '@visitscotland/component-library/components';
-
 import VsBrPageIntro from '../Modules/VsBrPageIntro.vue';
 import VsBrIntroImage from '../Modules/VsBrIntroImage.vue';
 import VsBrModuleBuilder from '../Modules/VsBrModuleBuilder.vue';
+import VsBrProductSearch from '../Modules/VsBrProductSearch.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
