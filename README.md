@@ -17,13 +17,13 @@ On this branch: https://github.com/visitscotland/vs-component-library/tree/spike
 ```bash
 yarn install
 yarn build:vite-only
-git link
+yarn link
 ```
 
 Then back in this project:
 
 ```bash
-git link @visitscotland/component-library
+yarn link @visitscotland/component-library
 ```
 
 ## Setup
