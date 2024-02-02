@@ -15,7 +15,7 @@
         v-else-if="documentData.theme === 'Top-Level'"
         :content="documentData"
         :hero-image="heroImage"
-        :light-background="(productSearch.position === 'Top' || !firstModuleIsLink) ? true : false"
+        :light-background="((productSearch && productSearch.position === 'Top') || !firstModuleIsLink) ? true : false"
     />
 
     <template v-else-if="documentData.theme === 'Standard'">
@@ -37,7 +37,7 @@
 
     <!-- TODO - labels -->
     <VsBrProductSearch
-        v-if="productSearch.position === 'Top'"
+        v-if="productSearch && productSearch.position === 'Top'"
         class="mb-9 mb-lg-12 pt-9"
     />
 
@@ -47,7 +47,7 @@
 
     <!-- TODO - labels -->
     <VsBrProductSearch
-        v-if="productSearch.position === 'Bottom'"
+        v-if="productSearch && productSearch.position === 'Bottom'"
         class="mt-9 mt-lg-12"
     />
 </template>
