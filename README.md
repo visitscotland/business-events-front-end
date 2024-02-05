@@ -53,7 +53,7 @@ yarn dev
 This project needs at least node.js version 18. You can verify if you have a version installed or which version is by executing the following command
 
 ```bash
-npm -version
+node -v
 ```
 You can find the latest version in [here](https://nodejs.org/en/download). Please download a TLS version to ensure maximum compatibility.
 
