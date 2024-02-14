@@ -56,13 +56,15 @@
         <BrManageMenuButton :menu="menuData" />
 
         <template #social-menu>
-            <VsFooterSocialMenu>
+            <VsFooterSocialMenu
+                v-if="configStore.labels"
+            >
                 <template #title>
                     Find us on
                 </template>
 
                 <VsFooterSocialItem
-                    v-for="(link, key, index) in configStore.socialLinks"
+                    v-for="(link, key, index) in configStore.labels['social-links']"
                     :key="index"
                     :href="link"
                     :icon="key"

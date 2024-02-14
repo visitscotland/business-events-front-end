@@ -1,13 +1,20 @@
 import { defineStore } from 'pinia';
 
+interface IConfigState {
+    isBusinessEvents: boolean,
+    productSearch: any,
+    pageItems: any[],
+    labels: any,
+}
+
 const useConfigStore = defineStore('configStore', {
-    state: () => ({
+    state: (): IConfigState => ({
         isBusinessEvents: false,
-        socialLinks: {
-        },
         productSearch: {
         },
         pageItems: [],
+        labels: {
+        },
     }),
 });
 
