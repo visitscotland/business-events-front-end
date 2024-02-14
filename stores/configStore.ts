@@ -16,6 +16,15 @@ const useConfigStore = defineStore('configStore', {
         labels: {
         },
     }),
+    actions: {
+        getLabel(section: string, key: string) {
+            if (this.labels[section] && this.labels[section][key]) {
+                return this.labels[section][key];
+            }
+
+            return '';
+        },
+    },
 });
 
 export default useConfigStore;

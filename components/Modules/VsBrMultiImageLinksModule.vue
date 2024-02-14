@@ -1,9 +1,12 @@
 <template>
-    <!-- TODO - error-message, itinerary, themes, video links -->
+    <!-- TODO - itinerary, themes, video links -->
     <VsMegalinks
         :title="module.title"
         variant="single-image"
         :theme="theme"
+        :cookie-link-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
+        :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
+        :no-js-message="configStore.getLabel('video', 'video.no-js')"
     >
         <template
             v-if="module.introduction"
@@ -122,7 +125,11 @@ import {
     VsRow,
 } from '@visitscotland/component-library/components';
 
+import useConfigStore from '~/stores/configStore.ts';
+
 import formatLink from '../../composables/formatLink.ts';
+
+const configStore = useConfigStore();
 
 const page: Page | undefined = inject('page');
 
@@ -145,7 +152,7 @@ if (page && module.links) {
             image: image?.getOriginal().getUrl(),
             type: nextLink.type.toLowerCase(),
             url: formatLink(nextLink.link),
-            'error-message': '',
+            'error-message': configStore.getLabel('essentials.global', 'third-party-error'),
             label: nextLink.label,
             teaser: nextLink.teaser,
         });
@@ -164,7 +171,7 @@ if (page && module.featuredLinks) {
             image: image?.getOriginal().getUrl(),
             type: nextLink.type.toLowerCase(),
             url: formatLink(nextLink.link),
-            'error-message': '',
+            'error-message': configStore.getLabel('essentials.global', 'third-party-error'),
             label: nextLink.label,
             teaser: nextLink.teaser,
         });

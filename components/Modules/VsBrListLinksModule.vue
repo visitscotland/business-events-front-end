@@ -4,6 +4,9 @@
         :title="module.title"
         variant="link-list"
         :theme="theme"
+        :cookie-link-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
+        :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
+        :no-js-message="configStore.getLabel('video', 'video.no-js')"
     >
         <template
             v-if="module.introduction"
@@ -57,7 +60,11 @@ import {
     VsCol,
 } from '@visitscotland/component-library/components';
 
+import useConfigStore from '~/stores/configStore.ts';
+
 import formatLink from '../../composables/formatLink.ts';
+
+const configStore = useConfigStore();
 
 const props = defineProps<{ module: Object, theme: string }>();
 const module: any = props.module;

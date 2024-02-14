@@ -1,11 +1,9 @@
 <template>
     <VsBreadcrumb>
-        <!-- TODO - Localised Home Label-->
-
         <VsBreadcrumbItem
             key="home"
             :href="rootUrl + '/'"
-            text="Home"
+            :text="configStore.getLabel('essentials.global', 'home')"
             :active="isHome"
         />
 
@@ -29,6 +27,10 @@ import {
     VsBreadcrumbItem,
 } from '@visitscotland/component-library/components';
 
+import useConfigStore from '~/stores/configStore.ts';
+
+const configStore = useConfigStore();
+
 const props = defineProps<{
     breadcrumb: any[],
     isHome: boolean,
@@ -46,7 +48,7 @@ let itemList : any[] = [
         position: 1,
         item: {
             '@id': `${ rootUrl }/`,
-            name: 'Home',
+            name: configStore.getLabel('essentials.global', 'home'),
         },
     },
 ];

@@ -6,11 +6,17 @@
         :mobile-overlap="mobileOverlap"
         :is-video="isVideo"
         :show-toggle="showToggle"
+        :error-message="configStore.getLabel('essentials.global', 'third-party-error')"
+        :cookie-link-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
+        :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
+        :no-js-message="configStore.getLabel('video', 'video.no-js')"
     >
         <!-- TODO - Move all srcset logic into component library with mixin for consistency -->
         <VsImg
             :src="imageValue.getOriginal().getUrl()"
-            :alt="noAltText ? '' : imageData.altText"
+            :alt="noAltText
+                ? configStore.getLabel('essentials.global', 'default.alt-text')
+                : imageData.altText"
             :use-lazy-loading="useLazyLoading"
         />
 
@@ -47,8 +53,10 @@
                         v-if="imageData.source"
                     >
                         <VsSocialCreditLink
-                            :credit="imageData.credit"
-                            :social-post-url="imageData.postUrl || ''"
+                            :credit="imageData.credit
+                                ? imageData.credit
+                                : configStore.getLabel('essentials.global', 'image.no.credit')"
+                            :social-post-url="imageData.postUrl ? imageData.postUrl : ''"
                             :source="imageData.source"
                         />
                     </template>
@@ -77,6 +85,10 @@ import {
     VsSocialCreditLink,
     VsIcon,
 } from '@visitscotland/component-library/components';
+
+import useConfigStore from '~/stores/configStore.ts';
+
+const configStore = useConfigStore();
 
 interface IProps {
     image: any,
