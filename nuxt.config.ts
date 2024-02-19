@@ -39,7 +39,7 @@ export default defineNuxtConfig({
     },
     css: [
         '@/assets/styles/main.scss',
-        '@visitscotland/component-library/components/style.css',
+        '@visitscotland/component-library-export/components/style.css',
     ],
     build: {
         transpile: [

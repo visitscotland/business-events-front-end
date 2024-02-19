@@ -25,7 +25,7 @@ import { toRefs } from 'vue';
 import {
     VsBreadcrumb,
     VsBreadcrumbItem,
-} from '@visitscotland/component-library/components';
+} from '@visitscotland/component-library-export/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 

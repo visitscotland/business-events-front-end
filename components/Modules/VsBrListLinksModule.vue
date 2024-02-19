@@ -58,7 +58,7 @@ import {
     VsMegalinkLinkList,
     VsRow,
     VsCol,
-} from '@visitscotland/component-library/components';
+} from '@visitscotland/component-library-export/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 

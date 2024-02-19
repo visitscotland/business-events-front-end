@@ -43,7 +43,7 @@
 import {
     VsArticle,
     VsArticleSection,
-} from '@visitscotland/component-library/components';
+} from '@visitscotland/component-library-export/components';
 
 import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
 import VsBrArticleSidebar from './VsBrArticleSidebar.vue';

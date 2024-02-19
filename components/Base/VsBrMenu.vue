@@ -154,7 +154,7 @@ import {
     VsMegaNavListItem,
     VsAccordion,
     VsMegaNavAccordionItem,
-} from '@visitscotland/component-library/components';
+} from '@visitscotland/component-library-export/components';
 
 const props = defineProps<{ component: Component, page: Page }>();
 

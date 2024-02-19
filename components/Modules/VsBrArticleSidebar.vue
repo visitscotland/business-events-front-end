@@ -24,7 +24,7 @@
 </template>
 
 <script lang="ts" setup>
-import { VsArticleSidebar } from '@visitscotland/component-library/components';
+import { VsArticleSidebar } from '@visitscotland/component-library-export/components';
 
 import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
 import VsBrQuote from './VsBrQuote.vue';

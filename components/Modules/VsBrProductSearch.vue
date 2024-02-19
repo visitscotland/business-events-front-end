@@ -18,7 +18,7 @@
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import { VsProductSearch } from '@visitscotland/component-library/components';
+import { VsProductSearch } from '@visitscotland/component-library-export/components';
 
 const configStore = useConfigStore();
 

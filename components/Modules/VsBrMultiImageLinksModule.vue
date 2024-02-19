@@ -123,7 +123,7 @@ import {
     VsCol,
     VsContainer,
     VsRow,
-} from '@visitscotland/component-library/components';
+} from '@visitscotland/component-library-export/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 

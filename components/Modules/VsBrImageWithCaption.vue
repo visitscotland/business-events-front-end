@@ -84,7 +84,7 @@ import {
     VsCaption,
     VsSocialCreditLink,
     VsIcon,
-} from '@visitscotland/component-library/components';
+} from '@visitscotland/component-library-export/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 

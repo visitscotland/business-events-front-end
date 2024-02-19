@@ -49,7 +49,7 @@ import {
     VsQuote,
     VsButton,
     VsImg,
-} from '@visitscotland/component-library/components';
+} from '@visitscotland/component-library-export/components';
 
 interface IProps {
     quote: any,

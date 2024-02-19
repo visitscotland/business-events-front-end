@@ -23,7 +23,7 @@ yarn link
 Then back in this project:
 
 ```bash
-yarn link @visitscotland/component-library
+yarn link @visitscotland/component-library-export
 ```
 
 ## Setup
