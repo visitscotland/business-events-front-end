@@ -3,7 +3,9 @@
 ## Pre-requisites
 
 - node.js 
-- yarn
+- npm
+
+NOTE - Currently this project does not support yarn, pending an investigation of a bug with the component library export integration. Prefer npm for package management
 
 ## Dependencies 
 
@@ -18,7 +20,6 @@ VUE_APP_BRXM_ENDPOINT=http://businessevents.local:8080
 Make sure to install the dependencies:
 
 ```bash
-# yarn
 npm install
 ```
 
