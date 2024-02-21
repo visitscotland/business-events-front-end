@@ -8,31 +8,13 @@ This project depends on a local site running an instance of the dot com brxm pro
 VUE_APP_BRXM_ENDPOINT=http://businessevents.local:8080
 ```
 
-It also currently requires a local install of the component library, linked directly into the project. This step will no longer be necessary when the exported component library is published.
-
-In the component library project: https://github.com/visitscotland/vs-component-library
-
-On this branch: https://github.com/visitscotland/vs-component-library/tree/spike/287-investigate-exporting-components
-
-```bash
-yarn install
-yarn build:vite-only
-yarn link
-```
-
-Then back in this project:
-
-```bash
-yarn link @visitscotland/component-library-export
-```
-
 ## Setup
 
 Make sure to install the dependencies:
 
 ```bash
 # yarn
-yarn install
+npm install
 ```
 
 ## Development Server
@@ -40,7 +22,7 @@ yarn install
 Start the development server on `http://localhost:3000`
 
 ```bash
-yarn dev
+npm run dev
 ```
 
 ## WIP Documentation
