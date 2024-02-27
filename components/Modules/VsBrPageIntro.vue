@@ -4,19 +4,42 @@
         :hero-intro="heroImage ? true : false"
         :is-itinerary="itinerary ? true : false"
     >
-        <!-- TODO - Hero Video -->
-
         <template
             #vs-intro-hero
             v-if="heroImage"
         >
-            <VsBrImageWithCaption
-                :is-video="false"
-                :is-hero="true"
-                :use-lazy-loading="false"
-                variant="large"
-                :image="heroImage"
-            />
+            <template
+                v-if="heroVideo"
+            >
+                <VsBrVideoModal
+                    :is-video-modal="true"
+                    :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+                    :modal-id="youtubeId"
+                    :video="heroVideo"
+                />
+
+                <VsBrImageWithCaption
+                    :is-video="true"
+                    :is-hero="true"
+                    :use-lazy-loading="false"
+                    variant="large"
+                    :image="heroImage"
+                    :video-id="youtubeId"
+                    :video-title="heroVideo.displayName"
+                    :video-btn="heroVideo.cta"
+                />
+            </template>
+            <template
+                v-else
+            >
+                <VsBrImageWithCaption
+                    :is-video="false"
+                    :is-hero="true"
+                    :use-lazy-loading="false"
+                    variant="large"
+                    :image="heroImage"
+                />
+            </template>
         </template>
 
         <!-- TODO
@@ -67,10 +90,15 @@ import { inject, toRefs } from 'vue';
 
 import { VsPageIntro, VsBlogDetails } from '@visitscotland/component-library-export/components';
 
+import useConfigStore from '~/stores/configStore.ts';
 import themeCalculator from '../../composables/themeCalculator.ts';
+import extractYoutubeId from '../../composables/extractYoutubeId.ts';
 
 import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
 import VsBrBreadcrumb from './VsBrBreadcrumb.vue';
+import VsBrVideoModal from './VsBrVideoModal.vue';
+
+const configStore = useConfigStore();
 
 const page: any = inject('page');
 
@@ -90,6 +118,9 @@ let isHome : boolean;
 let blogAuthor : any;
 let blogTime : string;
 let blogDate : string;
+
+let heroVideo : any;
+let youtubeId : string = '';
 
 if (page) {
     const pageContent : any = page.getContent(page.model.root);
@@ -121,6 +152,13 @@ if (page) {
                 month: 'long',
             },
         );
+    }
+
+    if (content.value.heroVideo) {
+        const video = page.getContent(content.value.heroVideo.videoLink);
+        heroVideo = video.model.data;
+
+        youtubeId = extractYoutubeId(heroVideo.url);
     }
 }
 </script>

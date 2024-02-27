@@ -5,6 +5,7 @@ interface IConfigState {
     productSearch: any,
     pageItems: any[],
     labels: any,
+    locale: string,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -15,6 +16,7 @@ const useConfigStore = defineStore('configStore', {
         pageItems: [],
         labels: {
         },
+        locale: '',
     }),
     actions: {
         getLabel(section: string, key: string) {

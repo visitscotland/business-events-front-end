@@ -53,16 +53,34 @@
                 </template>
 
                 <template #vs-single-image-links>
-                    <!-- TODO - Video links -->
-                    <VsLinkListItem
+                    <template
                         v-for="(link, index) in module.links"
-                        :variant="theme === 'light' ? 'primary' : 'on-dark'"
                         :key="index"
-                        :type="link.type.toLowerCase()"
-                        :href="formatLink(link.link)"
                     >
-                        {{ link.label }}
-                    </VsLinkListItem>
+                        <VsLinkListItem
+                            :variant="theme === 'light' ? 'primary' : 'on-dark'"
+                            :type="link.type.toLowerCase()"
+                            :href="link.youtubeId
+                                ? '#'
+                                : formatLink(link.link)
+                            "
+                            :video-id="link.youtubeId
+                                ? link.youtubeId
+                                : ''
+                            "
+                            :video-descriptor="configStore.getLabel('video', 'video.video-descriptor')"
+                        >
+                            {{ link.label }}
+                        </VsLinkListItem>
+
+                        <VsBrVideoModal
+                            v-if="link.youtubeId"
+                            :is-video-modal="true"
+                            :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+                            :modal-id="link.youtubeId"
+                            :video="link"
+                        />
+                    </template>
                 </template>
             </VsMegalinkSingleImage>
         </VsCol>

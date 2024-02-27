@@ -57,12 +57,16 @@ const articleSections: any[] = [];
 
 for (let x = 0; x < module.sections.length; x++) {
     const nextSection = module.sections[x];
-    let alignment = 'right';
+    let alignment = '';
 
     if (nextSection.quote || nextSection.image) {
         if (x % 2 !== 0) {
             alignment = 'left';
+        } else {
+            alignment = 'right';
         }
+    } else {
+        alignment = 'right';
     }
 
     nextSection.alignment = alignment;

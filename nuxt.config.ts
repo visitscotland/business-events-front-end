@@ -5,6 +5,12 @@ export default defineNuxtConfig({
     runtimeConfig: {
         VUE_APP_BRXM_ENDPOINT: process.env.VUE_APP_BRXM_ENDPOINT,
     },
+    components: [
+        {
+            path: '~/components',
+            pathPrefix: false,
+        },
+    ],
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',

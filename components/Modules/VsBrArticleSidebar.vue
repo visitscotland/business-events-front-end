@@ -1,15 +1,39 @@
 <template>
-    <!-- TODO - video -->
     <VsArticleSidebar
         :sidebar-align="alignment"
     >
         <template
             #vs-article-sidebar-img
-            v-if="section.image"
         >
-            <VsBrImageWithCaption
-                :image="section.image.cmsImage"
-            />
+            <template
+                v-if="section.video"
+            >
+                <VsBrVideoModal
+                    :is-video-modal="true"
+                    :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+                    :modal-id="section.video.youtubeId"
+                    :video="section.video"
+                />
+
+                <VsBrImageWithCaption
+                    :image="section.video.image.cmsImage"
+                    :is-video="true"
+                    :video-id="section.video.youtubeId"
+                    :video-title="section.video.label
+                        ? section.video.label
+                        : configStore.getLabel('video', 'video.play-btn')
+                    "
+                    :small-play-button="true"
+                    :show-toggle="false"
+                />
+            </template>
+            <template
+                v-else-if="section.image"
+            >
+                <VsBrImageWithCaption
+                    :image="section.image.cmsImage"
+                />
+            </template>
         </template>
 
         <template
@@ -26,8 +50,11 @@
 <script lang="ts" setup>
 import { VsArticleSidebar } from '@visitscotland/component-library-export/components';
 
+import useConfigStore from '~/stores/configStore.ts';
 import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
 import VsBrQuote from './VsBrQuote.vue';
+
+const configStore = useConfigStore();
 
 const props = defineProps<{ section: any, alignment: string }>();
 const section: any = props.section;

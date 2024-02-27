@@ -1,5 +1,5 @@
 <template>
-    <!-- TODO - itinerary, themes, video links -->
+    <!-- TODO - itinerary, themes -->
     <VsMegalinks
         :title="module.title"
         variant="single-image"
@@ -36,6 +36,11 @@
                             :link-type="featuredLinks[0].type"
                             :link-url="featuredLinks[0].url"
                             :error-message="featuredLinks[0]['error-message']"
+                            :video-id="featuredLinks[0].type === 'video'
+                                ? extractYoutubeId(featuredLinks[0].url)
+                                : ''
+                            "
+                            :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
                         >
                             <template #vs-multi-image-heading>
                                 {{ featuredLinks[0].label }}
@@ -48,6 +53,14 @@
                                 <p>{{ featuredLinks[0].teaser }}</p>
                             </template>
                         </VsMegalinkMultiImage>
+
+                        <VsBrVideoModal
+                            v-if="featuredLinks[0].type === 'video'"
+                            :is-video-modal="true"
+                            :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+                            :modal-id="extractYoutubeId(featuredLinks[0].url)"
+                            :video="featuredLinks[0]"
+                        />
                     </VsCol>
 
                     <VsCol
@@ -63,6 +76,11 @@
                             :link-type="link.type"
                             :link-url="link.url"
                             :error-message="link['error-message']"
+                            :video-id="link.type === 'video'
+                                ? extractYoutubeId(link.url)
+                                : ''
+                            "
+                            :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
                         >
                             <template #vs-multi-image-heading>
                                 {{ link.label }}
@@ -75,6 +93,14 @@
                                 <p>{{ link.teaser }}</p>
                             </template>
                         </VsMegalinkMultiImage>
+
+                        <VsBrVideoModal
+                            v-if="link.type === 'video'"
+                            :is-video-modal="true"
+                            :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+                            :modal-id="extractYoutubeId(link.url)"
+                            :video="link"
+                        />
                     </VsCol>
 
                     <VsCol
@@ -91,6 +117,11 @@
                             :link-type="featuredLinks[1].type"
                             :link-url="featuredLinks[1].url"
                             :error-message="featuredLinks[1]['error-message']"
+                            :video-id="featuredLinks[1].type === 'video'
+                                ? extractYoutubeId(featuredLinks[1].url)
+                                : ''
+                            "
+                            :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
                         >
                             <template #vs-multi-image-heading>
                                 {{ featuredLinks[1].label }}
@@ -103,6 +134,14 @@
                                 <p>{{ featuredLinks[1].teaser }}</p>
                             </template>
                         </VsMegalinkMultiImage>
+
+                        <VsBrVideoModal
+                            v-if="featuredLinks[1].type === 'video'"
+                            :is-video-modal="true"
+                            :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+                            :modal-id="extractYoutubeId(featuredLinks[1].url)"
+                            :video="featuredLinks[1]"
+                        />
                     </VsCol>
                 </VsRow>
             </VsContainer>

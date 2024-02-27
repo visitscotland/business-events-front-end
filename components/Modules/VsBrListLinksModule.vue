@@ -1,5 +1,5 @@
 <template>
-    <!-- TODO - error-message, itinerary, themes, video links -->
+    <!-- TODO - error-message, itinerary, themes -->
     <VsMegalinks
         :title="module.title"
         variant="link-list"
@@ -27,9 +27,14 @@
                 <VsMegalinkLinkList
                     :img-src="link.image ? link.image : ''"
                     :theme="theme"
-                    :type="link.type"
+                    :link-type="link.type"
                     :href="link.url"
                     :error-message="link['error-message']"
+                    :video-id="link.type === 'video'
+                        ? extractYoutubeId(link.url)
+                        : ''
+                    "
+                    :video-btn-text="configStore.getLabel('video', 'video.play-btn')"
                 >
                     <template #vs-link-list-heading>
                         {{ link.label }}
@@ -42,6 +47,17 @@
                         <p>{{ link.teaser }}</p>
                     </template>
                 </VsMegalinkLinkList>
+
+                <VsBrVideoModal
+                    v-if="link.type === 'video'"
+                    :is-video-modal="true"
+                    :close-btn-text="configStore.getLabel('essentials.global', 'close')"
+                    :modal-id="link.type === 'video'
+                        ? extractYoutubeId(link.url)
+                        : ''
+                    "
+                    :video="link"
+                />
             </VsCol>
         </VsRow>
     </VsMegalinks>

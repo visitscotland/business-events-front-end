@@ -51,6 +51,10 @@ if (page.value) {
     configStore.productSearch = componentModels.psrWidget;
     configStore.pageItems = componentModels.pageItems;
     configStore.labels = componentModels.labels;
+
+    const document : any = page.value.getDocument();
+
+    configStore.locale = document.model.data.localeString;
 }
 
 provide('page', page.value);

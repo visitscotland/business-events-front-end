@@ -1,5 +1,5 @@
 <template>
-    <!-- TODO - latitude, longitude, toggle-button-text, video, play-button-text -->
+    <!-- TODO - latitude, longitude, toggle-button-text, play-button-text -->
     <VsImageWithCaption
         :variant="variant"
         :is-hero-image="isHero"
@@ -10,7 +10,14 @@
         :cookie-link-text="configStore.getLabel('essentials.global', 'cookie.link-message')"
         :no-cookies-message="configStore.getLabel('video', 'video.no-cookies')"
         :no-js-message="configStore.getLabel('video', 'video.no-js')"
+        :video-id="videoId"
+        :small-play-button="smallPlayButton"
+        :play-button-text="videoBtn ? videoBtn : configStore.getLabel('video', 'video.play-btn')"
     >
+        <template #video-title>
+            {{ videoTitle }}
+        </template>
+
         <!-- TODO - Move all srcset logic into component library with mixin for consistency -->
         <VsImg
             :src="imageValue.getOriginal().getUrl()"
@@ -99,6 +106,7 @@ interface IProps {
     alignment?: string
     videoId?: string,
     videoTitle?: string,
+    videoBtn?: string,
     smallPlayButton?: boolean
     useLazyLoading?: boolean,
     noAltText?: boolean
@@ -117,6 +125,7 @@ const props = withDefaults(defineProps<IProps>(), {
     showToggle: true,
     videoId: '',
     videoTitle: '',
+    videoBtn: '',
 });
 
 const {
@@ -126,9 +135,10 @@ const {
     isVideo,
     mobileOverlap,
     alignment,
-    // videoId,
-    // videoTitle,
-    // smallPlayButton,
+    videoId,
+    videoTitle,
+    videoBtn,
+    smallPlayButton,
     useLazyLoading,
     noAltText,
     showToggle,

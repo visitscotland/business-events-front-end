@@ -21,9 +21,20 @@
 
 import axios from 'axios';
 
+import { getCurrentInstance } from 'vue';
+import mitt from 'mitt';
+
 import VsBrMenu from './components/Base/VsBrMenu.vue';
 import VsBrFooter from './components/Base/VsBrFooter.vue';
 import VsBrMain from './components/Base/VsBrMain.vue';
+
+const app = getCurrentInstance();
+const emitter = mitt();
+app.appContext.config.globalProperties.emitter = emitter;
+
+if (window) {
+    // window.bypassCookieChecks = true;
+}
 
 // Get url of current page.
 const route = useRoute().path;
