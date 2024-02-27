@@ -28,7 +28,7 @@
                     :img-src="link.image ? link.image : ''"
                     :theme="theme"
                     :link-type="link.type"
-                    :href="link.url"
+                    :link-url="link.url"
                     :error-message="link['error-message']"
                     :video-id="link.type === 'video'
                         ? extractYoutubeId(link.url)

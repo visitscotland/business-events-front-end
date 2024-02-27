@@ -33,7 +33,7 @@ const emitter = mitt();
 app.appContext.config.globalProperties.emitter = emitter;
 
 if (window) {
-    // window.bypassCookieChecks = true;
+    window.bypassCookieChecks = true;
 }
 
 // Get url of current page.

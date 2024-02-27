@@ -44,9 +44,6 @@
 
         <!-- TODO
             Social schema
-            Breadcrumb schema
-            Real breadcrumb data
-            Home label
         -->
 
         <template #vs-intro-breadcrumb>

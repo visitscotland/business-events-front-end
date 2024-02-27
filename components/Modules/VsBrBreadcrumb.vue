@@ -64,8 +64,6 @@ for (let x = 0; x < filteredBreadcrumb.length; x++) {
     });
 }
 
-// TODO - Localised Home Label
-
 useJsonld({
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
