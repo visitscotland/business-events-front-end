@@ -88,12 +88,12 @@ import { inject, toRefs } from 'vue';
 import { VsPageIntro, VsBlogDetails } from '@visitscotland/component-library-export/components';
 
 import useConfigStore from '~/stores/configStore.ts';
-import themeCalculator from '../../composables/themeCalculator.ts';
-import extractYoutubeId from '../../composables/extractYoutubeId.ts';
+import themeCalculator from '~/composables/themeCalculator.ts';
+import extractYoutubeId from '~/composables/extractYoutubeId.ts';
 
-import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
-import VsBrBreadcrumb from './VsBrBreadcrumb.vue';
-import VsBrVideoModal from './VsBrVideoModal.vue';
+import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
+import VsBrVideoModal from '~/components/Modules/VsBrVideoModal.vue';
 
 const configStore = useConfigStore();
 

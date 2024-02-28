@@ -30,8 +30,8 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import VsBrGeneral from '../PageTypes/VsBrGeneral.vue';
-import VsBr404 from '../PageTypes/VsBr404.vue';
+import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
+import VsBr404 from '~/components/PageTypes/VsBr404.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 

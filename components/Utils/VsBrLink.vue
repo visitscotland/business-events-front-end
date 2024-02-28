@@ -17,7 +17,7 @@
 <script lang="ts" setup>
 import { computed, inject } from 'vue';
 
-import VsBrImage from './VsBrImage.vue';
+import VsBrImage from '~/components/Utils/VsBrImage.vue';
 
 const props = defineProps<{ linkObj: any, showImage?: Boolean }>();
 const { linkObj } = props;

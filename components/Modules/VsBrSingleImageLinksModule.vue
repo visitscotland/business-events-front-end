@@ -97,9 +97,9 @@ import {
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import formatLink from '../../composables/formatLink.ts';
+import formatLink from '~/composables/formatLink.ts';
 
-import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
+import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
 
 const configStore = useConfigStore();
 

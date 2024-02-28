@@ -51,8 +51,8 @@
 import { VsArticleSidebar } from '@visitscotland/component-library-export/components';
 
 import useConfigStore from '~/stores/configStore.ts';
-import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
-import VsBrQuote from './VsBrQuote.vue';
+import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrQuote from '~/components/Modules/VsBrQuote.vue';
 
 const configStore = useConfigStore();
 

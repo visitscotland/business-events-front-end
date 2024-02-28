@@ -9,7 +9,7 @@
 import { toRefs } from 'vue';
 
 import type { Component, Page } from '@bloomreach/spa-sdk';
-import VsBrPageIntro from '../Modules/VsBrPageIntro.vue';
+import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 

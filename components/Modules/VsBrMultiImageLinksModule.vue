@@ -166,7 +166,7 @@ import {
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import formatLink from '../../composables/formatLink.ts';
+import formatLink from '~/composables/formatLink.ts';
 
 const configStore = useConfigStore();
 

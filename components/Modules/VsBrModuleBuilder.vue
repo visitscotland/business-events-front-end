@@ -33,12 +33,12 @@
 </template>
 
 <script lang="ts" setup>
-import VsBrListLinksModule from './VsBrListLinksModule.vue';
-import VsBrMultiImageLinksModule from './VsBrMultiImageLinksModule.vue';
-import VsBrSingleImageLinksModule from './VsBrSingleImageLinksModule.vue';
-import VsBrArticleModule from './VsBrArticleModule.vue';
+import VsBrListLinksModule from '~/components/Modules/VsBrListLinksModule.vue';
+import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksModule.vue';
+import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
+import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 
-import themeCalculator from '../../composables/themeCalculator.ts';
+import themeCalculator from '~/composables/themeCalculator.ts';
 
 const props = defineProps<{
     modules: any[],

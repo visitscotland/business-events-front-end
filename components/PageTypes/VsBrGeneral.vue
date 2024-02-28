@@ -58,10 +58,10 @@ import type { Component, Page } from '@bloomreach/spa-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import VsBrPageIntro from '../Modules/VsBrPageIntro.vue';
-import VsBrIntroImage from '../Modules/VsBrIntroImage.vue';
-import VsBrModuleBuilder from '../Modules/VsBrModuleBuilder.vue';
-import VsBrProductSearch from '../Modules/VsBrProductSearch.vue';
+import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
+import VsBrIntroImage from '~/components/Modules/VsBrIntroImage.vue';
+import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
+import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 

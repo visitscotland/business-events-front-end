@@ -45,10 +45,10 @@ import {
     VsArticleSection,
 } from '@visitscotland/component-library-export/components';
 
-import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
-import VsBrArticleSidebar from './VsBrArticleSidebar.vue';
+import formatLink from '~/composables/formatLink.ts';
 
-import formatLink from '../../composables/formatLink.ts';
+import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrArticleSidebar from '~/components/Modules/VsBrArticleSidebar.vue';
 
 const props = defineProps<{ module: Object }>();
 const module: any = props.module;

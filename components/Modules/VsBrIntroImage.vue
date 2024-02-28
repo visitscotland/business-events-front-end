@@ -24,7 +24,7 @@ import {
     VsContainer, VsRow, VsCol,
 } from '@visitscotland/component-library-export/components';
 
-import VsBrImageWithCaption from './VsBrImageWithCaption.vue';
+import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
 
 const props = defineProps<{
     image?: any,
