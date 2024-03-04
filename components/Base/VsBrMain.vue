@@ -1,5 +1,10 @@
 <template>
     <div>
+        <VsBrPageViewEvent
+            :data="document.model.data"
+            :page-type="pageName"
+        />
+
         <VsBrGeneral
             v-if="pageName === 'general-page'"
             :page="page"
@@ -33,13 +38,18 @@ import useConfigStore from '~/stores/configStore.ts';
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBr404 from '~/components/PageTypes/VsBr404.vue';
 
+import VsBrPageViewEvent from '~/components/Utils/VsBrPageViewEvent.vue';
+
 const props = defineProps<{ component: Component, page: Page }>();
 
 const { component, page } = toRefs(props);
 
 let pageComponent : any = {
 };
-let pageName = '';
+let pageName : string = '';
+
+let document : any = {
+};
 
 const configStore = useConfigStore();
 
@@ -54,7 +64,7 @@ if (page.value) {
     configStore.pageItems = componentModels.pageItems;
     configStore.labels = componentModels.labels;
 
-    const document : any = page.value.getDocument();
+    document = page.value.getDocument();
 
     configStore.locale = document.model.data.localeString;
 
