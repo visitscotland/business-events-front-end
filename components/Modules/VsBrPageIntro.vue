@@ -123,39 +123,41 @@ if (page) {
     const pageContent : any = page.getContent(page.model.root);
     const pageModels : any = pageContent.models;
 
-    isHome = pageModels.isHome;
-    breadcrumb = pageModels.breadcrumb.items;
+    if (pageModels) {
+        isHome = pageModels.isHome;
+        breadcrumb = pageModels.breadcrumb.items;
 
-    if (blog.value) {
-        blogAuthor = page.getContent(blog.value.author);
+        if (blog.value) {
+            blogAuthor = page.getContent(blog.value.author);
 
-        if (blogAuthor && blogAuthor.model && blogAuthor.model.data) {
-            blogAuthor = blogAuthor.model.data.displayName;
+            if (blogAuthor && blogAuthor.model && blogAuthor.model.data) {
+                blogAuthor = blogAuthor.model.data.displayName;
+            }
+
+            // TODO - localised labels for minute/s
+
+            if (blog.value.readingTime > 1) {
+                blogTime = `${blog.value.readingTime} minutes`;
+            } else {
+                blogTime = `${blog.value.readingTime} minute`;
+            }
+
+            blogDate = new Date(blog.value.publishDate).toLocaleString(
+                'en-US',
+                {
+                    year: 'numeric',
+                    day: 'numeric',
+                    month: 'long',
+                },
+            );
         }
 
-        // TODO - localised labels for minute/s
+        if (content.value.heroVideo) {
+            const video = page.getContent(content.value.heroVideo.videoLink);
+            heroVideo = video.model.data;
 
-        if (blog.value.readingTime > 1) {
-            blogTime = `${blog.value.readingTime} minutes`;
-        } else {
-            blogTime = `${blog.value.readingTime} minute`;
+            youtubeId = extractYoutubeId(heroVideo.url);
         }
-
-        blogDate = new Date(blog.value.publishDate).toLocaleString(
-            'en-US',
-            {
-                year: 'numeric',
-                day: 'numeric',
-                month: 'long',
-            },
-        );
-    }
-
-    if (content.value.heroVideo) {
-        const video = page.getContent(content.value.heroVideo.videoLink);
-        heroVideo = video.model.data;
-
-        youtubeId = extractYoutubeId(heroVideo.url);
     }
 }
 </script>
