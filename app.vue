@@ -76,6 +76,8 @@ if (window && window.location) {
     serverId = searchParams.get(PREVIEW_SERVER_ID_KEY);
 }
 
+const runtimeConfig = useRuntimeConfig();
+
 const configuration = {
     path: deLocalisedRoute,
     endpoint: localisedEndpoint,
@@ -88,6 +90,7 @@ const configuration = {
         serverId,
     } : {
     }),
+    origin: runtimeConfig.public.BR_CMS_ORIGIN_LOCATION,
 };
 
 const mapping = {

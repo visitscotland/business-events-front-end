@@ -95,6 +95,7 @@ if (page.value) {
     useHead({
         htmlAttrs: {
             lang: langString,
+            'data-version': '',
         },
     });
 }

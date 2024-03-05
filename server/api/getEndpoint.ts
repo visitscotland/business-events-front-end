@@ -1,6 +1,6 @@
 /* eslint no-undef: 0 */
 
 export default defineEventHandler(() => {
-    const { VUE_APP_BRXM_ENDPOINT } = useRuntimeConfig();
-    return VUE_APP_BRXM_ENDPOINT;
+    const { BR_RESOURCE_API_ENDPOINT } = useRuntimeConfig();
+    return BR_RESOURCE_API_ENDPOINT;
 });
