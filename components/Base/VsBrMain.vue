@@ -1,5 +1,7 @@
 <template>
     <div>
+        <VsBrGtm />
+
         <VsBrPageViewEvent
             :data="document.model.data"
             :page-type="pageName"
@@ -43,6 +45,8 @@ import useConfigStore from '~/stores/configStore.ts';
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBr404 from '~/components/PageTypes/VsBr404.vue';
 import VsBr500 from '~/components/PageTypes/VsBr500.vue';
+
+import VsBrGtm from '~/components/Modules/VsBrGtm.vue';
 
 import VsBrPageViewEvent from '~/components/Utils/VsBrPageViewEvent.vue';
 

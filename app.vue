@@ -32,10 +32,6 @@ const app = getCurrentInstance();
 const emitter = mitt();
 app.appContext.config.globalProperties.emitter = emitter;
 
-if (window) {
-    window.bypassCookieChecks = true;
-}
-
 // Get url of current page.
 const route = useRoute().path;
 
