@@ -15,6 +15,11 @@
             :page="page"
             :component="component"
         />
+        <VsBr500
+            v-else-if="pageName === 'servererror'"
+            :page="page"
+            :component="component"
+        />
         <div
             v-else
         >
@@ -37,6 +42,7 @@ import useConfigStore from '~/stores/configStore.ts';
 
 import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
 import VsBr404 from '~/components/PageTypes/VsBr404.vue';
+import VsBr500 from '~/components/PageTypes/VsBr500.vue';
 
 import VsBrPageViewEvent from '~/components/Utils/VsBrPageViewEvent.vue';
 
@@ -56,6 +62,16 @@ const configStore = useConfigStore();
 if (page.value) {
     pageComponent = page.value.getComponent();
     pageName = pageComponent.model.name;
+
+    const event = useRequestEvent();
+
+    if (pageName === 'pagenotfound') {
+        setResponseStatus(event, 404, 'Page Not Found');
+    }
+
+    if (pageName === 'servererror') {
+        setResponseStatus(event, 500, 'Something Went Wrong');
+    }
 
     const componentModels = component.value.getModels();
 
