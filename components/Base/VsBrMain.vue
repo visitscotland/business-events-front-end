@@ -1,5 +1,11 @@
 <template>
-    <div>
+    <div
+        :class="{ 'has-edit-button': page.isPreview() }"
+    >
+        <BrManageContentButton
+            :content="document"
+        />
+
         <VsBrGtm />
 
         <VsBrPageViewEvent
@@ -39,6 +45,7 @@
 
 import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
+import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 

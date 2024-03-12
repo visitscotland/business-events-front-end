@@ -3,7 +3,14 @@
         class="vs-module-wrapper__outer"
         v-for="(item, index) in modules"
         :key="index"
+        :id="`section-${index}`"
+        :class="{ 'has-edit-button': page.isPreview() }"
     >
+        <BrManageContentButton
+            v-if="item.hippoBean && page"
+            :content="page.getContent(item.hippoBean)"
+        />
+
         <VsBrListLinksModule
             v-if="item.type === 'ListLinksModule'"
             :module="item"
@@ -33,6 +40,11 @@
 </template>
 
 <script lang="ts" setup>
+import { inject } from 'vue';
+
+import type { Page } from '@bloomreach/spa-sdk';
+import { BrManageContentButton } from '@bloomreach/vue3-sdk';
+
 import VsBrListLinksModule from '~/components/Modules/VsBrListLinksModule.vue';
 import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksModule.vue';
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
@@ -45,6 +57,8 @@ const props = defineProps<{
 }>();
 
 const { modules } = props;
+
+const page: Page | undefined = inject('page');
 
 const themeCount = 3;
 let currentMegaLinkSection = -1;
