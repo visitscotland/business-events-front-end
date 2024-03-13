@@ -1,18 +1,28 @@
 <template>
-    <br-page
-        :configuration="configuration"
-        :mapping="mapping"
-    >
-        <template #default>
-            <div
-                :class="!isMounted ? 'no-js' : ''"
+    <div>
+        <VsBrSkeleton
+            v-show="!isMounted"
+        />
+        <div
+            class="hydrate"
+            v-show="isMounted"
+        >
+            <br-page
+                :configuration="configuration"
+                :mapping="mapping"
             >
-                <br-component component="menu" />
-                <br-component component="main" />
-                <br-component component="footer" />
-            </div>
-        </template>
-    </br-page>
+                <template #default>
+                    <div
+                        :class="!isMounted ? 'no-js' : ''"
+                    >
+                        <br-component component="menu" />
+                        <br-component component="main" />
+                        <br-component component="footer" />
+                    </div>
+                </template>
+            </br-page>
+        </div>
+    </div>
 </template>
 
 <script setup>
@@ -21,12 +31,15 @@
 
 import axios from 'axios';
 
-import { getCurrentInstance } from 'vue';
+import {
+    getCurrentInstance, ref, onMounted,
+} from 'vue';
 import mitt from 'mitt';
 
 import VsBrMenu from '~/components/Base/VsBrMenu.vue';
 import VsBrFooter from '~/components/Base/VsBrFooter.vue';
 import VsBrMain from '~/components/Base/VsBrMain.vue';
+import VsBrSkeleton from '~/components/Base/VsBrSkeleton.vue';
 
 const app = getCurrentInstance();
 const emitter = mitt();
@@ -47,7 +60,11 @@ const localeStrings = [
     'de-de',
 ];
 
-let isMounted = false;
+const isMounted = ref(false);
+
+onMounted(() => {
+    isMounted.value = true;
+});
 
 let deLocalisedRoute = route;
 
@@ -94,10 +111,6 @@ const mapping = {
     main: VsBrMain,
     footer: VsBrFooter,
 };
-
-onMounted(() => {
-    isMounted = true;
-});
 </script>
 
 <style lang="scss">

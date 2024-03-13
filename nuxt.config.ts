@@ -30,4 +30,7 @@ export default defineNuxtConfig({
             'bootstrap-vue-next',
         ],
     },
+    experimental: {
+        inlineSSRStyles: false,
+    },
 });
