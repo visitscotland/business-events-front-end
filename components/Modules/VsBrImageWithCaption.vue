@@ -18,7 +18,6 @@
             {{ videoTitle }}
         </template>
 
-        <!-- TODO - Move all srcset logic into component library with mixin for consistency -->
         <VsImg
             :src="imageValue.getOriginal().getUrl()"
             :alt="noAltText
