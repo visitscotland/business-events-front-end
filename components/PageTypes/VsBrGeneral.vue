@@ -50,6 +50,8 @@
         v-if="productSearch && productSearch.position === 'Bottom'"
         class="mt-9 mt-lg-12"
     />
+
+    <VsBrNewsletterSignpost />
 </template>
 
 <script lang="ts" setup>
@@ -62,6 +64,7 @@ import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrIntroImage from '~/components/Modules/VsBrIntroImage.vue';
 import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
+import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
