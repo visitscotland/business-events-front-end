@@ -20,7 +20,7 @@
                 :theme="item.themeValue"
             />
 
-            <VsBrListLinksModule
+            <VsBrHorizontalLinksModule
                 v-if="hippoContent[index].model.data.layout === 'Horizontal Links'"
                 :module="item"
                 :theme="item.themeValue"
@@ -60,6 +60,7 @@ import type { Page } from '@bloomreach/spa-sdk';
 import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 
 import VsBrListLinksModule from '~/components/Modules/VsBrListLinksModule.vue';
+import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksModule.vue';
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
 import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
@@ -76,7 +77,7 @@ const page: Page | undefined = inject('page');
 
 const themeCount = 3;
 let currentMegaLinkSection = -1;
-const hippoContent = {
+const hippoContent : any = {
 };
 
 if (modules) {
