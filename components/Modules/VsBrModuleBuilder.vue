@@ -8,28 +8,42 @@
     >
         <BrManageContentButton
             v-if="item.hippoBean && page"
-            :content="page.getContent(item.hippoBean)"
+            :content="hippoContent[index]"
         />
 
-        <VsBrListLinksModule
+        <template
             v-if="item.type === 'ListLinksModule'"
-            :module="item"
-            :theme="item.themeValue"
-        />
+        >
+            <VsBrListLinksModule
+                v-if="hippoContent[index].model.data.layout === 'List'"
+                :module="item"
+                :theme="item.themeValue"
+            />
+
+            <VsBrListLinksModule
+                v-if="hippoContent[index].model.data.layout === 'Horizontal Links'"
+                :module="item"
+                :theme="item.themeValue"
+            />
+        </template>
+
         <VsBrMultiImageLinksModule
             v-else-if="item.type === 'MultiImageLinksModule'"
             :module="item"
             :theme="item.themeValue"
         />
+
         <VsBrSingleImageLinksModule
             v-else-if="item.type === 'SingleImageLinksModule'"
             :module="item"
             :theme="item.themeValue"
         />
+
         <VsBrArticleModule
             v-else-if="item.type === 'ArticleModule'"
             :module="item"
         />
+
         <span
             style="color: red"
             v-else
@@ -62,6 +76,8 @@ const page: Page | undefined = inject('page');
 
 const themeCount = 3;
 let currentMegaLinkSection = -1;
+const hippoContent = {
+};
 
 if (modules) {
     for (let x = 0; x < modules.length; x++) {
@@ -81,6 +97,10 @@ if (modules) {
 
         modules[x].themeIndex = newThemeIndex;
         modules[x].themeValue = themeCalculator(newThemeIndex, module);
+
+        if (modules[x].hippoBean) {
+            hippoContent[x] = page.getContent(modules[x].hippoBean);
+        }
     }
 }
 </script>
