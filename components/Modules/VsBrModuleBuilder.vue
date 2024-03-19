@@ -44,6 +44,11 @@
             :module="item"
         />
 
+        <VsBrLongCopyModule
+            v-else-if="item.type === 'LongCopyModule'"
+            :module="item"
+        />
+
         <span
             style="color: red"
             v-else
@@ -64,6 +69,7 @@ import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksM
 import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksModule.vue';
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
 import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
+import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
 
