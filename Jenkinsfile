@@ -1,17 +1,15 @@
 def MAIL_TO = "webops@visitscotland.net"
+def thisAgent
+thisAgent = "docker-02"
 
 pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
         disableConcurrentBuilds()
+        timestamps()
     }
 
-    agent {
-        docker {
-            image 'vs/vs-brxm15-builder:node18'
-        label 'docker-02'
-        }
-    }
+    agent {label thisAgent}
 
     environment {
         GITHUB_PAT_JENKINS_CI = credentials('github-pat-jenkins-ci')
@@ -19,9 +17,15 @@ pipeline {
 
     stages {
         stage ('SCM checkout') {
+            agent {
+                docker {
+                image 'vs/vs-brxm15-builder:node18'
+                label thisAgent
+                }
+            }
             steps {
                 sh '''
-                    echo; echo "running stage $STAGE_NAME"
+                    echo; echo "running stage $STAGE_NAME on $HOSTNAME"
                     echo; echo "==== PRINTENV $STAGE_NAME 1 ====="
                     printenv
                     echo "====/PRINTENV $STAGE_NAME 1 ====="; echo
@@ -42,8 +46,14 @@ pipeline {
         } //end stage
 
         stage ('Install Dependencies') {
+            agent {
+                docker {
+                image 'vs/vs-brxm15-builder:node18'
+                label thisAgent
+                }
+            }
             steps {
-                sh 'echo; echo "running stage $STAGE_NAME"'
+                sh 'echo; echo "running stage $STAGE_NAME on $HOSTNAME"'
                 sh '''
                     export HOME=$WORKSPACE
                     export npm_config_cache=$HOME/.npm
@@ -57,9 +67,15 @@ pipeline {
         } //end stage
 
         stage ('Run Tests') {
+            agent {
+                docker {
+                image 'vs/vs-brxm15-builder:node18'
+                label thisAgent
+                }
+            }
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh 'echo; echo "running stage $STAGE_NAME"'
+                    sh 'echo; echo "running stage $STAGE_NAME on $HOSTNAME"'
                     sh '''
                         export HOME=$WORKSPACE
                         export npm_config_cache=$HOME/.npm
@@ -75,7 +91,7 @@ pipeline {
 
         stage ('Deploy') {
             steps {
-                sh 'echo; echo "running stage $STAGE_NAME"'
+                sh 'echo; echo "running stage $STAGE_NAME on $HOSTNAME"'
                 sh 'echo "Here we will define the scripted steps to deploy the application"'
             }
         } //end stage
