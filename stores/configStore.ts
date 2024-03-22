@@ -5,6 +5,7 @@ interface IConfigState {
     productSearch: any,
     pageItems: any[],
     labels: any,
+    newsletterSignpost: any,
     locale: string,
 }
 
@@ -15,6 +16,8 @@ const useConfigStore = defineStore('configStore', {
         },
         pageItems: [],
         labels: {
+        },
+        newsletterSignpost: {
         },
         locale: '',
     }),

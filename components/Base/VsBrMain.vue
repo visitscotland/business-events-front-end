@@ -90,6 +90,7 @@ if (page.value) {
     configStore.productSearch = componentModels.psrWidget;
     configStore.pageItems = componentModels.pageItems;
     configStore.labels = componentModels.labels;
+    configStore.newsletterSignpost = componentModels.newsletterSignpost;
 
     document = page.value.getDocument();
 
