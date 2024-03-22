@@ -50,6 +50,7 @@ const route = useRoute().path;
 
 // Get API endpoint from the server side.
 const { data: endpoint } = await useFetch('/api/getEndpoint');
+const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 
 let locale = '/site/resourceapi';
 
@@ -90,6 +91,10 @@ if (window && window.location) {
 }
 
 const runtimeConfig = useRuntimeConfig();
+
+if (xForwardedhost.value) {
+    axios.defaults.headers.common['X-Forwarded-Host'] = xForwardedhost.value;
+}
 
 const configuration = {
     path: deLocalisedRoute,
