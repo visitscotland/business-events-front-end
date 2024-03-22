@@ -18,16 +18,19 @@
             :page="page"
             :component="component"
         />
+
         <VsBr404
             v-else-if="pageName === 'pagenotfound'"
             :page="page"
             :component="component"
         />
+
         <VsBr500
             v-else-if="pageName === 'servererror'"
             :page="page"
             :component="component"
         />
+
         <div
             v-else
         >
