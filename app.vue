@@ -92,8 +92,8 @@ if (window && window.location) {
 
 const runtimeConfig = useRuntimeConfig();
 
-if (xForwardedhost.value) {
-    axios.defaults.headers.common['X-Forwarded-Host'] = xForwardedhost.value;
+if (process.server && xForwardedhost.value) {
+    axios.defaults.headers.common.Host = xForwardedhost.value;
 }
 
 const configuration = {
