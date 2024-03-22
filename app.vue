@@ -52,14 +52,14 @@ const route = useRoute().path;
 const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 
-let locale = '/site/resourceapi';
+// let locale = '/site/resourceapi';
 
-const localeStrings = [
-    'fr-fr',
-    'es-es',
-    'nl-nl',
-    'de-de',
-];
+// const localeStrings = [
+//     'fr-fr',
+//     'es-es',
+//     'nl-nl',
+//     'de-de',
+// ];
 
 const isMounted = ref(false);
 
@@ -67,16 +67,16 @@ onMounted(() => {
     isMounted.value = true;
 });
 
-let deLocalisedRoute = route;
+// let deLocalisedRoute = route;
 
-for (let x = 0; x < localeStrings.length; x++) {
-    if (route.includes(localeStrings[x])) {
-        locale = `/site/${localeStrings[x]}/resourceapi`;
-        deLocalisedRoute = deLocalisedRoute.replace(`/${localeStrings[x]}`, '');
-    }
-}
+// for (let x = 0; x < localeStrings.length; x++) {
+//     if (route.includes(localeStrings[x])) {
+//         locale = `/site/${localeStrings[x]}/resourceapi`;
+//         deLocalisedRoute = deLocalisedRoute.replace(`/${localeStrings[x]}`, '');
+//     }
+// }
 
-const localisedEndpoint = endpoint.value + locale;
+// const localisedEndpoint = endpoint.value + locale;
 
 const PREVIEW_TOKEN_KEY = 'token';
 const PREVIEW_SERVER_ID_KEY = 'server-id';
@@ -97,8 +97,8 @@ if (process.server && xForwardedhost.value) {
 }
 
 const configuration = {
-    path: deLocalisedRoute,
-    endpoint: localisedEndpoint,
+    path: route,
+    endpoint: endpoint.value,
     httpClient: axios,
     ...(authorizationToken ? {
         authorizationToken,
