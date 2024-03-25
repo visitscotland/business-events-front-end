@@ -51,7 +51,10 @@
         class="mt-9 mt-lg-12"
     />
 
-    <VsBrNewsletterSignpost />
+    <VsBrNewsletterSignpost
+        v-if="!documentData.hideNewsletter"
+        :data="configStore.newsletterSignpost"
+    />
 </template>
 
 <script lang="ts" setup>
