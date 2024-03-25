@@ -18,16 +18,19 @@
             :page="page"
             :component="component"
         />
+
         <VsBr404
             v-else-if="pageName === 'pagenotfound'"
             :page="page"
             :component="component"
         />
+
         <VsBr500
             v-else-if="pageName === 'servererror'"
             :page="page"
             :component="component"
         />
+
         <div
             v-else
         >
@@ -90,6 +93,7 @@ if (page.value) {
     configStore.productSearch = componentModels.psrWidget;
     configStore.pageItems = componentModels.pageItems;
     configStore.labels = componentModels.labels;
+    configStore.newsletterSignpost = componentModels.newsletterSignpost;
 
     document = page.value.getDocument();
 
@@ -142,7 +146,7 @@ if (page.value) {
             },
             {
                 rel: 'manifest',
-                href: 'manifest.webmanifest',
+                href: '/manifest.webmanifest',
             },
         ],
     });

@@ -49,6 +49,11 @@
             :module="item"
         />
 
+        <VsBrMarketoForm
+            v-else-if="item.type === 'MarketoFormModule'"
+            :module="item"
+        />
+
         <span
             style="color: red"
             v-else
@@ -70,6 +75,7 @@ import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksM
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
 import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
+import VsBrMarketoForm from '~/components/Modules/VsBrMarketoForm.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
 
@@ -103,7 +109,7 @@ if (modules) {
         }
 
         modules[x].themeIndex = newThemeIndex;
-        modules[x].themeValue = themeCalculator(newThemeIndex, module);
+        modules[x].themeValue = themeCalculator(newThemeIndex, modules[x]);
 
         if (modules[x].hippoBean) {
             hippoContent[x] = page.getContent(modules[x].hippoBean);

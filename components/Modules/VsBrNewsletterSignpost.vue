@@ -1,7 +1,7 @@
 <template>
     <VsModuleWrapper theme="grey">
         <template #vs-module-wrapper-heading>
-            Signpost Title
+            {{ data.title }}
         </template>
 
         <VsContainer>
@@ -18,13 +18,15 @@
                         variant="lead"
                         class="mb-9 mb-lg-10"
                     >
-                        <p>Signpost Text</p>
+                        <div
+                            v-html="data.copy.value"
+                        />
                     </VsRichTextWrapper>
 
                     <VsButton
-                        href="#"
+                        :href="data.cta.link"
                     >
-                        Signpost CTA
+                        {{ data.cta.label }}
                     </VsButton>
                 </VsCol>
                 <VsCol
@@ -38,7 +40,7 @@
                     class="text-center text-lg-start col-xxl-5 offset-xxl-1"
                 >
                     <VsImg
-                        src="img"
+                        src="/illustrations/newsletter.svg"
                         class="mt-10 mt-sm-2 w-100 h-auto"
                         style="aspect-ratio:267/206"
                     />
@@ -59,4 +61,7 @@ import {
     VsImg,
 } from '@visitscotland/component-library-export/components';
 
+const props = defineProps<{ data: any, }>();
+
+const data : any = props.data;
 </script>
