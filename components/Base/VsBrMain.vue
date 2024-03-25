@@ -146,7 +146,7 @@ if (page.value) {
             },
             {
                 rel: 'manifest',
-                href: 'manifest.webmanifest',
+                href: '/manifest.webmanifest',
             },
         ],
     });
