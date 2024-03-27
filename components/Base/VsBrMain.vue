@@ -124,10 +124,13 @@ if (page.value) {
         break;
     }
 
+    const runtimeConfig = useRuntimeConfig();
+
     useHead({
         htmlAttrs: {
             lang: langString,
             'data-version': configStore.pageMetaData.version,
+            'component-library-version': runtimeConfig.public.COMP_LIBRARY_VERSION,
         },
         link: [
             {

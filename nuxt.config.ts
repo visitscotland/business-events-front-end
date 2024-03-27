@@ -1,5 +1,16 @@
 /* eslint no-undef: 0 */
 
+import fs from 'fs';
+import path from 'path';
+
+function bufferFile(relPath: string) {
+    return fs.readFileSync(path.join(__dirname, relPath), {
+        encoding: 'utf8',
+    });
+}
+
+const clVersion = bufferFile('.clversion');
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
     runtimeConfig: {
@@ -7,6 +18,7 @@ export default defineNuxtConfig({
         BR_X_FORWARDED_HOST: process.env.BR_X_FORWARDED_HOST,
         public: {
             BR_CMS_ORIGIN_LOCATION: process.env.BR_CMS_ORIGIN_LOCATION,
+            COMP_LIBRARY_VERSION: clVersion,
         },
     },
     components: [
