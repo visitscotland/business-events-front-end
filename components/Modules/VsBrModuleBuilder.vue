@@ -54,6 +54,11 @@
             :module="item"
         />
 
+        <VsBrPreviewError
+            v-else-if="item.type === 'ErrorModule'"
+            :messages="item.errorMessages"
+        />
+
         <span
             style="color: red"
             v-else
@@ -76,6 +81,7 @@ import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLink
 import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
 import VsBrMarketoForm from '~/components/Modules/VsBrMarketoForm.vue';
+import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
 
