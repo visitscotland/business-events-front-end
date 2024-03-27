@@ -7,6 +7,7 @@ interface IConfigState {
     labels: any,
     newsletterSignpost: any,
     locale: string,
+    pageMetaData: any,
 }
 
 const useConfigStore = defineStore('configStore', {
@@ -20,6 +21,8 @@ const useConfigStore = defineStore('configStore', {
         newsletterSignpost: {
         },
         locale: '',
+        pageMetaData: {
+        },
     }),
     actions: {
         getLabel(section: string, key: string) {

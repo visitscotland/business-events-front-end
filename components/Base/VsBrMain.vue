@@ -94,6 +94,7 @@ if (page.value) {
     configStore.pageItems = componentModels.pageItems;
     configStore.labels = componentModels.labels;
     configStore.newsletterSignpost = componentModels.newsletterSignpost;
+    configStore.pageMetaData = componentModels.metadata;
 
     document = page.value.getDocument();
 
@@ -126,7 +127,7 @@ if (page.value) {
     useHead({
         htmlAttrs: {
             lang: langString,
-            'data-version': '',
+            'data-version': configStore.pageMetaData.version,
         },
         link: [
             {
