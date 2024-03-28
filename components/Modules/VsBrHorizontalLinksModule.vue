@@ -7,7 +7,10 @@
             {{ module.title }}
         </template>
 
-        <template #vs-module-wrapper-intro>
+        <template
+            #vs-module-wrapper-intro
+            v-if="module.introduction && module.introduction.value"
+        >
             <div
                 v-html="module.introduction.value"
             />

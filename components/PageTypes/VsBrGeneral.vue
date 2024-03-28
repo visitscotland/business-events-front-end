@@ -51,6 +51,12 @@
         class="mt-9 mt-lg-12"
     />
 
+    <VsBrHorizontalLinksModule
+        v-if="otyml"
+        :module="otyml"
+        theme="light"
+    />
+
     <VsBrNewsletterSignpost
         v-if="!documentData.hideNewsletter"
         :data="configStore.newsletterSignpost"
@@ -67,6 +73,7 @@ import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrIntroImage from '~/components/Modules/VsBrIntroImage.vue';
 import VsBrModuleBuilder from '~/components/Modules/VsBrModuleBuilder.vue';
 import VsBrProductSearch from '~/components/Modules/VsBrProductSearch.vue';
+import VsBrHorizontalLinksModule from '~/components/Modules/VsBrHorizontalLinksModule.vue';
 import VsBrNewsletterSignpost from '~/components/Modules/VsBrNewsletterSignpost.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
@@ -82,6 +89,7 @@ let productSearch : any = {
 };
 let heroImage = {
 };
+let otyml : any = null;
 
 const configStore = useConfigStore();
 
@@ -93,6 +101,9 @@ if (page.value) {
     pageItems = configStore.pageItems;
     productSearch = configStore.productSearch;
     heroImage = documentData.heroImage;
+    if (configStore.otyml) {
+        otyml = configStore.otyml;
+    }
 
     if (pageItems && pageItems.length
         && (

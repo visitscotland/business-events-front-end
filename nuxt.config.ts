@@ -35,7 +35,6 @@ export default defineNuxtConfig({
         disableOptionsAPI: true,
     },
     css: [
-        '@/assets/styles/main.scss',
         '@visitscotland/component-library-export/components/style.css',
     ],
     build: {

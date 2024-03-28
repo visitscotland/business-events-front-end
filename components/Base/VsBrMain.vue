@@ -91,6 +91,9 @@ if (page.value) {
 
     configStore.isBusinessEvents = componentModels['business-events'];
     configStore.productSearch = componentModels.psrWidget;
+    if (componentModels.otyml) {
+        configStore.otyml = componentModels.otyml;
+    }
     configStore.pageItems = componentModels.pageItems;
     configStore.labels = componentModels.labels;
     configStore.newsletterSignpost = componentModels.newsletterSignpost;
