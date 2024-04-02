@@ -97,6 +97,7 @@ if (page.value) {
     configStore.pageItems = componentModels.pageItems;
     configStore.labels = componentModels.labels;
     configStore.newsletterSignpost = componentModels.newsletterSignpost;
+    configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
     document = page.value.getDocument();

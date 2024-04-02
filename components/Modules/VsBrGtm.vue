@@ -12,15 +12,21 @@
 </template>
 
 <script lang="ts" setup>
+import useConfigStore from '~/stores/configStore.ts';
+
 /* eslint no-undef: 0 */
 import { inject } from 'vue';
 
 import type { Page } from '@bloomreach/spa-sdk';
 
+const configStore = useConfigStore();
+
 const page: Page | undefined = inject('page');
 
-const id = '';
-const queryString = '';
+const id = configStore.gtm['gtm.container-id'];
+const queryString = configStore.gtm['gtm.is-production'] === 'true'
+    ? ''
+    : configStore.gtm['gtm.preview-query-string'];
 
 if (id) {
     useHead({

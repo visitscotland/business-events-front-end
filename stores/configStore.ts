@@ -7,6 +7,7 @@ interface IConfigState {
     pageItems: any[],
     labels: any,
     newsletterSignpost: any,
+    gtm: any,
     locale: string,
     pageMetaData: any,
 }
