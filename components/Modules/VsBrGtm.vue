@@ -23,10 +23,15 @@ const configStore = useConfigStore();
 
 const page: Page | undefined = inject('page');
 
-const id = configStore.gtm['gtm.container-id'];
-const queryString = configStore.gtm['gtm.is-production'] === 'true'
-    ? ''
-    : configStore.gtm['gtm.preview-query-string'];
+let id = '';
+let queryString = '';
+
+if (configStore.gtm) {
+    id = configStore.gtm['gtm.container-id'];
+    queryString = configStore.gtm['gtm.is-production'] === 'true'
+        ? ''
+        : configStore.gtm['gtm.preview-query-string'];
+}
 
 if (id) {
     useHead({

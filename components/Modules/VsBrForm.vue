@@ -9,19 +9,18 @@
                 lg="7"
                 class="col-xxl-6"
             >
-                <VsMarketoForm
-                    :data-url="module.jsonUrl"
+                <!-- TODO - Is prod flag from data -->
+                <VsForm
+                    :is-marketo="module.config.type === 'marketo'"
+                    :marketo-instance="module.config.marketoInstance ? module.config.marketoInstance : ''"
+                    :munchkin-id="module.config.munchkinId ? module.config.munchkinId : ''"
+                    :submit-url="module.config.submitURL"
+                    :data-url="module.config.jsonUrl"
                     :messaging-url="configStore.getLabel('forms', 'form.messaging-url')"
                     :country-list-url="configStore.getLabel('forms', 'form.country-url')"
                     :recaptcha-key="configStore.getLabel('forms', 'form.recaptcha-key')"
                     language="en"
-                    :marketo-instance="module.isProduction
-                        ? configStore.getLabel('forms', 'form.marketo-instance-prod')
-                        : configStore.getLabel('forms', 'form.marketo-instance-sandbox')"
-                    :munchkin-id="module.isProduction
-                        ? configStore.getLabel('forms', 'form.munchkin-prod')
-                        : configStore.getLabel('forms', 'form.munchkin-sandbox')"
-                    :is-prod="module.isProduction"
+                    :is-prod="module.config.production ? module.config.production : false"
                     :recaptcha-textarea-label="configStore.getLabel('forms', 'form.recaptcha-textarea-label')"
                 >
                     <template #no-js>
@@ -35,7 +34,7 @@
                     <template #submitting>
                         {{ configStore.getLabel('forms', 'form.submitting') }}
                     </template>
-                </VsMarketoForm>
+                </VsForm>
             </VsCol>
         </VsRow>
     </VsContainer>
@@ -48,7 +47,7 @@ import {
     VsContainer,
     VsRow,
     VsCol,
-    VsMarketoForm,
+    VsForm,
 } from '@visitscotland/component-library-export/components';
 
 const configStore = useConfigStore();

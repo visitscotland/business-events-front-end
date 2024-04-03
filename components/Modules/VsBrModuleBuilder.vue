@@ -49,8 +49,8 @@
             :module="item"
         />
 
-        <VsBrMarketoForm
-            v-else-if="item.type === 'MarketoFormModule'"
+        <VsBrForm
+            v-else-if="item.type === 'FormModule'"
             :module="item"
         />
 
@@ -80,7 +80,7 @@ import VsBrMultiImageLinksModule from '~/components/Modules/VsBrMultiImageLinksM
 import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLinksModule.vue';
 import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
-import VsBrMarketoForm from '~/components/Modules/VsBrMarketoForm.vue';
+import VsBrForm from '~/components/Modules/VsBrForm.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
