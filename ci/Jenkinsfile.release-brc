@@ -110,9 +110,9 @@ pipeline {
                         echo; echo "==== PRINTENV $STAGE_NAME ====="
                         printenv
                         echo "====/PRINTENV $STAGE_NAME ====="; echo
-                        export BR_CMS_ORIGIN_LOCATION=https://cms-develop-brc.visitscotland.com
-                        export BR_RESOURCE_API_ENDPOINT=https://develop-brc-businessevents.visitscotland.com/resourceapi
-                        export BR_X_FORWARDED_HOST=develop-brc-businessevents.visitscotland.com
+                        export BR_CMS_ORIGIN_LOCATION=https://cms-release-brc.visitscotland.com
+                        export BR_RESOURCE_API_ENDPOINT=https://release-brc-businessevents.visitscotland.com/resourceapi
+                        export BR_X_FORWARDED_HOST=release-brc-businessevents.visitscotland.com
                         npm run build 
                     '''
                 }
@@ -131,7 +131,7 @@ pipeline {
                     VS_CONTAINER_WD=$PWD
                     VS_CONTAINER_WORKSPACE=$WORKSPACE
                     VS_CONTAINER_VOLUME_PERMISSIONS="rw,z"
-                    VS_CONTAINER_PORTS="-p 3001:3000"
+                    VS_CONTAINER_PORTS="-p 3002:3000"
                     VS_CONTAINER_ENVIRONMENT=""
                     VS_CONTAINER_ENVIRONMENT_FILE="--env-file [FILE_NAME]"
                     VS_CONTAINER_INIT_EXEC="cat"
