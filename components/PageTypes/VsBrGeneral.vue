@@ -42,6 +42,7 @@
     />
 
     <VsBrModuleBuilder
+        v-if="pageItems"
         :modules="pageItems"
     />
 
@@ -58,7 +59,7 @@
     />
 
     <VsBrNewsletterSignpost
-        v-if="!documentData.hideNewsletter"
+        v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
         :data="configStore.newsletterSignpost"
     />
 </template>
