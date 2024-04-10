@@ -109,6 +109,7 @@ const configuration = {
     } : {
     }),
     origin: runtimeConfig.public.BR_CMS_ORIGIN_LOCATION,
+    debug: runtimeConfig.public.BR_NUXT_APP_DEBUG === 'true',
 };
 
 const mapping = {
