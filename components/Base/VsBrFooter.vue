@@ -64,7 +64,7 @@
                 </template>
 
                 <VsFooterSocialItem
-                    v-for="(link, key, index) in configStore.labels['social-links']"
+                    v-for="(link, key, index) in configStore.labels['navigation.social-media']"
                     :key="index"
                     :href="link"
                     :icon="key"
