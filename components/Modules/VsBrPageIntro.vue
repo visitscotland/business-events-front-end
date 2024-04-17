@@ -154,9 +154,11 @@ if (page) {
 
         if (content.value.heroVideo) {
             const video = page.getContent(content.value.heroVideo.videoLink);
-            heroVideo = video.model.data;
+            if (video) {
+                heroVideo = video.model.data;
 
-            youtubeId = extractYoutubeId(heroVideo.url);
+                youtubeId = extractYoutubeId(heroVideo.url);
+            }
         }
     }
 }
