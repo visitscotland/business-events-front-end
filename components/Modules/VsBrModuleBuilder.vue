@@ -54,10 +54,14 @@
             :module="item"
         />
 
-        <VsBrPreviewError
+        <div
             v-else-if="item.type === 'ErrorModule'"
-            :messages="item.errorMessages"
-        />
+        >
+            <VsBrPreviewError
+                v-if="page.isPreview()"
+                :messages="item.errorMessages"
+            />
+        </div>
 
         <span
             style="color: red"
