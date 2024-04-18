@@ -24,7 +24,7 @@
     "@bloomreach/spa-sdk": "^20.0.0",
     "@bloomreach/vue3-sdk": "^20.0.0",
     "@pinia/nuxt": "^0.5.1",
-    "@visitscotland/component-library-export": "^0.0.23",
+    "@visitscotland/component-library-export": "^0.0.24",
     "axios": "^1.3.5",
     "commitizen": "^4.3.0",
     "cz-conventional-changelog": "^3.3.0",
