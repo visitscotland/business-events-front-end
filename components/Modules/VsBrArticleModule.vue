@@ -13,7 +13,10 @@
             />
         </template>
 
-        <template #vs-article-intro>
+        <template
+            #vs-article-intro
+            v-if="module.introduction"
+        >
             <div v-html="module.introduction.value" />
         </template>
 
@@ -32,7 +35,10 @@
                 />
             </template>
 
-            <div v-html="section.copy.value" />
+            <div
+                v-if="section.copy"
+                v-html="section.copy.value"
+            />
         </VsArticleSection>
     </VsArticle>
 </template>
