@@ -62,13 +62,6 @@
                 :messages="item.errorMessages"
             />
         </div>
-
-        <span
-            style="color: red"
-            v-else
-        >
-            {{ item.type }}
-        </span>
     </div>
 </template>
 
