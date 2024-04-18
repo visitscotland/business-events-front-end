@@ -40,7 +40,7 @@
 
                 <template
                     #vs-single-image-content
-                    v-if="module.introduction"
+                    v-if="module.innerIntroduction"
                 >
                     <div v-html="module.innerIntroduction.value" />
                 </template>
