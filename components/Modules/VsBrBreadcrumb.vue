@@ -8,11 +8,11 @@
         />
 
         <VsBreadcrumbItem
-            v-for="(item, index) in filteredBreadcrumb"
+            v-for="(item, index) in definedBreadcrumb"
             :key="index"
             :href="item.link.href"
             :text="item.title"
-            :active="index === filteredBreadcrumb.length - 1"
+            :active="index === definedBreadcrumb.length - 1"
         />
     </VsBreadcrumb>
 </template>
@@ -40,8 +40,8 @@ const rootUrl = window ? window.location.origin : '';
 
 const { breadcrumb, isHome } = toRefs(props);
 
-const filteredBreadcrumb = breadcrumb.value
-    ? breadcrumb.value.slice(1)
+const definedBreadcrumb = breadcrumb.value
+    ? breadcrumb.value
     : [];
 
 let itemList : any[] = [
@@ -55,13 +55,13 @@ let itemList : any[] = [
     },
 ];
 
-for (let x = 0; x < filteredBreadcrumb.length; x++) {
+for (let x = 0; x < definedBreadcrumb.length; x++) {
     itemList = itemList.concat({
         '@type': 'ListItem',
         position: x + 2,
         item: {
-            '@id': `${ rootUrl }${ filteredBreadcrumb[x].link.href }`,
-            name: filteredBreadcrumb[x].title,
+            '@id': `${ rootUrl }${ definedBreadcrumb[x].link.href }`,
+            name: definedBreadcrumb[x].title,
         },
     });
 }
