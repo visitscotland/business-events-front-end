@@ -6,19 +6,7 @@
                 :active-site="configStore.isBusinessEvents
                     ? 'https://businessevents.visitscotland.com/'
                     : 'https://www.visitscotland.com/'"
-            >
-                <template #third-menu-item>
-                    <VsGlobalMenuLanguage>
-                        <VsGlobalMenuLanguageItem
-                            v-for="link in languageLinks"
-                            :key="link.language"
-                            :language-link="link.url"
-                            :language-name="link.displayName"
-                            :language="link.locale"
-                        />
-                    </VsGlobalMenuLanguage>
-                </template>
-            </VsGlobalMenu>
+            />
 
             <!-- TODO
                 All labels
@@ -157,8 +145,6 @@ import useConfigStore from '~/stores/configStore.ts';
 
 import {
     VsGlobalMenu,
-    VsGlobalMenuLanguage,
-    VsGlobalMenuLanguageItem,
     VsMeganav,
     VsMegaNavDropdownContainer,
     VsMegaNavList,
@@ -178,8 +164,6 @@ let menu = {
 let menuData : any = {
 };
 let menuItems : any[] = [];
-let languageLinks : any = {
-};
 
 const configStore = useConfigStore();
 
@@ -187,7 +171,5 @@ if (page.value) {
     menu = component.value.getModels().menu;
     menuData = page.value.getContent(menu.$ref);
     menuItems = menuData.items;
-
-    languageLinks = component.value.getModels().localizedURLs;
 }
 </script>
