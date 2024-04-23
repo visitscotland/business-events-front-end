@@ -67,7 +67,7 @@
                         />
                     </template>
                     <template
-                        v-if="!imageData.source"
+                        v-if="!imageData.source && imageData.credit"
                     >
                         &copy; {{ imageData.credit }}
                     </template>
