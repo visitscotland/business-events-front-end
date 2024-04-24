@@ -36,7 +36,8 @@
     "youtube-vue3": "^0.1.15"
   },
   "overrides": {
-    "vue": "latest"
+    "vue": "latest",
+    "minimist": "latest"
   },
   "config": {
     "commitizen": {
