@@ -27,109 +27,28 @@
                         v-for="(menuItem, index) in menuItems"
                         :key="index"
                     >
-                        <VsMegaNavDropdownContainer
+                        <VsMegaNavStaticLink
                             :href="menuItem.getUrl() ? menuItem.getUrl() : menuItem.model.name"
-                            :cta-text="menuItem.model.cta"
-                            v-if="menuItem.children.length"
-                            :has-dropdown="true"
-                        >
-                            <template #button-content>
-                                {{ menuItem.model.title }}
-                            </template>
-
-                            <template #dropdown-content>
-                                <VsMegaNavList
-                                    v-for="(childItem, childIndex) in menuItem.getChildren()"
-                                    :key="childIndex"
-                                    :list-heading="childItem.model.title"
-                                >
-                                    <template #nav-list-items>
-                                        <VsMegaNavListItem
-                                            v-for="(
-                                                grandChildItem,
-                                                grandChildIndex
-                                            ) in childItem.getChildren()"
-                                            :key="grandChildIndex"
-                                            :href="grandChildItem.getUrl()"
-                                        >
-                                            {{ grandChildItem.model.title }}
-                                        </VsMegaNavListItem>
-                                    </template>
-
-                                    <template
-                                        #nav-heading-cta-link
-                                        v-if="childItem.cta"
-                                    >
-                                        <VsMegaNavListItem
-                                            :href="childItem.getUrl()"
-                                            subheading-link
-                                        >
-                                            {{ childItem.cta }}
-                                        </VsMegaNavListItem>
-                                    </template>
-                                </VsMegaNavList>
-                            </template>
-                        </VsMegaNavDropdownContainer>
-                        <VsLink
-                            v-if="!menuItem.children.length"
-                            :href="menuItem.getUrl() ? menuItem.getUrl() : menuItem.model.name"
-                            class="mx-2"
                         >
                             {{ menuItem.model.title }}
-                        </VsLink>
+                        </VsMegaNavStaticLink>
                     </template>
                 </template>
 
                 <template #mega-nav-accordion-items>
                     <VsAccordion>
-                        <!-- TODO
-                            analytics event
-                            cmsCached?
-                        -->
-                        <VsMegaNavAccordionItem
+                        <template
                             v-for="(menuItem, index) in menuItems"
                             :key="index"
-                            :title="menuItem.model.title"
-                            level="1"
-                            :control-id="`${index}`"
-                            :cta-link="menuItem.getUrl()"
-                            :cta-text="menuItem.model.cta"
                         >
-                            <VsMegaNavAccordionItem
-                                v-for="(childItem, childIndex) in menuItem.getChildren()"
-                                :key="childIndex"
-                                :title="childItem.model.title"
-                                level="2"
-                                :control-id="`${index}-${childIndex}`"
+                            <VsMegaNavStaticLink
+                                class="vs-mega-nav-mobile"
+                                :href="menuItem.getUrl() ? menuItem.getUrl() : menuItem.model.name"
+                                :is-full-width="true"
                             >
-                                <VsMegaNavList>
-                                    <template #nav-list-items>
-                                        <VsMegaNavListItem
-                                            v-for="(
-                                                grandChildItem,
-                                                grandChildIndex
-                                            ) in childItem.getChildren()"
-                                            :key="grandChildIndex"
-                                            :href="grandChildItem.getUrl()"
-                                        >
-                                            {{ grandChildItem.model.title }}
-                                        </VsMegaNavListItem>
-                                    </template>
-
-                                    <template
-                                        #nav-heading-cta-link
-                                        v-if="childItem.cta"
-                                    >
-                                        <VsMegaNavListItem
-                                            :href="childItem.getUrl()"
-                                            subheading-link
-                                        >
-                                            {{ childItem.cta }}
-                                        </VsMegaNavListItem>
-                                    </template>
-                                </VsMegaNavList>
-                            </VsMegaNavAccordionItem>
-                        </VsMegaNavAccordionItem>
+                                {{ menuItem.model.title }}
+                            </VsMegaNavStaticLink>
+                        </template>
                     </VsAccordion>
                 </template>
             </VsMeganav>
@@ -147,12 +66,8 @@ import useConfigStore from '~/stores/configStore.ts';
 import {
     VsGlobalMenu,
     VsMeganav,
-    VsMegaNavDropdownContainer,
-    VsMegaNavList,
-    VsMegaNavListItem,
+    VsMegaNavStaticLink,
     VsAccordion,
-    VsMegaNavAccordionItem,
-    VsLink,
 } from '@visitscotland/component-library-export/components';
 
 const props = defineProps<{ component: Component, page: Page }>();
