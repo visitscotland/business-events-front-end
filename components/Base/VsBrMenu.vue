@@ -20,6 +20,7 @@
                 search-clear-button-text=""
                 search-close-button-text=""
                 logo-alt-text=""
+                :no-search="true"
             >
                 <template #mega-nav-top-menu-items>
                     <template
