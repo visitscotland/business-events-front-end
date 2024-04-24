@@ -18,7 +18,7 @@
     "@vue/eslint-config-airbnb": "^7.0.0",
     "eslint": "^8.56.0",
     "husky": "^8.0.3",
-    "nuxt": "^3.10.2"
+    "nuxt": "^3.11.2"
   },
   "dependencies": {
     "@bloomreach/spa-sdk": "^20.0.0",
