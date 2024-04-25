@@ -1,5 +1,6 @@
 <template>
     <div
+        class="vs-main-container"
         :class="{ 'has-edit-button': page.isPreview() }"
     >
         <BrManageContentButton
@@ -162,3 +163,17 @@ if (page.value) {
 
 provide('page', page.value);
 </script>
+
+<style lang="scss">
+    .vs-main-container {
+        min-height: calc(100vh - 27rem);
+
+        @media (min-width: 768px) {
+            min-height: calc(100vh - 37rem);
+        }
+
+        @media (min-width: 992px) {
+            min-height: calc(100vh - 28rem);
+        }
+    }
+</style>
