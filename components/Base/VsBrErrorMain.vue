@@ -3,10 +3,6 @@
         class="vs-main-container"
         :class="{ 'has-edit-button': page.isPreview() }"
     >
-        <BrManageContentButton
-            :content="document"
-        />
-
         <VsBrGtm />
 
         <VsBrPageViewEvent
@@ -14,22 +10,9 @@
             :page-type="pageName"
         />
 
-        <VsBrGeneral
-            v-if="pageName === 'general-page'"
-            :page="page"
-            :component="component"
-        />
-
-        <VsBr404
-            v-else-if="pageName === 'pagenotfound'"
-            :page="page"
-            :component="component"
-        />
-
-        <VsBr500
-            v-else-if="pageName === 'servererror'"
-            :page="page"
-            :component="component"
+        <VsBrPageIntro
+            :content="errorData"
+            :light-background="true"
         />
     </div>
 </template>
@@ -39,14 +22,10 @@
 
 import { toRefs, provide } from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
-import { BrManageContentButton } from '@bloomreach/vue3-sdk';
 
 import useConfigStore from '~/stores/configStore.ts';
 
-import VsBrGeneral from '~/components/PageTypes/VsBrGeneral.vue';
-import VsBr404 from '~/components/PageTypes/VsBr404.vue';
-import VsBr500 from '~/components/PageTypes/VsBr500.vue';
-
+import VsBrPageIntro from '~/components/Modules/VsBrPageIntro.vue';
 import VsBrGtm from '~/components/Modules/VsBrGtm.vue';
 
 import VsBrPageViewEvent from '~/components/Utils/VsBrPageViewEvent.vue';
@@ -62,6 +41,11 @@ let pageName : string = '';
 let document : any = {
 };
 
+const errorData = {
+    introduction: {
+    },
+};
+
 const configStore = useConfigStore();
 
 if (page.value) {
@@ -69,29 +53,18 @@ if (page.value) {
     pageName = pageComponent.model.name;
 
     const event = useRequestEvent();
-
-    if (pageName === 'pagenotfound') {
-        setResponseStatus(event, 404, 'Page Not Found');
-    }
-
-    if (pageName === 'servererror') {
-        setResponseStatus(event, 500, 'Something Went Wrong');
-    }
+    setResponseStatus(event, 500, 'Something Went Wrong');
 
     const componentModels = component.value.getModels();
 
     configStore.isBusinessEvents = componentModels['business-events'];
-    configStore.productSearch = componentModels.psrWidget;
-    if (componentModels.otyml) {
-        configStore.otyml = componentModels.otyml;
-    }
-    configStore.pageItems = componentModels.pageItems;
     configStore.labels = componentModels.labels;
-    configStore.newsletterSignpost = componentModels.newsletterSignpost;
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
     document = page.value.getDocument();
+
+    errorData.introduction.value = `<p>${configStore.getLabel('essentials.global', 'third-party-error')}</p>`;
 
     configStore.locale = document.model.data.localeString;
 
