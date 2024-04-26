@@ -4,7 +4,7 @@ const themeCalculator = (
     colourSchemeParam?: string[],
 ) => {
     let colourScheme = [
-        'dark',
+        'grey',
         'light',
         'light',
     ];
