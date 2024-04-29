@@ -110,7 +110,6 @@ if (page.value) {
         && (
             pageItems[0].type === 'ListLinksModule'
             || pageItems[0].type === 'MultiImageLinksModule'
-            || pageItems[0].type === 'SingleImageLinksModule'
         )
     ) {
         firstModuleIsLink = true;
