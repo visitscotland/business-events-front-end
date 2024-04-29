@@ -10,7 +10,6 @@
             >
                 <VsFooterAccordionItem
                     :title="menuItem.model.title"
-                    variant="dark"
                     :control-id="`footer_accordion_item${index}`"
                 >
                     <template #icon-open>
