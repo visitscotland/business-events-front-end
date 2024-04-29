@@ -1,5 +1,5 @@
 <template>
-    <VsModuleWrapper theme="grey">
+    <VsModuleWrapper theme="neutral">
         <template #vs-module-wrapper-heading>
             {{ data.title }}
         </template>

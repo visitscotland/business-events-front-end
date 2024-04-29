@@ -21,7 +21,6 @@
         >
             <VsMegalinkSingleImage
                 :title="module.innerTitle"
-                :theme="theme"
                 :button-link="module.cta && module.cta.link ? module.cta.link : ''"
                 :alternate="module.alignment === 'left' ? true : false"
             >
@@ -58,7 +57,6 @@
                         :key="index"
                     >
                         <VsLinkListItem
-                            :variant="theme === 'light' ? 'primary' : 'on-dark'"
                             :type="link.type.toLowerCase()"
                             :href="link.youtubeId
                                 ? '#'

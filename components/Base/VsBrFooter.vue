@@ -10,13 +10,12 @@
             >
                 <VsFooterAccordionItem
                     :title="menuItem.model.title"
-                    variant="dark"
                     :control-id="`footer_accordion_item${index}`"
                 >
                     <template #icon-open>
                         <VsIcon
                             name="chevron"
-                            variant="light"
+                            variant="inverse"
                             size="xs"
                         />
                     </template>
@@ -25,7 +24,7 @@
                         <VsIcon
                             name="chevron"
                             orientation="down"
-                            variant="light"
+                            variant="inverse"
                             size="xs"
                         />
                     </template>
