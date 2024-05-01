@@ -36,7 +36,7 @@
     "youtube-vue3": "^0.1.15"
   },
   "overrides": {
-    "vue": "latest",
+    "vue": "3.4.21",
     "minimist": "latest"
   },
   "config": {
