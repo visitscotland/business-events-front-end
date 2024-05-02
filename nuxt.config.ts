@@ -22,6 +22,11 @@ export default defineNuxtConfig({
             COMP_LIBRARY_VERSION: clVersion,
         },
     },
+    vite: {
+        resolve: {
+            preserveSymlinks: true,
+        },
+    },
     components: [
         {
             path: '~/components',
