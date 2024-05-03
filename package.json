@@ -21,7 +21,7 @@
     "nuxt": "^3.11.2"
   },
   "dependencies": {
-    "@bloomreach/spa-sdk": "^22.0.5",
+    "@bloomreach/spa-sdk": "^23.0.0",
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@pinia/nuxt": "^0.5.1",
     "@visitscotland/component-library-export": "^0.0.32",
