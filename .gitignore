@@ -8,3 +8,9 @@ node_modules
 dist
 .DS_Store
 .clversion
+
+# amplify
+node_modules
+.amplify
+amplify_outputs*
+amplifyconfiguration*
