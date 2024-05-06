@@ -18,14 +18,14 @@
     "@nuxt/eslint-config": "^0.2.0",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@vue/eslint-config-airbnb": "^7.0.0",
-    "aws-cdk": "^2.139.1",
-    "aws-cdk-lib": "^2.139.1",
+    "aws-cdk": "^2.140.0",
+    "aws-cdk-lib": "^2.140.0",
     "constructs": "^10.3.0",
     "esbuild": "^0.20.2",
     "eslint": "^8.56.0",
     "husky": "^8.0.3",
     "nuxt": "^3.11.2",
-    "tsx": "^4.8.2",
+    "tsx": "^4.9.3",
     "typescript": "^5.4.5"
   },
   "dependencies": {

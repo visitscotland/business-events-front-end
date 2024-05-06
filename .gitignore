@@ -8,6 +8,7 @@ node_modules
 dist
 .DS_Store
 .clversion
+.idea
 
 # amplify
 node_modules
