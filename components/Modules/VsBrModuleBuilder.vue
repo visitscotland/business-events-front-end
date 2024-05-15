@@ -14,53 +14,85 @@
         <template
             v-if="item.type === 'ListLinksModule'"
         >
-            <VsBrListLinksModule
-                v-if="hippoContent[index].model.data.layout === 'List'"
-                :module="item"
-                :theme="item.themeValue"
-            />
+            <NuxtLazyHydrate
+                :when-visible="{ rootMargin: '50px' }"
+            >
+                <VsBrListLinksModule
+                    v-if="hippoContent[index].model.data.layout === 'List'"
+                    :module="item"
+                    :theme="item.themeValue"
+                />
+            </NuxtLazyHydrate>
 
-            <VsBrHorizontalLinksModule
-                v-if="hippoContent[index].model.data.layout === 'Horizontal Links'"
-                :module="item"
-                :theme="item.themeValue"
-            />
+            <NuxtLazyHydrate
+                :when-visible="{ rootMargin: '50px' }"
+            >
+                <VsBrHorizontalLinksModule
+                    v-if="hippoContent[index].model.data.layout === 'Horizontal Links'"
+                    :module="item"
+                    :theme="item.themeValue"
+                />
+            </NuxtLazyHydrate>
         </template>
 
-        <VsBrMultiImageLinksModule
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'MultiImageLinksModule'"
-            :module="item"
-            :theme="item.themeValue"
-        />
+        >
+            <VsBrMultiImageLinksModule
+                :module="item"
+                :theme="item.themeValue"
+            />
+        </NuxtLazyHydrate>
 
-        <VsBrSingleImageLinksModule
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'SingleImageLinksModule'"
-            :module="item"
-            :theme="item.themeValue"
-        />
+        >
+            <VsBrSingleImageLinksModule
+                :module="item"
+                :theme="item.themeValue"
+            />
+        </NuxtLazyHydrate>
 
-        <VsBrArticleModule
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'ArticleModule'"
-            :module="item"
-        />
+        >
+            <VsBrArticleModule
+                :module="item"
+            />
+        </NuxtLazyHydrate>
 
-        <VsBrLongCopyModule
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'LongCopyModule'"
-            :module="item"
-        />
+        >
+            <VsBrLongCopyModule
+                :module="item"
+            />
+        </NuxtLazyHydrate>
 
-        <VsBrForm
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
             v-else-if="item.type === 'FormModule'"
-            :module="item"
-        />
+        >
+            <VsBrForm
+                :module="item"
+            />
+        </NuxtLazyHydrate>
 
         <div
             v-else-if="item.type === 'ErrorModule'"
         >
-            <VsBrPreviewError
-                v-if="page.isPreview()"
-                :messages="item.errorMessages"
-            />
+            <NuxtLazyHydrate
+                :when-visible="{ rootMargin: '50px' }"
+            >
+                <VsBrPreviewError
+                    v-if="page.isPreview()"
+                    :messages="item.errorMessages"
+                />
+            </NuxtLazyHydrate>
         </div>
     </div>
 </template>

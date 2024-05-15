@@ -9,7 +9,6 @@
                 lg="7"
                 class="col-xxl-6"
             >
-                <!-- TODO - Is prod flag from data -->
                 <VsForm
                     :is-marketo="module.config.type === 'marketo'"
                     :marketo-instance="module.config.marketoInstance ? module.config.marketoInstance : ''"

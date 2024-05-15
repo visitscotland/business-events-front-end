@@ -17,7 +17,11 @@
                     >
                         <br-component component="menu" />
                         <br-component component="main" />
-                        <br-component component="footer" />
+                        <NuxtLazyHydrate
+                            :when-visible="{ rootMargin: '50px' }"
+                        >
+                            <br-component component="footer" />
+                        </NuxtLazyHydrate>
                     </div>
                 </template>
             </br-page>
