@@ -26,6 +26,9 @@ export default defineNuxtConfig({
         resolve: {
             preserveSymlinks: true,
         },
+        build: {
+            cssCodeSplit: true,
+        },
     },
     components: [
         {
@@ -36,12 +39,14 @@ export default defineNuxtConfig({
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
+        'nuxt-lazy-hydrate',
     ],
     'nuxt-jsonld': {
         disableOptionsAPI: true,
     },
     css: [
         '@visitscotland/component-library-export/components/style.css',
+        '@visitscotland/component-library-export/components/fonts.css',
     ],
     build: {
         transpile: [
