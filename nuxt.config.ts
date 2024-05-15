@@ -46,9 +46,10 @@ export default defineNuxtConfig({
     build: {
         transpile: [
             'bootstrap-vue-next',
+            '@visitscotland/component-library',
         ],
     },
     experimental: {
-        inlineSSRStyles: true,
+        inlineSSRStyles: false,
     },
 });
