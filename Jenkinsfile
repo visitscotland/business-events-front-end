@@ -110,9 +110,6 @@ pipeline {
                         echo; echo "==== PRINTENV $STAGE_NAME ====="
                         printenv
                         echo "====/PRINTENV $STAGE_NAME ====="; echo
-                        export BR_CMS_ORIGIN_LOCATION=https://feature.visitscotland.com
-                        export BR_RESOURCE_API_ENDPOINT=https://feature-businessevents.visitscotland.com/resourceapi
-                        export BR_X_FORWARDED_HOST=feature-businessevents.visitscotland.com
                         npm run build 
                     '''
                 }
