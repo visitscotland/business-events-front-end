@@ -36,6 +36,9 @@ export default defineNuxtConfig({
             pathPrefix: false,
         },
     ],
+    buildModules: [
+        '@nuxtjs/dotenv',
+    ],
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
