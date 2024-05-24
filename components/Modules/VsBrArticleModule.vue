@@ -1,5 +1,4 @@
 <template>
-    <!-- TODO - Preview warning, video -->
     <VsArticle
         :title="module.title"
         :anchor-link="module.anchor ? formatLink(module.anchor) : ''"
@@ -61,12 +60,16 @@ const module: any = props.module;
 
 const articleSections: any[] = [];
 
+let sidebarCount = -1;
+
 for (let x = 0; x < module.sections.length; x++) {
     const nextSection = module.sections[x];
     let alignment = '';
 
-    if (nextSection.quote || nextSection.image) {
-        if (x % 2 !== 0) {
+    if (nextSection.quote || nextSection.image || nextSection.video) {
+        sidebarCount += 1;
+
+        if (sidebarCount % 2 !== 0) {
             alignment = 'left';
         } else {
             alignment = 'right';
