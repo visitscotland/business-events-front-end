@@ -48,7 +48,7 @@
 </template>
 
 <script lang="ts" setup>
-import { VsArticleSidebar } from '@visitscotland/component-library-export/components';
+import { VsArticleSidebar } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';

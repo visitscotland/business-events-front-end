@@ -46,7 +46,7 @@ import type { Page } from '@bloomreach/spa-sdk';
 
 import {
     VsModal, VsVideo, VsRow, VsCol, VsRichTextWrapper,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 

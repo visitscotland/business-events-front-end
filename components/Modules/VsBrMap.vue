@@ -30,5 +30,5 @@
  * their dependent components to be de-duped.
  */
 
-import { VsMap } from '@visitscotland/component-library-export/maps';
+import { VsMap } from '@visitscotland/component-library/maps';
 </script>

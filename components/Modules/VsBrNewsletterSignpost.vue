@@ -59,7 +59,7 @@ import {
     VsRichTextWrapper,
     VsButton,
     VsImg,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 const props = defineProps<{ data: any, }>();
 

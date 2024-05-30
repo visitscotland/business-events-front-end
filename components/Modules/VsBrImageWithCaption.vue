@@ -47,7 +47,7 @@
                     #toggle-icon
                 >
                     <VsIcon
-                        :name="imageData.source + '-filled'"
+                        :name="`${imageData.source}-filled`"
                         size="md"
                     />
                 </template>
@@ -90,7 +90,7 @@ import {
     VsCaption,
     VsSocialCreditLink,
     VsIcon,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 

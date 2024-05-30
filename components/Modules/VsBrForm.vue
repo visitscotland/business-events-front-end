@@ -47,7 +47,7 @@ import {
     VsRow,
     VsCol,
     VsForm,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 const configStore = useConfigStore();
 

@@ -25,7 +25,7 @@ import {
     VsRow,
     VsCol,
     VsRichTextWrapper,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 const props = defineProps<{ module: Object }>();
 const module: any = props.module;

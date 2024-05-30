@@ -85,7 +85,7 @@
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue';
 
-import { VsPageIntro, VsBlogDetails } from '@visitscotland/component-library-export/components';
+import { VsPageIntro, VsBlogDetails } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 import themeCalculator from '~/composables/themeCalculator.ts';

@@ -48,7 +48,7 @@
 import {
     VsArticle,
     VsArticleSection,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 import formatLink from '~/composables/formatLink.ts';
 

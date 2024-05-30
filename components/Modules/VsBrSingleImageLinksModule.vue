@@ -91,7 +91,7 @@ import {
     VsMegalinkSingleImage,
     VsCol,
     VsLinkListItem,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 

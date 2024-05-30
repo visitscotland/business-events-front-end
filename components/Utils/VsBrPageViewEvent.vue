@@ -5,7 +5,7 @@
 </template>
 
 <script lang="ts" setup>
-import { VsTagManagerWrapper } from '@visitscotland/component-library-export/components';
+import { VsTagManagerWrapper } from '@visitscotland/component-library/components';
 
 const props = defineProps<{
     data: any,
