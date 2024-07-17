@@ -1,5 +1,6 @@
 <template>
-    <VsMap />
+    <div />
+    <!-- <VsMap /> -->
 </template>
 
 <script lang="ts" setup>
@@ -30,5 +31,5 @@
  * their dependent components to be de-duped.
  */
 
-import { VsMap } from '@visitscotland/component-library/maps';
+// import { VsMap } from '@visitscotland/component-library/maps';
 </script>

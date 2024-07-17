@@ -1,5 +1,4 @@
 <template>
-    <!-- TODO - error-message, itinerary, themes -->
     <VsModuleWrapper
         :theme="theme"
     >
