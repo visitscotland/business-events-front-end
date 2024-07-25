@@ -73,9 +73,7 @@
         <template
             #vs-intro-content
         >
-            <div
-                v-html="content.introduction.value"
-            />
+            <VsBrRichText :input-content="content.introduction.value" />
         </template>
 
         <!-- TODO - Itinerary Summary -->
@@ -94,6 +92,7 @@ import extractYoutubeId from '~/composables/extractYoutubeId.ts';
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
 import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
 import VsBrVideoModal from '~/components/Modules/VsBrVideoModal.vue';
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 const configStore = useConfigStore();
 
