@@ -28,7 +28,7 @@
                         :key="index"
                     >
                         <VsMegaNavStaticLink
-                            :href="menuItem.getUrl() ? menuItem.getUrl() : menuItem.model.name"
+                            :href="`/${menuItem.getUrl() ? menuItem.getUrl() : menuItem.model.name}`"
                         >
                             {{ menuItem.model.title }}
                         </VsMegaNavStaticLink>
