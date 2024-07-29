@@ -21,7 +21,7 @@
         >
             <VsMegalinkSingleImage
                 :title="module.innerTitle"
-                :button-link="module.cta && module.cta.link ? module.cta.link : ''"
+                :button-link="module.cta && module.cta.link ? formatLink(module.cta.link) : ''"
                 :alternate="module.alignment === 'left' ? true : false"
             >
                 <template
