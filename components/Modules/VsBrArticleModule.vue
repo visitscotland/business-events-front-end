@@ -16,7 +16,7 @@
             #vs-article-intro
             v-if="module.introduction"
         >
-            <div v-html="module.introduction.value" />
+            <VsBrRichText :input-content="module.introduction.value" />
         </template>
 
         <VsArticleSection
@@ -34,10 +34,11 @@
                 />
             </template>
 
-            <div
+            <template
                 v-if="section.copy"
-                v-html="section.copy.value"
-            />
+            >
+                <VsBrRichText :input-content="section.copy.value" />
+            </template>
         </VsArticleSection>
     </VsArticle>
 </template>
@@ -54,6 +55,8 @@ import formatLink from '~/composables/formatLink.ts';
 
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
 import VsBrArticleSidebar from '~/components/Modules/VsBrArticleSidebar.vue';
+
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 const props = defineProps<{ module: Object }>();
 const module: any = props.module;

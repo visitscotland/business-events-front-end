@@ -12,9 +12,7 @@
             v-if="module.introduction"
             #vs-megalinks-intro
         >
-            <div
-                v-html="module.introduction.value"
-            />
+            <VsBrRichText :input-content="module.introduction.value" />
         </template>
 
         <VsCol
@@ -163,6 +161,8 @@ import {
     VsContainer,
     VsRow,
 } from '@visitscotland/component-library/components';
+
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 
