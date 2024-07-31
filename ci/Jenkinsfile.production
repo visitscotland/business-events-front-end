@@ -117,7 +117,28 @@ pipeline {
                         export BR_CMS_ORIGIN_LOCATION=https://cms.visitscotland.com
                         export BR_RESOURCE_API_ENDPOINT=https://beta-businessevents.visitscotland.com/resourceapi
                         export BR_X_FORWARDED_HOST=beta-businessevents.visitscotland.com
-                        npm run build 
+                        npm run build
+			            VS_BUILD_RESULT=$?
+			            if [ $VS_BUILD_RESULT = 0 ]; then
+				            VS_DSSR_PACKAGE_NAME=vs-dssr-package.$GIT_COMMIT.tar.gz
+				            echo "NPM build successful, creating $VS_DSSR_PACKAGE_NAME in target folder"
+				            if [ ! -d "$WORKSPACE/target" ]; then
+					            echo " - creating target folder"
+					            mkdir -p $WORKSPACE/target
+				            fi
+				            if [ -d "$WORKSPACE/target" ]&&[ -d $WORKSPACE/.output/ ]&&[ ! -z "$VS_DSSR_PACKAGE_NAME" ]; then
+					            cd $WORKSPACE/.output/
+					            echo " - creating tarball"
+					            tar -zcf $WORKSPACE/target/$VS_DSSR_PACKAGE_NAME *
+					            cd $WORKSPACE
+					            VS_DSSR_PACKAGE=$(find $WORKSPACE -name "$VS_DSSR_PACKAGE_NAME")
+				            else
+					            echo " - either target folder or .output folder does not exist, exiting"
+				            fi
+			            fi
+			            if [ ! -z "$VS_DSSR_PACKAGE" ]; then
+				            echo "VS DSSR Package created at $VS_DSSR_PACKAGE"
+			            fi
                     '''
                 }
             }
