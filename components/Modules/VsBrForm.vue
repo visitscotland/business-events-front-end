@@ -33,6 +33,43 @@
                     <template #submitting>
                         {{ configStore.getLabel('forms', 'form.submitting') }}
                     </template>
+
+                    <template #hidden-fields>
+                        <input
+                            v-if="module.config.activityCode"
+                            type="hidden"
+                            name="activity_code"
+                            :value="module.config.activityCode"
+                        >
+
+                        <input
+                            v-if="module.config.activityDescription"
+                            type="hidden"
+                            name="activity_description"
+                            :value="module.config.activityDescription"
+                        >
+
+                        <input
+                            v-if="module.config.activitySource"
+                            type="hidden"
+                            name="activity_source"
+                            :value="module.config.activitySource"
+                        >
+
+                        <input
+                            v-if="module.config.consents"
+                            type="hidden"
+                            name="consents"
+                            :value="module.config.consents"
+                        >
+
+                        <input
+                            v-if="module.config.legalBasis"
+                            type="hidden"
+                            name="legalBasis"
+                            :value="module.config.legalBasis"
+                        >
+                    </template>
                 </VsForm>
             </VsCol>
         </VsRow>
