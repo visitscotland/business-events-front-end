@@ -25,13 +25,13 @@ export default defineNuxtConfig({
     vite: {
         resolve: {
             preserveSymlinks: true,
-            alias: {
-                vue: 'vue/dist/vue.esm-bundler',
-            },
         },
         build: {
             cssCodeSplit: true,
         },
+    },
+    vue: {
+        runtimeCompiler: true,
     },
     components: [
         {
