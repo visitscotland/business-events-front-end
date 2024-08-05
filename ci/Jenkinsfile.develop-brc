@@ -26,22 +26,23 @@ pipeline {
             }
             steps {
                 sh '''
+                    set +x
                     echo; echo "running stage $STAGE_NAME on $HOSTNAME"
-                    echo; echo "==== PRINTENV $STAGE_NAME 1 ====="
-                    printenv
-                    echo "====/PRINTENV $STAGE_NAME 1 ====="; echo
-                    ls -alh
+                    echo; echo "==== PRINTENV $STAGE_NAME 1 =====" > printenv.$STAGE_NAME
+                    printenv >> printenv.$STAGE_NAME
+                    echo "====/PRINTENV $STAGE_NAME 1 =====" >> printenv.$STAGE_NAME ; echo
+                    #ls -alh
                     export HOME=$WORKSPACE
                     export npm_config_cache=$HOME
-                    echo; echo "==== PRINTENV $STAGE_NAME 2 ====="
-                    printenv
-                    echo "====/PRINTENV $STAGE_NAME 2 ====="; echo
+                    echo; echo "==== PRINTENV $STAGE_NAME 2 =====" > printenv2.$STAGE_NAME
+                    printenv >> printenv2.$STAGE_NAME
+                    echo "====/PRINTENV $STAGE_NAME 2 =====" >> printenv2.$STAGE_NAME; echo
                     echo; echo "==== TOOLS CHECK ====="
                 '''
-                sh 'node --version; exit 0'
-                sh 'npm --version; exit 0'
-                sh 'yarn --version; exit 0'
-                sh 'echo "==== TOOLS CHECK ====="; echo'
+                sh 'set +x; node --version; exit 0'
+                sh 'set +x; npm --version; exit 0'
+                sh 'set +x; yarn --version; exit 0'
+                sh 'set +x; echo "==== TOOLS CHECK ====="; echo'
                 checkout scm
             }
         } //end stage
@@ -57,12 +58,13 @@ pipeline {
             steps {
                 sh 'echo; echo "running stage $STAGE_NAME on $HOSTNAME"'
                 sh '''
+                    set +x
                     export HOME=$WORKSPACE
                     export npm_config_cache=$HOME/.npm
                     if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
-                    echo; echo "==== PRINTENV $STAGE_NAME ====="
-                    printenv
-                    echo "====/PRINTENV $STAGE_NAME ====="; echo
+                    echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
+                    printenv >> printenv.$STAGE_NAME
+                    echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
                     npm install
                 '''
             }
@@ -80,12 +82,13 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     sh 'echo; echo "running stage $STAGE_NAME on $HOSTNAME"'
                     sh '''
+                        set +x
                         export HOME=$WORKSPACE
                         export npm_config_cache=$HOME/.npm
                         if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
-                        echo; echo "==== PRINTENV $STAGE_NAME ====="
-                        printenv
-                        echo "====/PRINTENV $STAGE_NAME ====="; echo
+                        echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
+                        printenv >> printenv.$STAGE_NAME
+                        echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
                         npm test
                     '''
                 }
@@ -104,16 +107,18 @@ pipeline {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
                     sh 'echo; echo "running stage $STAGE_NAME on $HOSTNAME"'
                     sh '''
+                        set +x
+                        echo; echo "running stage $STAGE_NAME on $HOSTNAME"
                         export HOME=$WORKSPACE
                         export npm_config_cache=$HOME/.npm
                         if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
-                        echo; echo "==== PRINTENV $STAGE_NAME ====="
-                        printenv
-                        echo "====/PRINTENV $STAGE_NAME ====="; echo
+                        echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
+                        printenv >> printenv.$STAGE_NAME
+                        echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
                         export BR_CMS_ORIGIN_LOCATION=https://cms-develop-brc.visitscotland.com
                         export BR_RESOURCE_API_ENDPOINT=https://develop-brc-businessevents.visitscotland.com/resourceapi
                         export BR_X_FORWARDED_HOST=develop-brc-businessevents.visitscotland.com
-                        npm run build 
+                        npm run build
                     '''
                 }
             }
@@ -121,9 +126,9 @@ pipeline {
 
         stage ('Deploy') {
             steps {
-                sh 'echo; echo "running stage $STAGE_NAME on $HOSTNAME"'
-                sh 'echo "Here we will define the scripted steps to deploy the application"'
                 sh '''
+                    set +x
+                    echo; echo "running stage $STAGE_NAME on $HOSTNAME"
                     VS_CONTAINER_IMAGE=vs/vs-brxm15:node18
                     VS_CONTAINER_NAME=$(echo $JOB_NAME | sed -e "s/\\//_/g")
                     VS_CONTAINER_USR=$(id -u $USER)
@@ -138,9 +143,15 @@ pipeline {
                     #VS_CONTAINER_EXEC="NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs"
                     #VS_CONTAINER_EXEC="/bin/bash -c \\"HOME=$PWD; set | tee ./nodeapp.log; NODE_DEBUG=http node $HOME/.output/server/index.mjs 2>&1 | tee -a ./nodeapp.log\\""
                     VS_CONTAINER_EXEC="/bin/bash -c \\"node .output/server/index.mjs\\""
-                    docker container rm -f $VS_CONTAINER_NAME
+                    VS_RUNNING_CONTAINER_ID=$(docker ps -aq --filter "name=^$VS_CONTAINER_NAME$")
+                    echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
+                    printenv >> printenv.$STAGE_NAME
+                    echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
+                    echo "found container with name: $VS_CONTAINER_NAME and id: $VS_RUNNING_CONTAINER_ID"
+                    echo "removing any container with name: $VS_CONTAINER_NAME: $VS_RUNNING_CONTAINER_ID"
+                    docker container rm -f $VS_RUNNING_CONTAINER_ID
                     docker run -t -d -u $VS_CONTAINER_USR:$VS_CONTAINER_GRP $VS_CONTAINER_PORTS --workdir $VS_CONTAINER_WD --volume $VS_CONTAINER_WORKSPACE:$VS_CONTAINER_WORKSPACE:$VS_CONTAINER_VOLUME_PERMISSIONS --volume $VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_VOLUME_PERMISSIONS $VS_CONTAINER_ENVIRONMENT --name $VS_CONTAINER_NAME --hostname $VS_CONTAINER_NAME $VS_CONTAINER_IMAGE $VS_CONTAINER_INIT_EXEC
-                    VS_CONTAINER_ID=$(docker ps -a | grep "$VS_CONTAINER_NAME" | awk '{print $1}')
+                    VS_CONTAINER_ID=$(docker ps -aq --filter "name=^$VS_CONTAINER_NAME$")
                     docker exec -d -t $VS_CONTAINER_ID /bin/bash -c "NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs 2>&1 | tee -a ./nodeapp.log"
                 '''
             }
