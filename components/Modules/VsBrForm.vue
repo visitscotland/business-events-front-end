@@ -13,7 +13,7 @@
                     :is-marketo="module.config.type === 'marketo'"
                     :marketo-instance="module.config.marketoInstance ? module.config.marketoInstance : ''"
                     :munchkin-id="module.config.munchkinId ? module.config.munchkinId : ''"
-                    :submit-url="module.config.submitURL"
+                    :submit-url="module.config.submitUrl"
                     :data-url="module.config.jsonUrl"
                     :messaging-url="configStore.getLabel('forms', 'form.messaging-url')"
                     :country-list-url="configStore.getLabel('forms', 'form.country-url')"
