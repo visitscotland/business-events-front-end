@@ -107,7 +107,7 @@ pipeline {
         stage ('NPM Build') {
             agent {
                 docker {
-                iimage '$VS_DOCKER_BUILDER_IMAGE_NAME'
+                image '$VS_DOCKER_BUILDER_IMAGE_NAME'
                 label thisAgent
                 reuseNode true
                 }
