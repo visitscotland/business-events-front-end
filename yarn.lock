@@ -1400,7 +1400,7 @@
     "@typescript-eslint/types" "^8.0.0"
     "@typescript-eslint/utils" "^8.0.0"
 
-"@nuxt/kit@3.12.4", "@nuxt/kit@^3.11.2", "@nuxt/kit@^3.12.2", "@nuxt/kit@^3.3.2", "@nuxt/kit@^3.5.0":
+"@nuxt/kit@3.12.4", "@nuxt/kit@^3.11.2", "@nuxt/kit@^3.12.2", "@nuxt/kit@^3.3.2", "@nuxt/kit@^3.9.0":
   version "3.12.4"
   resolved "https://registry.yarnpkg.com/@nuxt/kit/-/kit-3.12.4.tgz#b7073611d533ac32b504d95664074be3587046b3"
   integrity sha512-aNRD1ylzijY0oYolldNcZJXVyxdGzNTl+Xd0UYyFQCu9f4wqUZqQ9l+b7arCEzchr96pMK0xdpvLcS3xo1wDcw==
@@ -1632,13 +1632,13 @@
     "@parcel/watcher-win32-ia32" "2.4.1"
     "@parcel/watcher-win32-x64" "2.4.1"
 
-"@pinia/nuxt@^0.5.1":
-  version "0.5.1"
-  resolved "https://registry.npmjs.org/@pinia/nuxt/-/nuxt-0.5.1.tgz"
-  integrity sha512-6wT6TqY81n+7/x3Yhf0yfaJVKkZU42AGqOR0T3+UvChcaOJhSma7OWPN64v+ptYlznat+fS1VTwNAcbi2lzHnw==
+"@pinia/nuxt@^0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@pinia/nuxt/-/nuxt-0.5.3.tgz#d9de0653e36011d859e42917480b09c814ab6197"
+  integrity sha512-AEuHEcaxZdAl73qUOco1TpOGjcmn83nJlYORZ63zhufSCVMj28lPq15ZnfhhofwBh5IjkT/lB7d8Ff958LajDQ==
   dependencies:
-    "@nuxt/kit" "^3.5.0"
-    pinia ">=2.1.7"
+    "@nuxt/kit" "^3.9.0"
+    pinia "2.2.1"
 
 "@pinia/testing@^0.1.3":
   version "0.1.3"
@@ -8317,7 +8317,7 @@ pify@^3.0.0:
   resolved "https://registry.npmjs.org/pify/-/pify-3.0.0.tgz"
   integrity sha512-C3FsVNH1udSEX48gGX1xfvwTWfsYWj5U+8/uK15BGzIGrKoUpghX8hWZwa/OFnakBiiVNmBvemTJR5mcy7iPcg==
 
-pinia@>=2.1.7, pinia@^2.1.3, pinia@^2.2.1:
+pinia@2.2.1, pinia@^2.1.3, pinia@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/pinia/-/pinia-2.2.1.tgz#7cf860f6a23981c23e58605cee45496ce46d15d1"
   integrity sha512-ltEU3xwiz5ojVMizdP93AHi84Rtfz0+yKd8ud75hr9LVyWX2alxp7vLbY1kFm7MXFmHHr/9B08Xf8Jj6IHTEiQ==
