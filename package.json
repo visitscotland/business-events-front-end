@@ -25,7 +25,7 @@
   "dependencies": {
     "@bloomreach/spa-sdk": "^23.3.1",
     "@bloomreach/vue3-sdk": "^22.0.5",
-    "@pinia/nuxt": "^0.5.1",
+    "@pinia/nuxt": "^0.5.3",
     "@visitscotland/component-library": "^3.0.15",
     "axios": "^1.7.3",
     "commitizen": "^4.3.0",
