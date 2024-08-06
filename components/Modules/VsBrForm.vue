@@ -17,7 +17,7 @@
                     :data-url="module.config.jsonUrl"
                     :messaging-url="configStore.getLabel('forms', 'form.messaging-url')"
                     :country-list-url="configStore.getLabel('forms', 'form.country-url')"
-                    :recaptcha-key="configStore.getLabel('forms', 'form.recaptcha-key')"
+                    :recaptcha-key="module.config.recaptcha"
                     language="en"
                     :is-prod="module.config.production ? module.config.production : false"
                     :recaptcha-textarea-label="configStore.getLabel('forms', 'form.recaptcha-textarea-label')"
