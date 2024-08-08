@@ -21,6 +21,7 @@
                 search-close-button-text=""
                 logo-alt-text=""
                 :no-search="true"
+                :is-static="true"
             >
                 <template #mega-nav-top-menu-items>
                     <template
