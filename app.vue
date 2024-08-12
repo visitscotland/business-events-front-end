@@ -126,6 +126,8 @@ const mapping = {
 </script>
 
 <style lang="scss">
+    @import '@visitscotland/component-library-export/components/style.css';
+
     .has-edit-button {
         position: relative;
 
