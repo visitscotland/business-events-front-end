@@ -26,7 +26,7 @@ import {
     VsContainer,
     VsAlert,
     VsList,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 const props = defineProps<{ messages: string[], }>();
 

@@ -1,5 +1,4 @@
 <template>
-    <!-- TODO - Preview warning, video -->
     <VsArticle
         :title="module.title"
         :anchor-link="module.anchor ? formatLink(module.anchor) : ''"
@@ -17,7 +16,7 @@
             #vs-article-intro
             v-if="module.introduction"
         >
-            <div v-html="module.introduction.value" />
+            <VsBrRichText :input-content="module.introduction.value" />
         </template>
 
         <VsArticleSection
@@ -35,10 +34,11 @@
                 />
             </template>
 
-            <div
+            <template
                 v-if="section.copy"
-                v-html="section.copy.value"
-            />
+            >
+                <VsBrRichText :input-content="section.copy.value" />
+            </template>
         </VsArticleSection>
     </VsArticle>
 </template>
@@ -49,24 +49,30 @@
 import {
     VsArticle,
     VsArticleSection,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 import formatLink from '~/composables/formatLink.ts';
 
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
 import VsBrArticleSidebar from '~/components/Modules/VsBrArticleSidebar.vue';
 
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
+
 const props = defineProps<{ module: Object }>();
 const module: any = props.module;
 
 const articleSections: any[] = [];
 
+let sidebarCount = -1;
+
 for (let x = 0; x < module.sections.length; x++) {
     const nextSection = module.sections[x];
     let alignment = '';
 
-    if (nextSection.quote || nextSection.image) {
-        if (x % 2 !== 0) {
+    if (nextSection.quote || nextSection.image || nextSection.video) {
+        sidebarCount += 1;
+
+        if (sidebarCount % 2 !== 0) {
             alignment = 'left';
         } else {
             alignment = 'right';

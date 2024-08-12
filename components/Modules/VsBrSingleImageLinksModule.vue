@@ -11,9 +11,7 @@
             v-if="module.introduction"
             #vs-megalinks-intro
         >
-            <div
-                v-html="module.introduction.value"
-            />
+            <VsBrRichText :input-content="module.introduction.value" />
         </template>
 
         <VsCol
@@ -21,8 +19,7 @@
         >
             <VsMegalinkSingleImage
                 :title="module.innerTitle"
-                :theme="theme"
-                :button-link="module.cta && module.cta.link ? module.cta.link : ''"
+                :button-link="module.cta && module.cta.link ? formatLink(module.cta.link) : ''"
                 :alternate="module.alignment === 'left' ? true : false"
             >
                 <template
@@ -42,7 +39,7 @@
                     #vs-single-image-content
                     v-if="module.innerIntroduction"
                 >
-                    <div v-html="module.innerIntroduction.value" />
+                    <VsBrRichText :input-content="module.innerIntroduction.value" />
                 </template>
 
                 <template
@@ -58,7 +55,6 @@
                         :key="index"
                     >
                         <VsLinkListItem
-                            :variant="theme === 'light' ? 'primary' : 'on-dark'"
                             :type="link.type.toLowerCase()"
                             :href="link.youtubeId
                                 ? '#'
@@ -93,13 +89,14 @@ import {
     VsMegalinkSingleImage,
     VsCol,
     VsLinkListItem,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 
 import formatLink from '~/composables/formatLink.ts';
 
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 const configStore = useConfigStore();
 

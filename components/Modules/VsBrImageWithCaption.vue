@@ -19,6 +19,7 @@
         </template>
 
         <VsImg
+            v-if="imageValue"
             :src="imageValue.getOriginal().getUrl()"
             :alt="noAltText
                 ? configStore.getLabel('essentials.global', 'default.alt-text')
@@ -28,6 +29,7 @@
 
         <template
             #img-caption
+            v-if="imageData"
         >
             <!-- TODO - latitude & longitude don't seem to be available for hero images, it comes
             down as a raw ImageSet without that info. Images in links have them but we need them
@@ -47,7 +49,7 @@
                     #toggle-icon
                 >
                     <VsIcon
-                        :name="imageData.source + '-filled'"
+                        :name="`${imageData.source}-filled`"
                         size="md"
                     />
                 </template>
@@ -90,7 +92,7 @@ import {
     VsCaption,
     VsSocialCreditLink,
     VsIcon,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 
@@ -147,7 +149,7 @@ const page: Page | undefined = inject('page');
 let imageValue: any;
 let imageData: any;
 
-if (page) {
+if (page && image && image.value) {
     imageValue = page.getContent(image.value.$ref);
     imageData = imageValue.model.data;
 }

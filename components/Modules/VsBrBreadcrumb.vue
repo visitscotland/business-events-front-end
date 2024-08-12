@@ -2,7 +2,7 @@
     <VsBreadcrumb>
         <VsBreadcrumbItem
             key="home"
-            :href="rootUrl + '/'"
+            :href="`${rootUrl}/`"
             :text="configStore.getLabel('essentials.global', 'home')"
             :active="isHome"
         />
@@ -25,7 +25,7 @@ import { toRefs } from 'vue';
 import {
     VsBreadcrumb,
     VsBreadcrumbItem,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 

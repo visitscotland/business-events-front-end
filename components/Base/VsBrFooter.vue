@@ -10,13 +10,12 @@
             >
                 <VsFooterAccordionItem
                     :title="menuItem.model.title"
-                    variant="dark"
                     :control-id="`footer_accordion_item${index}`"
                 >
                     <template #icon-open>
                         <VsIcon
                             name="chevron"
-                            variant="light"
+                            variant="inverse"
                             size="xs"
                         />
                     </template>
@@ -25,7 +24,7 @@
                         <VsIcon
                             name="chevron"
                             orientation="down"
-                            variant="light"
+                            variant="inverse"
                             size="xs"
                         />
                     </template>
@@ -67,7 +66,7 @@
                     v-for="(link, key, index) in configStore.labels['navigation.social-media']"
                     :key="index"
                     :href="link"
-                    :icon="key"
+                    :icon="key === 'twitter' ? 'x-twitter' : key"
                 />
             </vsfootersocialmenu>
         </template>
@@ -90,10 +89,9 @@
             </VsFooterUtilityList>
         </template>
 
-        <!-- TODO - copyright labels -->
         <VsFooterCopyright
             href="https://www.scotland.org/"
-            link-alt-text=""
+            :link-alt-text="configStore.getLabel('navigation.static', 'footer.logo-alt-text')"
         >
             <template #copyright>
                 VisitScotland. All rights reserved.
@@ -101,10 +99,20 @@
         </VsFooterCopyright>
     </VsFooter>
     <VsCookieChecker />
+
+    <Suspense
+        v-if="isMounted"
+    >
+        <component
+            :is="VsBrIconFonts"
+        />
+    </Suspense>
 </template>
 
 <script lang="ts" setup>
-import { toRefs } from 'vue';
+import {
+    toRefs, ref, defineAsyncComponent, onMounted,
+} from 'vue';
 import type { Component, Page } from '@bloomreach/spa-sdk';
 import { BrManageMenuButton } from '@bloomreach/vue3-sdk';
 
@@ -122,7 +130,7 @@ import {
     VsIcon,
     VsCol,
     VsCookieChecker,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
@@ -162,5 +170,13 @@ if (page.value) {
         }
     }
 }
+
+const isMounted = ref(false);
+
+const VsBrIconFonts = defineAsyncComponent(() => import('../Utils/VsBrIconFonts.vue'));
+
+onMounted(() => {
+    isMounted.value = true;
+});
 
 </script>

@@ -11,7 +11,7 @@
                 class="col-xxl-6"
             >
                 <VsRichTextWrapper>
-                    <div v-html="module.copy.value" />
+                    <VsBrRichText :input-content="module.copy.value" />
                 </VsRichTextWrapper>
             </VsCol>
         </VsRow>
@@ -25,7 +25,9 @@ import {
     VsRow,
     VsCol,
     VsRichTextWrapper,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
+
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 const props = defineProps<{ module: Object }>();
 const module: any = props.module;

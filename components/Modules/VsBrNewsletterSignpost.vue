@@ -1,5 +1,5 @@
 <template>
-    <VsModuleWrapper theme="grey">
+    <VsModuleWrapper theme="neutral">
         <template #vs-module-wrapper-heading>
             {{ data.title }}
         </template>
@@ -18,9 +18,7 @@
                         variant="lead"
                         class="mb-9 mb-lg-10"
                     >
-                        <div
-                            v-html="data.copy.value"
-                        />
+                        <VsBrRichText :input-content="data.copy.value" />
                     </VsRichTextWrapper>
 
                     <VsButton
@@ -59,7 +57,9 @@ import {
     VsRichTextWrapper,
     VsButton,
     VsImg,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
+
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 const props = defineProps<{ data: any, }>();
 

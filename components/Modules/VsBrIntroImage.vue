@@ -22,7 +22,7 @@ import { toRefs } from 'vue';
 
 import {
     VsContainer, VsRow, VsCol,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
 
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
 

@@ -73,9 +73,7 @@
         <template
             #vs-intro-content
         >
-            <div
-                v-html="content.introduction.value"
-            />
+            <VsBrRichText :input-content="content.introduction.value" />
         </template>
 
         <!-- TODO - Itinerary Summary -->
@@ -85,7 +83,7 @@
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue';
 
-import { VsPageIntro, VsBlogDetails } from '@visitscotland/component-library-export/components';
+import { VsPageIntro, VsBlogDetails } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 import themeCalculator from '~/composables/themeCalculator.ts';
@@ -94,6 +92,7 @@ import extractYoutubeId from '~/composables/extractYoutubeId.ts';
 import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
 import VsBrBreadcrumb from '~/components/Modules/VsBrBreadcrumb.vue';
 import VsBrVideoModal from '~/components/Modules/VsBrVideoModal.vue';
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 const configStore = useConfigStore();
 

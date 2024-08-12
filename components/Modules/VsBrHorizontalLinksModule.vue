@@ -1,5 +1,4 @@
 <template>
-    <!-- TODO - error-message, itinerary, themes -->
     <VsModuleWrapper
         :theme="theme"
     >
@@ -11,9 +10,7 @@
             #vs-module-wrapper-intro
             v-if="module.introduction && module.introduction.value"
         >
-            <div
-                v-html="module.introduction.value"
-            />
+            <VsBrRichText :input-content="module.introduction.value" />
         </template>
 
         <VsCarousel
@@ -58,7 +55,9 @@ import {
     VsModuleWrapper,
     VsCarousel,
     VsCarouselSlide,
-} from '@visitscotland/component-library-export/components';
+} from '@visitscotland/component-library/components';
+
+import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 import useConfigStore from '~/stores/configStore.ts';
 

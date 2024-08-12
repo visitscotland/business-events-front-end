@@ -35,15 +35,30 @@ export default defineNuxtConfig({
             COMP_LIBRARY_VERSION: clVersion,
         },
     },
+    vite: {
+        resolve: {
+            preserveSymlinks: true,
+        },
+        build: {
+            cssCodeSplit: true,
+        },
+    },
+    vue: {
+        runtimeCompiler: true,
+    },
     components: [
         {
             path: '~/components',
             pathPrefix: false,
         },
     ],
+    buildModules: [
+        '@nuxtjs/dotenv',
+    ],
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
+        'nuxt-lazy-hydrate',
     ],
     'nuxt-jsonld': {
         disableOptionsAPI: true,
@@ -51,6 +66,7 @@ export default defineNuxtConfig({
     build: {
         transpile: [
             'bootstrap-vue-next',
+            '@visitscotland/component-library',
         ],
     },
     experimental: {

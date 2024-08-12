@@ -1,10 +1,9 @@
 const themeCalculator = (
     themeIndex?: number,
-    module?: any,
     colourSchemeParam?: string[],
 ) => {
     let colourScheme = [
-        'dark',
+        'grey',
         'light',
         'light',
     ];
@@ -15,16 +14,6 @@ const themeCalculator = (
 
     if (themeIndex !== undefined) {
         return colourScheme[themeIndex];
-    }
-
-    if (module) {
-        if (module.type === 'ICentreModule') {
-            return 'grey';
-        }
-
-        if (module.type === 'TravelInformationModule') {
-            return 'dark';
-        }
     }
 
     return 'light';

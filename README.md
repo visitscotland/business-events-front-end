@@ -1,18 +1,16 @@
-# Business Events Bloomreach Integration Proof of Concept
+# VisitScotland Business Events - Front End Application
 
 ## Pre-requisites
 
 - node.js 
-- npm
-
-NOTE - Currently this project does not support yarn, pending an investigation of a bug with the component library export integration. Prefer npm for package management
+- yarn
 
 ## Dependencies 
 
 This project depends on a local site running an instance of the dot com brxm project, with the resource api enabled (current working branch https://github.com/visitscotland/dot-com-brxm/tree/business-events-2024 ). It should contain a .env file pointing to the api on that instance, for example:
 
 ```bash
-BR_RESOURCE_API_ENDPOINT=http://businessevents.local:8080
+BR_RESOURCE_API_ENDPOINT=http://businessevents.local:8080/site/resourceapi
 BR_CMS_ORIGIN_LOCATION=http://localhost:8080
 ```
 
@@ -21,7 +19,7 @@ BR_CMS_ORIGIN_LOCATION=http://localhost:8080
 Make sure to install the dependencies:
 
 ```bash
-npm install
+yarn
 ```
 
 ## Development Server
@@ -29,7 +27,7 @@ npm install
 Start the development server on `http://localhost:3000`
 
 ```bash
-npm run dev
+yarn dev
 ```
 
 ## How to install node.js
