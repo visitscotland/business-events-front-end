@@ -21,7 +21,7 @@
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@vue/eslint-config-airbnb": "^8.0.0",
     "eslint": "^8.56.0",
-    "husky": "^9.1.4",
+    "husky": "^9.1.5",
     "nuxt": "^3.12.4",
     "nuxt-lazy-hydrate": "^1.0.0"
   },
