@@ -16,7 +16,7 @@
     "*.{js,vue,ts}": "eslint"
   },
   "devDependencies": {
-    "@nuxt/eslint-config": "^0.5.0",
+    "@nuxt/eslint-config": "^0.5.4",
     "@nuxtjs/dotenv": "^1.4.2",
     "@nuxtjs/eslint-config-typescript": "^12.1.0",
     "@vue/eslint-config-airbnb": "^8.0.0",
