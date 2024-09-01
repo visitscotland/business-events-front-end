@@ -89,10 +89,9 @@
             </VsFooterUtilityList>
         </template>
 
-        <!-- TODO - copyright labels -->
         <VsFooterCopyright
             href="https://www.scotland.org/"
-            link-alt-text=""
+            :link-alt-text="configStore.getLabel('navigation.static', 'footer.logo-alt-text')"
         >
             <template #copyright>
                 VisitScotland. All rights reserved.
