@@ -74,7 +74,7 @@ pipeline {
                     echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
                     printenv >> printenv.$STAGE_NAME
                     echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
-                    npm install
+                    yarn
                 '''
             }
         } //end stage
@@ -98,13 +98,13 @@ pipeline {
                         echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
                         printenv >> printenv.$STAGE_NAME
                         echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
-                        npm test
+                        yarn test
                     '''
                 }
             }
         } //end stage
 
-        stage ('NPM Build') {
+        stage ('NPM Production Build') {
             agent {
                 docker {
                 image '$VS_DOCKER_BUILDER_IMAGE_NAME'
@@ -123,30 +123,88 @@ pipeline {
                         echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
                         printenv >> printenv.$STAGE_NAME
                         echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
-                        export BR_CMS_ORIGIN_LOCATION=https://cms-release-brc.visitscotland.com
-                        export BR_RESOURCE_API_ENDPOINT=https://release-brc-businessevents.visitscotland.com/resourceapi
-                        export BR_X_FORWARDED_HOST=release-brc-businessevents.visitscotland.com
-                        npm run build 
+
+                        export BR_CMS_ORIGIN_LOCATION=https://cms.visitscotland.com
+                        export BR_RESOURCE_API_ENDPOINT=https://businessevents.visitscotland.com/resourceapi
+                        export BR_X_FORWARDED_HOST=businessevents.visitscotland.com
+                        export VS_ARTIFACT_ENVIRONMEMT=production
+
+			echo "Building $VS_ARTIFACT_ENVIRONMEMT artifact"
+                        yarn build
 			            VS_BUILD_RESULT=$?
 			            if [ $VS_BUILD_RESULT = 0 ]; then
 				            VS_DSSR_PACKAGE_NAME=business-events-$GIT_COMMIT-dssr.tar.gz
 				            echo "NPM build successful, creating $VS_DSSR_PACKAGE_NAME in target folder"
-				            if [ ! -d "$WORKSPACE/target" ]; then
+				            if [ ! -d "$WORKSPACE/$VS_ARTIFACT_ENVIRONMEMT" ]; then
 					            echo " - creating target folder"
-					            mkdir -p $WORKSPACE/target
+					            mkdir -p $WORKSPACE/target/$VS_ARTIFACT_ENVIRONMEMT
 				            fi
-				            if [ -d "$WORKSPACE/target" ]&&[ -d $WORKSPACE/.output/ ]&&[ ! -z "$VS_DSSR_PACKAGE_NAME" ]; then
+				            if [ -d "$WORKSPACE/target/$VS_ARTIFACT_ENVIRONMEMT" ]&&[ -d $WORKSPACE/.output/ ]&&[ ! -z "$VS_DSSR_PACKAGE_NAME" ]; then
 					            cd $WORKSPACE/.output/
 					            echo " - creating tarball"
-					            tar -zcf $WORKSPACE/target/$VS_DSSR_PACKAGE_NAME *
+					            tar -zcf $WORKSPACE/target/$VS_ARTIFACT_ENVIRONMEMT/$VS_DSSR_PACKAGE_NAME *
 					            cd $WORKSPACE
-					            VS_DSSR_PACKAGE=$(find $WORKSPACE -name "$VS_DSSR_PACKAGE_NAME")
+					            VS_DSSR_PACKAGE=$(find $WORKSPACE/target/$VS_ARTIFACT_ENVIRONMEMT -name "$VS_DSSR_PACKAGE_NAME")
 				            else
 					            echo " - either target folder or .output folder does not exist, exiting"
 				            fi
 			            fi
 			            if [ ! -z "$VS_DSSR_PACKAGE" ]; then
-				            echo "VS DSSR Package created at $VS_DSSR_PACKAGE"
+				            echo "VS DSSR $VS_ARTIFACT_ENVIRONMEMT Package created at $VS_DSSR_PACKAGE"
+			            fi
+
+                    '''
+                }
+            }
+        } //end stage
+
+        stage ('NPM Staging Build') {
+            agent {
+                docker {
+                image '$VS_DOCKER_BUILDER_IMAGE_NAME'
+                label thisAgent
+                reuseNode true
+                }
+            }
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    sh '''
+                        set +x
+                        echo; echo "running stage $STAGE_NAME on $HOSTNAME"
+                        export HOME=$WORKSPACE
+                        export npm_config_cache=$HOME/.npm
+                        if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
+                        echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
+                        printenv >> printenv.$STAGE_NAME
+                        echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
+
+                        export BR_CMS_ORIGIN_LOCATION=https://cms-release-brc.visitscotland.com
+                        export BR_RESOURCE_API_ENDPOINT=https://release-brc-businessevents.visitscotland.com/resourceapi
+                        export BR_X_FORWARDED_HOST=release-brc-businessevents.visitscotland.com
+                        export VS_ARTIFACT_ENVIRONMEMT=staging
+
+			echo "Building $VS_ARTIFACT_ENVIRONMEMT artifact"
+                        yarn build
+			            VS_BUILD_RESULT=$?
+			            if [ $VS_BUILD_RESULT = 0 ]; then
+				            VS_DSSR_PACKAGE_NAME=business-events-$GIT_COMMIT-dssr.tar.gz
+				            echo "NPM build successful, creating $VS_DSSR_PACKAGE_NAME in target folder"
+				            if [ ! -d "$WORKSPACE/$VS_ARTIFACT_ENVIRONMEMT" ]; then
+					            echo " - creating target folder"
+					            mkdir -p $WORKSPACE/target/$VS_ARTIFACT_ENVIRONMEMT
+				            fi
+				            if [ -d "$WORKSPACE/target/$VS_ARTIFACT_ENVIRONMEMT" ]&&[ -d $WORKSPACE/.output/ ]&&[ ! -z "$VS_DSSR_PACKAGE_NAME" ]; then
+					            cd $WORKSPACE/.output/
+					            echo " - creating tarball"
+					            tar -zcf $WORKSPACE/target/$VS_ARTIFACT_ENVIRONMEMT/$VS_DSSR_PACKAGE_NAME *
+					            cd $WORKSPACE
+					            VS_DSSR_PACKAGE=$(find $WORKSPACE/target/$VS_ARTIFACT_ENVIRONMEMT -name "$VS_DSSR_PACKAGE_NAME")
+				            else
+					            echo " - either target folder or .output folder does not exist, exiting"
+				            fi
+			            fi
+			            if [ ! -z "$VS_DSSR_PACKAGE" ]; then
+				            echo "VS DSSR $VS_ARTIFACT_ENVIRONMEMT Package created at $VS_DSSR_PACKAGE"
 			            fi
                     '''
                 }
