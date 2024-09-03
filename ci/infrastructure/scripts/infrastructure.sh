@@ -70,6 +70,8 @@ if [ -z "$VS_BRXM_PERSISTENCE_METHOD" ]; then VS_BRXM_PERSISTENCE_METHOD=h2; fi
 if [ -z "$VS_BRXM_TOMCAT_PORT" ]; then VS_BRXM_TOMCAT_PORT=8080; fi
 if [ -z "$VS_CONTAINER_PORT_INCREMENT" ]; then VS_CONTAINER_PORT_INCREMENT=100; fi
 if [ -z "$VS_CONTAINER_CONSOLE_FILE" ]; then VS_CONTAINER_CONSOLE_FILE="/tmp/console.out"; fi
+if [ -z "$VS_CONTAINER_BASE_PORT_MIN" ]; then VS_CONTAINER_BASE_PORT_MIN=8001; fi
+if [ -z "$VS_CONTAINER_BASE_PORT_MAX" ]; then VS_CONTAINER_BASE_PORT_MAX=8079; fi
 if [ -z "$VS_CONTAINER_DYN_PORT_MAX" ]; then VS_CONTAINER_DYN_PORT_MAX=8999; fi
 if [ -z "$VS_CONTAINER_INT_PORT_SSR" ]; then VS_CONTAINER_INT_PORT_SSR=8082; fi
 if [ -z "$VS_CONTAINER_INT_PORT_SSH" ]; then VS_CONTAINER_INT_PORT_SSH=22; fi
@@ -78,9 +80,9 @@ if [ -z "$VS_CONTAINER_PRESERVE" ]; then VS_CONTAINER_PRESERVE=TRUE; fi
 if [ -z "$VS_CONTAINER_SSH_PASS_ROOT" ]; then VS_CONTAINER_SSH_PASS_ROOT=rootssh; fi
 if [ -z "$VS_CONTAINER_SSH_PASS_HIPPO" ]; then VS_CONTAINER_SSH_PASS_HIPPO=hippossh; fi
 if [ -z "$VS_CONTAINER_UPDATES_DIR" ]; then VS_CONTAINER_UPDATES_DIR="../files"; fi
-#  ==== SSR Application Variables ====
-if [ -z "$VS_SSR_PACKAGE_VERSION" ]; then VS_SSR_PACKAGE_VERSION="package"; fi
+#  ==== (D)SSR Application Variables ====
 if [ -z "$VS_FRONTEND_DIR" ]; then VS_FRONTEND_DIR=ui-integration; fi
+if [ -z "$VS_SSR_PACKAGE_VERSION" ]; then VS_SSR_PACKAGE_VERSION="package"; fi
 if [ -z "$VS_SSR_PACKAGE_SOURCE" ]; then VS_SSR_PACKAGE_SOURCE="$VS_FRONTEND_DIR/ssr/server/ $VS_FRONTEND_DIR/node_modules/@visitscotland/component-library/dist/ssr/ $VS_FRONTEND_DIR/node_modules/ $VS_FRONTEND_DIR/build/"; fi
 if [ -z "$VS_SSR_PACKAGE_TARGET" ]; then VS_SSR_PACKAGE_TARGET="./target"; fi
 if [ -z "$VS_SSR_PACKAGE_NAME" ]; then VS_SSR_PACKAGE_NAME="vs-ssr-$VS_SSR_PACKAGE_VERSION.tar.gz"; fi
@@ -119,8 +121,14 @@ while [[ $# -gt 0 ]]; do
   case $THIS_VAR in
     --debug) if [ ! -z "$THIS_RESULT" ]; then VS_DEBUG=$THIS_RESULT; else VS_DEBUG=TRUE; fi;;
     --ci-dir) if [ ! -z "$THIS_RESULT" ]; then VS_CI_DIR=$THIS_RESULT; fi;;
+    --container-min-port) if [ ! -z "$THIS_RESULT" ]; then VS_CONTAINER_BASE_PORT_MIN=$THIS_RESULT; fi;;
+    --container-min-port) if [ ! -z "$THIS_RESULT" ]; then VS_CONTAINER_BASE_PORT_MAX=$THIS_RESULT; fi;;
     --frontend-dir) if [ ! -z "$THIS_RESULT" ]; then VS_FRONTEND_DIR=$THIS_RESULT; fi;;
-    --ssr-package-version)  if [ ! -z "$THIS_RESULT" ]; then VS_SSR_PACKAGE_VERSION=$THIS_RESULT; fi;;
+    --ssr-app-port) if [ ! -z "$THIS_RESULT" ]; then VS_SSR_APP_PORT=$THIS_RESULT; fi;;
+    --ssr-target) if [ ! -z "$THIS_RESULT" ]; then VS_SSR_PROXY_TARGET_HOST=$THIS_RESULT; fi;;
+    --ssr-package-name) if [ ! -z "$THIS_RESULT" ]; then VS_SSR_PACKAGE_NAME=$THIS_RESULT; fi;;
+    --ssr-package-target) if [ ! -z "$THIS_RESULT" ]; then VS_SSR_PACKAGE_TARGET=$THIS_RESULT; fi;;
+    --ssr-package-version) if [ ! -z "$THIS_RESULT" ]; then VS_SSR_PACKAGE_VERSION=$THIS_RESULT; fi;;
     --persistence) if [ ! -z "$THIS_RESULT" ]; then VS_BRXM_PERSISTENCE_METHOD=$THIS_RESULT; fi;;
     --persistence-method) if [ ! -z "$THIS_RESULT" ]; then VS_BRXM_PERSISTENCE_METHOD=$THIS_RESULT; fi;;
     --preserve-container) if [ ! -z "$THIS_RESULT" ]; then VS_CONTAINER_PRESERVE=$THIS_RESULT; else VS_CONTAINER_PRESERVE=TRUE; fi;;
@@ -560,8 +568,8 @@ setPortRange() {
   # MIN_PORT/MAX_PORT values are set here to a range, if no override is set, or to the value of the override if it is
   # if the override port if in use the job must fail in the findBasePort proc
   if [ -z "$VS_CONTAINER_BASE_PORT_OVERRIDE" ]; then
-    MIN_PORT=8001
-    MAX_PORT=8079
+    MIN_PORT=$VS_CONTAINER_BASE_PORT_MIN
+    MAX_PORT=$VS_CONTAINER_BASE_PORT_MAX
   else
     MIN_PORT=$VS_CONTAINER_BASE_PORT_OVERRIDE
     MAX_PORT=$VS_CONTAINER_BASE_PORT_OVERRIDE
