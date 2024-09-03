@@ -156,25 +156,25 @@ checkVariables() {
     exit 3
   elif [ "$LOGNAME" = "jenkins" ] && [ ! -z "$JENKINS_SERVER_COOKIE" ]; then
     echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME] $VS_SCRIPTNAME appears to be running from a Jenkins job"
-    echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  - exporting selected variables to $VS_CI_DIR/$VS_JENKINS_LAST_ENV"
-    printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | tee $VS_CI_DIR/$VS_JENKINS_LAST_ENV
+    echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  - exporting selected variables to $VS_JENKINS_LAST_ENV"
+    printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | tee $VS_JENKINS_LAST_ENV
   elif [[ "$VS_AGENT_IS_DOCKER" =~ ^(TRUE|true)$ ]] && [ ! -z "$JENKINS_SERVER_COOKIE" ]; then
     echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME] $VS_SCRIPTNAME appears to be running from a Jenkins job inside a Docker container "
-    echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  - exporting selected variables to $VS_CI_DIR/$VS_JENKINS_LAST_ENV"
-    printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | tee $VS_CI_DIR/$VS_JENKINS_LAST_ENV
-  elif [ "$LOGNAME" = "jenkins" ] && [ -z "$JOB_NAME" ] && [ -e $VS_CI_DIR/$VS_JENKINS_LAST_ENV ]; then
+    echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  - exporting selected variables to $VS_JENKINS_LAST_ENV"
+    printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | tee $VS_JENKINS_LAST_ENV
+  elif [ "$LOGNAME" = "jenkins" ] && [ -z "$JOB_NAME" ] && [ -e $VS_JENKINS_LAST_ENV ]; then
     echo "`eval $VS_LOG_DATESTAMP` WARN  [$VS_SCRIPTNAME] $VS_SCRIPTNAME was called from a Jenkins workspace but not by a Jenkins job"
     echo "`eval $VS_LOG_DATESTAMP` WARN  [$VS_SCRIPTNAME]  - setting Jenkins environment variables from last run"
-    source $VS_CI_DIR/$VS_JENKINS_LAST_ENV
+    source $VS_JENKINS_LAST_ENV
   elif [ "$LOGNAME" = "jenkins" ] && [ -z "$JOB_NAME" ] && [ ! -d ./target ] && [ ! -z "$VS_WORKING_DIR" ]; then
     echo "`eval $VS_LOG_DATESTAMP` WARN  [$VS_SCRIPTNAME] $VS_SCRIPTNAME was not called from within Jenkins workspace"
     echo "`eval $VS_LOG_DATESTAMP` WARN  [$VS_SCRIPTNAME]  - switching to $VS_WORKING_DIR"
     checkVariables
     cd $VS_WORKING_DIR
-  elif [ -z "$JOB_NAME" ] && [ "$VS_WD_PARENT" = "workspace" ] && [ ! -z "$VS_WORKING_DIR" ] && [ ! -e $VS_CI_DIR/$VS_JENKINS_LAST_ENV ] && [ ! -d ./target ]; then
+  elif [ -z "$JOB_NAME" ] && [ "$VS_WD_PARENT" = "workspace" ] && [ ! -z "$VS_WORKING_DIR" ] && [ ! -e $VS_JENKINS_LAST_ENV ] && [ ! -d ./target ]; then
     echo "`eval $VS_LOG_DATESTAMP` ERROR [$VS_SCRIPTNAME] $VS_SCRIPTNAME was called from "`pwd`" but this may not be a Jenkins workspace, please either:"
     echo "`eval $VS_LOG_DATESTAMP` ERROR [$VS_SCRIPTNAME]  - switch to the workspace of a Jenkins job that has previously run this script"
-    echo "`eval $VS_LOG_DATESTAMP` ERROR [$VS_SCRIPTNAME]  - run a Jenkins job for this branch to populate $VS_CI_DIR/$VS_JENKINS_LAST_ENV and create ./target"
+    echo "`eval $VS_LOG_DATESTAMP` ERROR [$VS_SCRIPTNAME]  - run a Jenkins job for this branch to populate $VS_JENKINS_LAST_ENV and create ./target"
     echo "`eval $VS_LOG_DATESTAMP` ERROR [$VS_SCRIPTNAME]  - call this script with --working-dir=[workspace of a Jenkins job that has previously run this script]"
     exit 2
   else
@@ -952,7 +952,7 @@ copyVSVariables() {
     mkdir -p $VS_BUILD_PROPERTIES_TARGET_DIR
   fi
   echo "#`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME] # properties from $BUILD_TAG" > $VS_BUILD_PROPERTIES_TARGET_DIR/$VS_BUILD_PROPERTIES_TARGET_NAME
-  if [ -a $VS_CI_DIR/$VS_JENKINS_LAST_ENV ]; then cat $VS_CI_DIR/$VS_JENKINS_LAST_ENV >> $VS_BUILD_PROPERTIES_TARGET_DIR/$VS_BUILD_PROPERTIES_TARGET_NAME; fi
+  if [ -a $VS_JENKINS_LAST_ENV ]; then cat $VS_JENKINS_LAST_ENV >> $VS_BUILD_PROPERTIES_TARGET_DIR/$VS_BUILD_PROPERTIES_TARGET_NAME; fi
   if [ -a $VS_CI_DIR/$VS_LAST_ENV ]; then cat $VS_CI_DIR/$VS_LAST_ENV >> $VS_BUILD_PROPERTIES_TARGET_DIR/$VS_BUILD_PROPERTIES_TARGET_NAME; fi
 }
 
