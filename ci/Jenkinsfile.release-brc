@@ -129,7 +129,7 @@ pipeline {
                         export BR_X_FORWARDED_HOST=businessevents.visitscotland.com
                         export VS_ARTIFACT_ENVIRONMEMT=production
 
-			                  echo "Building $VS_ARTIFACT_ENVIRONMEMT artifact"
+			            echo "Building $VS_ARTIFACT_ENVIRONMEMT artifact"
                         yarn build
 			            VS_BUILD_RESULT=$?
 			            if [ $VS_BUILD_RESULT = 0 ]; then
