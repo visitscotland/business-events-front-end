@@ -2,6 +2,40 @@ def MAIL_TO = "webops@visitscotland.net"
 def thisAgent
 thisAgent = "docker-02"
 
+// set any environment-specific environment variables here using the format: env.MY_VAR = "conditional_value" }
+// please see ci/README_PIPELINE_VARIABLES.md or consult Web Operations for details on environment variables and their purposes
+echo "== Setting conditional environment variables"
+if (BRANCH_NAME == "develop" && (JOB_NAME ==~ "develop-brc-businessevents.visitscotland.com(-mb)?/develop")) {
+  echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
+  env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3003"
+  env.VS_RELEASE_SNAPSHOT = "FALSE"
+} else if (BRANCH_NAME ==~ "ops/feature-environment(s)?-enhancements" && (JOB_NAME ==~ "feature.visitscotland.(com|org)(-mb)?/ops%2Ffeature-environment(s)?-enhancements")) {
+  echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
+  env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3009"
+} else {
+  env.VS_RELEASE_SNAPSHOT = "FALSE"
+  // thisAgent should always be set to "docker-02" unless you have been informed otherwise!
+}
+echo "==/Setting conditional environment variables"
+
+// set or override any default environment variables here using the format: if (!env.MY_VAR) { env.MY_VAR = "default_value" }
+// please see ci/README_PIPELINE_VARIABLES.md or consult Web Operations for details on environment variables and their purposes
+// NOTE: these values will only be set if currently null, they may have been set by the "conditional environment variables" section above
+echo "== Setting default environment variables"
+if (!env.VS_SSR_PROXY_ON) { env.VS_SSR_PROXY_ON = "TRUE" }
+if (!env.VS_CONTAINER_PRESERVE) { env.VS_CONTAINER_PRESERVE = "TRUE" }
+if (!env.VS_SKIP_BUILD_FOR_BRANCH) { env.VS_SKIP_BUILD_FOR_BRANCH = "feature/VS-1865-feature-environments-enhancements-log4j" }
+if (!env.VS_BRC_STACK_URI) { env.VS_BRC_STACK_URI = "visitscotland" }
+if (!env.VS_BRC_ENV) { env.VS_BRC_ENV = "demo" }
+if (!env.VS_BRC_STACK_URL) { env.VS_BRC_STACK_URL = "https://api.${VS_BRC_STACK_URI}.bloomreach.cloud" }
+if (!env.VS_BRC_STACK_API_VERSION) { env.VS_BRC_STACK_API_VERSION = "v3" }
+if (!env.VS_DOCKER_IMAGE_NAME) { env.VS_DOCKER_IMAGE_NAME = "vs/vs-brxm15:node18" }
+if (!env.VS_DOCKER_BUILDER_IMAGE_NAME) { env.VS_DOCKER_BUILDER_IMAGE_NAME = "vs/vs-brxm15-builder:node18" }
+if (!env.VS_USE_DOCKER_BUILDER) { env.VS_USE_DOCKER_BUILDER = "TRUE" }
+if (!env.VS_BRANCH_PROPERTIES_DIR) { env.VS_BRANCH_PROPERTIES_DIR = "ci/properties" }
+if (!env.VS_BRANCH_PROPERTIES_FILE) { env.VS_BRANCH_PROPERTIES_FILE = env.BRANCH_NAME.substring(env.BRANCH_NAME.lastIndexOf('/') + 1) + ".properties" }
+echo "==/Setting default environment variables"
+
 pipeline {
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
@@ -16,6 +50,41 @@ pipeline {
     }
 
     stages {
+	stage ('Pre-build') {
+	    steps {
+                // Set any defined build property overrides for this work-in-progress branch
+	        sh '''
+	          set +x
+	          echo; echo "running stage $STAGE_NAME on $HOSTNAME"
+	          echo; echo "== printenv in $STAGE_NAME =="; printenv | sort; echo "==/printenv in $STAGE_NAME =="; echo
+	          echo; echo "setting default properties using /infrastructure.sh setvars"
+	          ./ci/infrastructure/scripts/infrastructure.sh setvars
+	          echo
+	          echo "== printenv after setvars in $STAGE_NAME =="; printenv | sort; echo "==/printenv after setvars in $STAGE_NAME =="
+	          echo
+	          echo; echo "looking for branch specific properties file at $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
+	          echo " - if the pipeline fails at this point please check the format of your properties file!"
+	        '''
+	        // make all branch-specific variables available to pipeline, load file must be in env.VARIABLE="VALUE" format
+	        script {
+	          if (fileExists("$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE")) {
+	            echo "loading environment variables from $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
+	            load "$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
+	            sh '''
+	              set +x
+	              echo
+	              echo "== printenv after load of $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE in $STAGE_NAME =="
+	              printenv | sort
+	              echo "==/printenv after load of $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE in $STAGE_NAME =="
+	              echo
+	            '''
+	          } else {
+	            echo "branch specific properties won't be loaded, file $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE does not exist"
+	          }
+	        }
+	    }
+	} // end stage
+
         stage ('SCM checkout') {
             agent {
                 docker {
