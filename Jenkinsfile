@@ -13,7 +13,7 @@ if (BRANCH_NAME == "develop" && (JOB_NAME ==~ "develop-brc-businessevents.visits
   echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
   env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3009"
 } else {
-  env.VS_RELEASE_SNAPSHOT = "FALSE"
+  echo "=== No conditional environment variables found for branch $BRANCH_NAME in job $JOB_NAME, using dedaults"
   // thisAgent should always be set to "docker-02" unless you have been informed otherwise!
 }
 echo "==/Setting conditional environment variables"
@@ -32,7 +32,9 @@ if (!env.VS_BRC_STACK_API_VERSION) { env.VS_BRC_STACK_API_VERSION = "v3" }
 if (!env.VS_DOCKER_IMAGE_NAME) { env.VS_DOCKER_IMAGE_NAME = "vs/vs-brxm15:node18" }
 if (!env.VS_DOCKER_BUILDER_IMAGE_NAME) { env.VS_DOCKER_BUILDER_IMAGE_NAME = "vs/vs-brxm15-builder:node18" }
 if (!env.VS_USE_DOCKER_BUILDER) { env.VS_USE_DOCKER_BUILDER = "TRUE" }
-if (!env.VS_BRANCH_PROPERTIES_DIR) { env.VS_BRANCH_PROPERTIES_DIR = "ci/properties" }
+if (!env.VS_RELEASE_SNAPSHOT) { env.VS_RELEASE_SNAPSHOT = "FALSE" }
+if (!env.VS_CI_DIR) { env.VS_CI_DIR = "ci" }
+if (!env.VS_BRANCH_PROPERTIES_DIR) { env.VS_BRANCH_PROPERTIES_DIR = env.VS_CI_DIR + "/properties" }
 if (!env.VS_BRANCH_PROPERTIES_FILE) { env.VS_BRANCH_PROPERTIES_FILE = env.BRANCH_NAME.substring(env.BRANCH_NAME.lastIndexOf('/') + 1) + ".properties" }
 echo "==/Setting default environment variables"
 
@@ -58,7 +60,7 @@ pipeline {
 	          echo; echo "running stage $STAGE_NAME on $HOSTNAME"
 	          echo; echo "== printenv in $STAGE_NAME =="; printenv | sort; echo "==/printenv in $STAGE_NAME =="; echo
 	          echo; echo "setting default properties using /infrastructure.sh setvars"
-	          ./ci/infrastructure/scripts/infrastructure.sh setvars
+	          $VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars
 	          echo
 	          echo "== printenv after setvars in $STAGE_NAME =="; printenv | sort; echo "==/printenv after setvars in $STAGE_NAME =="
 	          echo
@@ -88,7 +90,7 @@ pipeline {
 	            sh '''
 	              set +x
 	              echo; echo "setting default properties using infrastructure.sh setvars"
-	              ./ci/infrastructure/scripts/infrastructure.sh setvars
+	              $VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars
 	              echo; echo "== printenv after setvars in $STAGE_NAME =="; printenv | sort; echo "==/printenv after setvars in $STAGE_NAME =="
 	            '''
 	          } else {
@@ -226,8 +228,8 @@ pipeline {
                 sh '''
                     set +x
                     echo; echo "running stage $STAGE_NAME on $HOSTNAME"
-                    ./ci/infrastructure/scripts/infrastructure.sh setvars
-                    VS_CONTAINER_IMAGE=vs/vs-brxm15:node18
+                    $VS_CI_DIR/infrastructure/scripts/infrastructure.sh --container-min-port=3010 --container-max-port=3029 findports
+                    #VS_CONTAINER_IMAGE=vs/vs-brxm15:node18
                     #VS_CONTAINER_NAME=$(echo $JOB_NAME | sed -e "s/\\//_/g")
                     VS_CONTAINER_USR=$(id -u $USER)
                     VS_CONTAINER_GRP=$(id -g $USER)
@@ -252,7 +254,7 @@ pipeline {
                     else
                         echo "no container found with name: $VS_CONTAINER_NAME"
                     fi
-                    docker run -t -d -u $VS_CONTAINER_USR:$VS_CONTAINER_GRP $VS_CONTAINER_PORTS --workdir $VS_CONTAINER_WD --volume $VS_CONTAINER_WORKSPACE:$VS_CONTAINER_WORKSPACE:$VS_CONTAINER_VOLUME_PERMISSIONS --volume $VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_VOLUME_PERMISSIONS $VS_CONTAINER_ENVIRONMENT --name $VS_CONTAINER_NAME --hostname $VS_CONTAINER_NAME $VS_CONTAINER_IMAGE $VS_CONTAINER_INIT_EXEC
+                    docker run -t -d -u $VS_CONTAINER_USR:$VS_CONTAINER_GRP $VS_CONTAINER_PORTS --workdir $VS_CONTAINER_WD --volume $VS_CONTAINER_WORKSPACE:$VS_CONTAINER_WORKSPACE:$VS_CONTAINER_VOLUME_PERMISSIONS --volume $VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_VOLUME_PERMISSIONS $VS_CONTAINER_ENVIRONMENT --name $VS_CONTAINER_NAME --hostname $VS_CONTAINER_NAME $VS_DOCKER_IMAGE_NAME $VS_CONTAINER_INIT_EXEC
                     VS_CONTAINER_ID=$(docker ps -aq --filter "name=^$VS_CONTAINER_NAME$")
                     docker exec -d -t $VS_CONTAINER_ID /bin/bash -c "NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs 2>&1 | tee -a ./nodeapp.log"
                 '''
