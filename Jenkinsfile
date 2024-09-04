@@ -82,6 +82,35 @@ pipeline {
 	            echo "branch specific properties won't be loaded, file $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE does not exist"
 	          }
 	        }
+		// run infrastructure.sh to set default variables and then import them into the pipeline
+		script {
+	          if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
+	            sh '''
+	              set +x
+	              echo; echo "setting default properties using infrastructure.sh setvars"
+	              ./ci/infrastructure/scripts/infrastructure.sh setvars
+	              echo; echo "== printenv after setvars in $STAGE_NAME =="; printenv | sort; echo "==/printenv after setvars in $STAGE_NAME =="
+	            '''
+	          } else {
+	              echo; echo "infrastructure.sh was not found - default environment variables will not be set"
+	          }
+		}
+		script {
+	          if (fileExists("$WORKSPACE/ci/vs-last-env.quoted")) {
+	            echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
+	            load "$WORKSPACE/ci/vs-last-env.quoted"
+	            echo "found ${env.VS_COMMIT_AUTHOR}"
+	          }
+		}
+		script {
+	            sh '''
+			set +x
+			echo; echo "== printenv after load of $WORKSPACE/ci/vs-last-env.quoted in $STAGE_NAME =="
+			printenv | sort
+			echo "==/printenv after load of $WORKSPACE/ci/vs-last-env.quoted in $STAGE_NAME =="
+			echo
+		    '''
+		}
 	    }
 	} // end stage
 
@@ -197,8 +226,9 @@ pipeline {
                 sh '''
                     set +x
                     echo; echo "running stage $STAGE_NAME on $HOSTNAME"
+                    ./ci/infrastructure/scripts/infrastructure.sh setvars
                     VS_CONTAINER_IMAGE=vs/vs-brxm15:node18
-                    VS_CONTAINER_NAME=$(echo $JOB_NAME | sed -e "s/\\//_/g")
+                    #VS_CONTAINER_NAME=$(echo $JOB_NAME | sed -e "s/\\//_/g")
                     VS_CONTAINER_USR=$(id -u $USER)
                     VS_CONTAINER_GRP=$(id -g $USER)
                     VS_CONTAINER_WD=$PWD
@@ -215,9 +245,13 @@ pipeline {
                     echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
                     printenv >> printenv.$STAGE_NAME
                     echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
-                    echo "found container with name: $VS_CONTAINER_NAME and id: $VS_RUNNING_CONTAINER_ID"
-                    echo "removing any container with name: $VS_CONTAINER_NAME: $VS_RUNNING_CONTAINER_ID"
-                    docker container rm -f $VS_RUNNING_CONTAINER_ID
+                    if [ ! -z "" $VS_RUNNING_CONTAINER_ID ]; then 
+                        echo "found container with name: $VS_CONTAINER_NAME and id: $VS_RUNNING_CONTAINER_ID"
+                        echo "removing any container with name: $VS_CONTAINER_NAME: $VS_RUNNING_CONTAINER_ID"
+                        docker container rm -f $VS_RUNNING_CONTAINER_ID
+                    else
+                        echo "no container found with name: $VS_CONTAINER_NAME"
+                    fi
                     docker run -t -d -u $VS_CONTAINER_USR:$VS_CONTAINER_GRP $VS_CONTAINER_PORTS --workdir $VS_CONTAINER_WD --volume $VS_CONTAINER_WORKSPACE:$VS_CONTAINER_WORKSPACE:$VS_CONTAINER_VOLUME_PERMISSIONS --volume $VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_VOLUME_PERMISSIONS $VS_CONTAINER_ENVIRONMENT --name $VS_CONTAINER_NAME --hostname $VS_CONTAINER_NAME $VS_CONTAINER_IMAGE $VS_CONTAINER_INIT_EXEC
                     VS_CONTAINER_ID=$(docker ps -aq --filter "name=^$VS_CONTAINER_NAME$")
                     docker exec -d -t $VS_CONTAINER_ID /bin/bash -c "NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs 2>&1 | tee -a ./nodeapp.log"
