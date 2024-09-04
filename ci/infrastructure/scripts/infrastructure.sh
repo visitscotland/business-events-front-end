@@ -546,6 +546,8 @@ tidyContainers() {
 
 setPortRange() {
   # to-do: gp - consider if this logic should live in the pipeline rather than the script
+  #      : gp - considered, the per branch/job overrides should be set in the pipeline, not here
+  #      :    - the entire if block below can be removed
   echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME] determining port range to test for available base ports"
     if [ -z "$VS_CONTAINER_BASE_PORT_OVERRIDE" ]; then
     if [ "$VS_PARENT_JOB_NAME" == "develop-stable.visitscotland.com-mb" ] && [ "$GIT_BRANCH" == "develop" ]; then
@@ -565,15 +567,17 @@ setPortRange() {
     fi
   fi
   # even if override is set we must still check to ensure the port is free
-  # MIN_PORT/MAX_PORT values are set here to a range, if no override is set, or to the value of the override if it is
+  # MIN_PORT/MAX_PORT values are set here to a range if no override is set, or to the value of the override if it is
   # if the override port if in use the job must fail in the findBasePort proc
   if [ -z "$VS_CONTAINER_BASE_PORT_OVERRIDE" ]; then
     MIN_PORT=$VS_CONTAINER_BASE_PORT_MIN
     MAX_PORT=$VS_CONTAINER_BASE_PORT_MAX
+    echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  - MIN_PORT and MAX_PORT will be set to $VS_CONTAINER_BASE_PORT_MIN and MAX_PORT=$VS_CONTAINER_BASE_PORT_MAX since VS_CONTAINER_BASE_PORT_OVERRIDE is not set"
+    echo ""
   else
     MIN_PORT=$VS_CONTAINER_BASE_PORT_OVERRIDE
     MAX_PORT=$VS_CONTAINER_BASE_PORT_OVERRIDE
-    echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  - MIN_PORT will be set to $VS_CONTAINER_BASE_PORT_OVERRIDE due to VS_CONTAINER_BASE_PORT_OVERRIDE"
+    echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  - MIN_PORT and MAX_PORT will be set to $VS_CONTAINER_BASE_PORT_OVERRIDE due to VS_CONTAINER_BASE_PORT_OVERRIDE"
     echo ""
   fi
 }
@@ -651,20 +655,20 @@ findDynamicPorts() {
       FREE=`netstat -an | egrep "LISTEN *$" | grep $THIS_PORT`
       if [ "$FREE" = "" ]; then
         #echo " - netstat says $THIS_PORT is free - using it"
-	eval "VS_CONTAINER_EXT_PORT_"$VS_CONTAINER_SERVICE"="$THIS_PORT
+	      eval "VS_CONTAINER_EXT_PORT_"$VS_CONTAINER_SERVICE"="$THIS_PORT
         echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  - service $VS_CONTAINER_SERVICE on port $VS_CONTAINER_SERVICE_PORT has been mapped to external port $THIS_PORT" >> $VS_MAIL_NOTIFY_BUILD_MESSAGE_EXTRA
-	THIS_DOCKER_MAP="-p $THIS_PORT:$VS_CONTAINER_SERVICE_PORT"
-	VS_CONTAINER_PORT_MAPPINGS="$THIS_DOCKER_MAP $VS_CONTAINER_PORT_MAPPINGS"
-	break
+	      THIS_DOCKER_MAP="-p $THIS_PORT:$VS_CONTAINER_SERVICE_PORT"
+	      VS_CONTAINER_PORT_MAPPINGS="$THIS_DOCKER_MAP $VS_CONTAINER_PORT_MAPPINGS"
+	      break
       elif [ ! "$FREE" = "" ] && [ "$VS_CONTAINER_PRESERVE" == "TRUE" ]; then
         echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  - netstat says $THIS_PORT is not free - checking if it's reserved by this branch "
         HAS_PORT_ID=`docker ps -a | grep $THIS_PORT | tail -1 | awk '{print $1}'`
         HAS_PORT_NAME=`docker ps -a --filter="id=$HAS_PORT_ID" --format "table {{.Names}}" | tail -n +2`
         if [ "$HAS_PORT_NAME" == "$VS_CONTAINER_NAME" ]; then
           echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  -- success - port is owned by $HAS_PORT_NAME"
-	  eval "VS_CONTAINER_EXT_PORT_"$VS_CONTAINER_SERVICE"="$THIS_PORT
-	  break
-	fi
+	        eval "VS_CONTAINER_EXT_PORT_"$VS_CONTAINER_SERVICE"="$THIS_PORT
+	        break
+	      fi
       else
         echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  - $THIS_PORT is in use, trying "$((THIS_PORT+$VS_CONTAINER_PORT_INCREMENT))
       fi
@@ -1058,6 +1062,14 @@ case $METHOD in
     checkVariables
     defaultSettings
     findHippoArtifact
+  ;;
+  findports)
+    checkVariables
+    defaultSettings
+    findHippoArtifact
+    setPortRange
+    findBasePort
+    findDynamicPorts
   ;;
   packagesstartifact)
     checkVariables
