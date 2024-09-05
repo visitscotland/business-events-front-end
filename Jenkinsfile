@@ -212,7 +212,7 @@ pipeline {
                         printenv | sort | tee printenv.$VS_STAGE_NAME
                         echo "====/PRINTENV $STAGE_NAME ====="
                     else
-                        printenv | sort > tee printenv.$VS_STAGE_NAME
+                        printenv | sort > printenv.$VS_STAGE_NAME
                     fi
                     yarn
                 '''
@@ -242,7 +242,7 @@ pipeline {
                             printenv | sort | tee printenv.$VS_STAGE_NAME
                             echo "====/PRINTENV $STAGE_NAME ====="
                         else
-                            printenv | sort > tee printenv.$VS_STAGE_NAME
+                            printenv | sort > printenv.$VS_STAGE_NAME
                         fi
                         yarn test
                     '''
@@ -293,7 +293,7 @@ pipeline {
                         printenv | sort | tee printenv.$VS_STAGE_NAME
                         echo "====/PRINTENV $STAGE_NAME ====="
                     else
-                        printenv | sort > tee printenv.$VS_STAGE_NAME
+                        printenv | sort > printenv.$VS_STAGE_NAME
                     fi
                     if [ ! -z "$VS_RUNNING_CONTAINER_ID"  ]; then 
                         echo "found container with name: $VS_CONTAINER_NAME and id: $VS_RUNNING_CONTAINER_ID"
