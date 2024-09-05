@@ -107,7 +107,10 @@ pipeline {
 	                echo "branch specific properties won't be loaded, file $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE does not exist"
 	            }
 	        }
-		    // run infrastructure.sh to set default variables and then import them into the pipeline
+		    // the two script blocks below are necessary to allow infrastructure.sh to set variables and then import them back to the pipeline
+            //  - if we determine that none of these variables are actually used until the Deploy stage, then this is not necessary
+            //  - the printenv commands in every stage are useful for debugging but may not be required long-term
+            // run infrastructure.sh to set default variables and then import them into the pipeline
 		    script {
 	            if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
 	                sh '''
@@ -282,6 +285,36 @@ pipeline {
 
         stage ('Deploy') {
             steps {
+                // the two script blocks below are necessary to allow infrastructure.sh to set variables and then import them back to the pipeline
+                //  - in a future iteration, where the container is started by the shell script, these will no longer be required
+                script {
+                    if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
+	                    sh '''
+	                        set +x
+                            VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
+	                        echo; echo "setting default properties using infrastructure.sh setvars"
+	                        $VS_CI_DIR/infrastructure/scripts/infrastructure.sh findports
+                            if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+	                            echo; echo "== printenv after setvars in $STAGE_NAME =="
+                                printenv | sort | tee printenv_4.$VS_STAGE_NAME
+                                echo "==/printenv after setvars in $STAGE_NAME =="
+                            else
+                                printenv | sort > printenv_4.$VS_STAGE_NAME
+                            fi
+	                    '''
+	                } else {
+	                    echo; echo "infrastructure.sh was not found - default environment variables will not be set"
+	                }
+                }
+                script {
+	                if (fileExists("$WORKSPACE/ci/vs-last-env.quoted")) {
+	                    echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
+	                    load "$WORKSPACE/ci/vs-last-env.quoted"
+	                    echo "found ${env.VS_COMMIT_AUTHOR}"
+	                } else {
+	                    echo; echo "$WORKSPACE/ci/vs-last-env.quoted - default environment variables will not be loaded"
+	                }
+		        }
                 sh '''
                     set +x
                     echo; echo "running stage $STAGE_NAME on $HOSTNAME"
