@@ -41,13 +41,13 @@ if (!env.VS_RELEASE_SNAPSHOT) { env.VS_RELEASE_SNAPSHOT = "FALSE" }
 echo "==/Setting default environment variables"
 
 echo "== Setting default application variables"
-if (!env.BR_CMS_ORIGIN_LOCATION ) { env.BR_CMS_ORIGIN_LOCATION=https://feature.visitscotland.com }
-if (!env.BR_RESOURCE_API_ENDPOINT ) { env.BR_RESOURCE_API_ENDPOINT=https://feature-businessevents.visitscotland.com/resourceapi }
-if (!env.BR_X_FORWARDED_HOST ) { env.BR_X_FORWARDED_HOST=feature-businessevents.visitscotland.com }
+if (!env.BR_CMS_ORIGIN_LOCATION ) { env.BR_CMS_ORIGIN_LOCATION = "https://feature.visitscotland.com" }
+if (!env.BR_RESOURCE_API_ENDPOINT ) { env.BR_RESOURCE_API_ENDPOINT = "https://feature-businessevents.visitscotland.com/resourceapi" }
+if (!env.BR_X_FORWARDED_HOST ) { env.BR_X_FORWARDED_HOST = "feature-businessevents.visitscotland.com" }
 echo "==/Setting default application variables"
 
 echo "== Setting default container variables"
-if (!env.VS_CONTAINER_EXEC ) { env.VS_CONTAINER_EXEC="/bin/bash -c \\"node .output/server/index.mjs\\"" }
+if (!env.VS_CONTAINER_EXEC ) { env.VS_CONTAINER_EXEC = "/bin/bash -c \\"node .output/server/index.mjs\\"" }
 echo "==/Setting default container variables"
 
 pipeline {
