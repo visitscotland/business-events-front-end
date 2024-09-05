@@ -244,7 +244,7 @@ pipeline {
                     echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
                     printenv >> printenv.$STAGE_NAME
                     echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
-                    if [ ! -z "" $VS_RUNNING_CONTAINER_ID ]; then 
+                    if [ ! -z "$VS_RUNNING_CONTAINER_ID"  ]; then 
                         echo "found container with name: $VS_CONTAINER_NAME and id: $VS_RUNNING_CONTAINER_ID"
                         echo "removing any container with name: $VS_CONTAINER_NAME: $VS_RUNNING_CONTAINER_ID"
                         docker container rm -f $VS_RUNNING_CONTAINER_ID
