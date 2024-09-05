@@ -68,13 +68,22 @@ pipeline {
                 // Set any defined build property overrides for this work-in-progress branch
 	            sh '''
     	            set +x
+                    VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
 	                echo; echo "running stage $STAGE_NAME on $HOSTNAME"
-	                echo; echo "== printenv in $STAGE_NAME =="; printenv | sort; echo "==/printenv in $STAGE_NAME =="; echo
-	                echo; echo "setting default properties using /infrastructure.sh setvars"
+                    if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+	                    echo; echo "== printenv in $STAGE_NAME =="; printenv | sort; echo "==/printenv in $STAGE_NAME =="; echo
+                    else
+                        printenv | sort > printenv.$VS_STAGE_NAME
+                    fi
+                    echo; echo "setting default properties using /infrastructure.sh setvars"
 	                $VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars
-	                echo
-	                echo "== printenv after setvars in $STAGE_NAME =="; printenv | sort; echo "==/printenv after setvars in $STAGE_NAME =="
-	                echo
+                    if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+	                    echo; echo "== printenv after setvars in $STAGE_NAME =="
+                        printenv | sort | tee printenv_2.$VS_STAGE_NAME
+                        echo "==/printenv after setvars in $STAGE_NAME =="
+                    else
+                        printenv | sort > printenv_2.$VS_STAGE_NAME
+                    fi
 	                echo; echo "looking for branch specific properties file at $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
 	                echo " - if the pipeline fails at this point please check the format of your properties file!"
 	            '''
@@ -85,22 +94,34 @@ pipeline {
     	            load "$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
 	                sh '''
     	                set +x
-	                    echo; echo "== printenv after load of $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE in $STAGE_NAME =="
-	                    printenv | sort
-	                    echo "==/printenv after load of $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE in $STAGE_NAME =="; echo
+                        VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
+                        if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+	                        echo; echo "== printenv after load of $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE in $STAGE_NAME =="
+	                        printenv | sort | tee printenv_3.$VS_STAGE_NAME
+                            echo "==/printenv after load of $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE in $STAGE_NAME =="
+                        else
+                            printenv | sort > printenv_3.$VS_STAGE_NAME
+                        fi
 	            '''
-	          } else {
-	            echo "branch specific properties won't be loaded, file $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE does not exist"
-	          }
+	            } else {
+	                echo "branch specific properties won't be loaded, file $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE does not exist"
+	            }
 	        }
 		    // run infrastructure.sh to set default variables and then import them into the pipeline
 		    script {
 	            if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
 	                sh '''
 	                    set +x
+                        VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
 	                    echo; echo "setting default properties using infrastructure.sh setvars"
 	                    $VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars
-	                    echo; echo "== printenv after setvars in $STAGE_NAME =="; printenv | sort; echo "==/printenv after setvars in $STAGE_NAME =="
+                        if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+	                        echo; echo "== printenv after setvars in $STAGE_NAME =="
+                            printenv | sort | tee printenv_4.$VS_STAGE_NAME
+                            echo "==/printenv after setvars in $STAGE_NAME =="
+                        else
+                            printenv | sort > printenv_4.$VS_STAGE_NAME
+                        fi
 	                '''
 	            } else {
 	                echo; echo "infrastructure.sh was not found - default environment variables will not be set"
@@ -111,14 +132,21 @@ pipeline {
 	                echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
 	                load "$WORKSPACE/ci/vs-last-env.quoted"
 	                echo "found ${env.VS_COMMIT_AUTHOR}"
+	            } else {
+	                echo; echo "$WORKSPACE/ci/vs-last-env.quoted - default environment variables will not be loaded"
 	            }
 		    }
 		    script {
                 sh '''
 			        set +x
-			        echo; echo "== printenv after load of $WORKSPACE/ci/vs-last-env.quoted in $STAGE_NAME =="
-			        printenv | sort
-			        echo "==/printenv after load of $WORKSPACE/ci/vs-last-env.quoted in $STAGE_NAME =="; echo
+                    VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
+                    if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+			            echo; echo "== printenv after load of $WORKSPACE/ci/vs-last-env.quoted in $STAGE_NAME =="
+			            printenv | sort | tee printenv_5.$VS_STAGE_NAME
+			            echo "==/printenv after load of $WORKSPACE/ci/vs-last-env.quoted in $STAGE_NAME ==";
+                    else
+                        printenv | sort > printenv_5.$VS_STAGE_NAME
+                    fi
 		        '''
             }
         }
@@ -135,16 +163,24 @@ pipeline {
             steps {
                 sh '''
                     set +x
+                    VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
                     echo; echo "running stage $STAGE_NAME on $HOSTNAME"
-                    echo; echo "==== PRINTENV $STAGE_NAME 1 =====" > printenv.$STAGE_NAME
-                    printenv >> printenv.$STAGE_NAME
-                    echo "====/PRINTENV $STAGE_NAME 1 =====" >> printenv.$STAGE_NAME ; echo
-                    #ls -alh
+                    if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+                        echo; echo "==== PRINTENV $STAGE_NAME 1 ====="
+                        printenv | sort | tee printenv_1.$VS_STAGE_NAME
+                        echo "====/PRINTENV $STAGE_NAME 1 ====="
+                    else
+                        printenv | sort > printenv_1.$VS_STAGE_NAME
+                    fi
                     export HOME=$WORKSPACE
                     export npm_config_cache=$HOME
-                    echo; echo "==== PRINTENV $STAGE_NAME 2 =====" > printenv2.$STAGE_NAME
-                    printenv >> printenv2.$STAGE_NAME
-                    echo "====/PRINTENV $STAGE_NAME 2 =====" >> printenv2.$STAGE_NAME; echo
+                    if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+                        echo; echo "==== PRINTENV $STAGE_NAME 2 ====="
+                        printenv | sort | tee printenv_2.$VS_STAGE_NAME
+                        echo "====/PRINTENV $STAGE_NAME 2 ====="
+                    else
+                        printenv > printenv_2.$VS_STAGE_NAME
+                    fi
                     echo; echo "==== TOOLS CHECK ====="
                 '''
                 sh 'set +x; node --version; exit 0'
@@ -164,15 +200,20 @@ pipeline {
                 }
             }
             steps {
-                sh 'echo; echo "running stage $STAGE_NAME on $HOSTNAME"'
                 sh '''
                     set +x
+                    echo; echo "running stage $STAGE_NAME on $HOSTNAME"
+                    VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
                     export HOME=$WORKSPACE
                     export npm_config_cache=$HOME/.npm
                     if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
-                    echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
-                    printenv >> printenv.$STAGE_NAME
-                    echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
+                    if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+                        echo; echo "==== PRINTENV $STAGE_NAME ====="
+                        printenv | sort | tee printenv.$VS_STAGE_NAME
+                        echo "====/PRINTENV $STAGE_NAME ====="
+                    else
+                        printenv | sort > tee printenv.$VS_STAGE_NAME
+                    fi
                     yarn
                 '''
             }
@@ -188,15 +229,21 @@ pipeline {
             }
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh 'echo; echo "running stage $STAGE_NAME on $HOSTNAME"'
+                    sh ''
                     sh '''
                         set +x
+                        echo; echo "running stage $STAGE_NAME on $HOSTNAME"
+                        VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
                         export HOME=$WORKSPACE
                         export npm_config_cache=$HOME/.npm
                         if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
-                        echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
-                        printenv >> printenv.$STAGE_NAME
-                        echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
+                        if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+                            echo; echo "==== PRINTENV $STAGE_NAME ====="
+                            printenv | sort | tee printenv.$VS_STAGE_NAME
+                            echo "====/PRINTENV $STAGE_NAME ====="
+                        else
+                            printenv | sort > tee printenv.$VS_STAGE_NAME
+                        fi
                         yarn test
                     '''
                 }
@@ -216,12 +263,17 @@ pipeline {
                     sh '''
                         set +x
                         echo; echo "running stage $STAGE_NAME on $HOSTNAME"
+                        VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
                         export HOME=$WORKSPACE
                         export npm_config_cache=$HOME/.npm
                         if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
-                        echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
-                        printenv >> printenv.$STAGE_NAME
-                        echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
+                        if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+                            echo; echo "==== PRINTENV $STAGE_NAME ====="
+                            printenv | sort | tee printenv.$VS_STAGE_NAME
+                            echo "====/PRINTENV $STAGE_NAME ====="
+                        else
+                            printenv | sort > printenv.$VS_STAGE_NAME
+                        fi
                         yarn build
                     '''
                 }
@@ -233,13 +285,16 @@ pipeline {
                 sh '''
                     set +x
                     echo; echo "running stage $STAGE_NAME on $HOSTNAME"
-                    #VS_CONTAINER_EXEC="NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs"
-                    #VS_CONTAINER_EXEC="/bin/bash -c \\"HOME=$PWD; set | tee ./nodeapp.log; NODE_DEBUG=http node $HOME/.output/server/index.mjs 2>&1 | tee -a ./nodeapp.log\\""
+                    VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
                     echo $VS_CONTAINER_EXEC
                     VS_RUNNING_CONTAINER_ID=$(docker ps -aq --filter "name=^$VS_CONTAINER_NAME$")
-                    echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
-                    printenv >> printenv.$STAGE_NAME
-                    echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
+                    if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+                        echo; echo "==== PRINTENV $STAGE_NAME ====="
+                        printenv | sort | tee printenv.$VS_STAGE_NAME
+                        echo "====/PRINTENV $STAGE_NAME ====="
+                    else
+                        printenv | sort > tee printenv.$VS_STAGE_NAME
+                    fi
                     if [ ! -z "$VS_RUNNING_CONTAINER_ID"  ]; then 
                         echo "found container with name: $VS_CONTAINER_NAME and id: $VS_RUNNING_CONTAINER_ID"
                         echo "removing any container with name: $VS_CONTAINER_NAME: $VS_RUNNING_CONTAINER_ID"
