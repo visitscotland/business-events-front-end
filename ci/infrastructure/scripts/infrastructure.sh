@@ -122,7 +122,7 @@ while [[ $# -gt 0 ]]; do
     --debug) if [ ! -z "$THIS_RESULT" ]; then VS_DEBUG=$THIS_RESULT; else VS_DEBUG=TRUE; fi;;
     --ci-dir) if [ ! -z "$THIS_RESULT" ]; then VS_CI_DIR=$THIS_RESULT; fi;;
     --container-min-port) if [ ! -z "$THIS_RESULT" ]; then VS_CONTAINER_BASE_PORT_MIN=$THIS_RESULT; fi;;
-    --container-min-port) if [ ! -z "$THIS_RESULT" ]; then VS_CONTAINER_BASE_PORT_MAX=$THIS_RESULT; fi;;
+    --container-max-port) if [ ! -z "$THIS_RESULT" ]; then VS_CONTAINER_BASE_PORT_MAX=$THIS_RESULT; fi;;
     --frontend-dir) if [ ! -z "$THIS_RESULT" ]; then VS_FRONTEND_DIR=$THIS_RESULT; fi;;
     --ssr-app-port) if [ ! -z "$THIS_RESULT" ]; then VS_SSR_APP_PORT=$THIS_RESULT; fi;;
     --ssr-target) if [ ! -z "$THIS_RESULT" ]; then VS_SSR_PROXY_TARGET_HOST=$THIS_RESULT; fi;;
@@ -572,7 +572,7 @@ setPortRange() {
   if [ -z "$VS_CONTAINER_BASE_PORT_OVERRIDE" ]; then
     MIN_PORT=$VS_CONTAINER_BASE_PORT_MIN
     MAX_PORT=$VS_CONTAINER_BASE_PORT_MAX
-    echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  - MIN_PORT and MAX_PORT will be set to $VS_CONTAINER_BASE_PORT_MIN and MAX_PORT=$VS_CONTAINER_BASE_PORT_MAX since VS_CONTAINER_BASE_PORT_OVERRIDE is not set"
+    echo "`eval $VS_LOG_DATESTAMP` INFO  [$VS_SCRIPTNAME]  - MIN_PORT and MAX_PORT will be set to $VS_CONTAINER_BASE_PORT_MIN and $VS_CONTAINER_BASE_PORT_MAX since VS_CONTAINER_BASE_PORT_OVERRIDE is not set"
     echo ""
   else
     MIN_PORT=$VS_CONTAINER_BASE_PORT_OVERRIDE
