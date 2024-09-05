@@ -137,4 +137,8 @@ const mapping = {
             top: 0;
         }
     }
+
+    .vs-sticky-nav {
+        overflow: hidden;
+    }
 </style>
