@@ -21,22 +21,34 @@ echo "==/Setting conditional environment variables"
 // set or override any default environment variables here using the format: if (!env.MY_VAR) { env.MY_VAR = "default_value" }
 // please see ci/README_PIPELINE_VARIABLES.md or consult Web Operations for details on environment variables and their purposes
 // NOTE: these values will only be set if currently null, they may have been set by the "conditional environment variables" section above
-echo "== Setting default environment variables"
-if (!env.VS_SSR_PROXY_ON) { env.VS_SSR_PROXY_ON = "TRUE" }
-if (!env.VS_CONTAINER_PRESERVE) { env.VS_CONTAINER_PRESERVE = "TRUE" }
-if (!env.VS_SKIP_BUILD_FOR_BRANCH) { env.VS_SKIP_BUILD_FOR_BRANCH = "feature/VS-1865-feature-environments-enhancements-log4j" }
+echo "== Setting default pipeline environment variables"
+if (!env.VS_CI_DIR) { env.VS_CI_DIR = "ci" }
+if (!env.VS_BRANCH_PROPERTIES_DIR) { env.VS_BRANCH_PROPERTIES_DIR = env.VS_CI_DIR + "/properties" }
+if (!env.VS_BRANCH_PROPERTIES_FILE) { env.VS_BRANCH_PROPERTIES_FILE = env.BRANCH_NAME.substring(env.BRANCH_NAME.lastIndexOf('/') + 1) + ".properties" }
 if (!env.VS_BRC_STACK_URI) { env.VS_BRC_STACK_URI = "visitscotland" }
 if (!env.VS_BRC_ENV) { env.VS_BRC_ENV = "demo" }
 if (!env.VS_BRC_STACK_URL) { env.VS_BRC_STACK_URL = "https://api.${VS_BRC_STACK_URI}.bloomreach.cloud" }
 if (!env.VS_BRC_STACK_API_VERSION) { env.VS_BRC_STACK_API_VERSION = "v3" }
+if (!env.VS_CONTAINER_BASE_PORT_MIN ) { env.VS_CONTAINER_BASE_PORT_MIN = 3010 }
+if (!env.VS_CONTAINER_BASE_PORT_MAX ) { env.VS_CONTAINER_BASE_PORT_MAX = 3029 }
+if (!env.VS_CONTAINER_PRESERVE) { env.VS_CONTAINER_PRESERVE = "TRUE" }
 if (!env.VS_DOCKER_IMAGE_NAME) { env.VS_DOCKER_IMAGE_NAME = "vs/vs-brxm15:node18" }
 if (!env.VS_DOCKER_BUILDER_IMAGE_NAME) { env.VS_DOCKER_BUILDER_IMAGE_NAME = "vs/vs-brxm15-builder:node18" }
+if (!env.VS_SKIP_BUILD_FOR_BRANCH) { env.VS_SKIP_BUILD_FOR_BRANCH = "feature/VS-1865-feature-environments-enhancements-log4j" }
+if (!env.VS_SSR_PROXY_ON) { env.VS_SSR_PROXY_ON = "TRUE" }
 if (!env.VS_USE_DOCKER_BUILDER) { env.VS_USE_DOCKER_BUILDER = "TRUE" }
 if (!env.VS_RELEASE_SNAPSHOT) { env.VS_RELEASE_SNAPSHOT = "FALSE" }
-if (!env.VS_CI_DIR) { env.VS_CI_DIR = "ci" }
-if (!env.VS_BRANCH_PROPERTIES_DIR) { env.VS_BRANCH_PROPERTIES_DIR = env.VS_CI_DIR + "/properties" }
-if (!env.VS_BRANCH_PROPERTIES_FILE) { env.VS_BRANCH_PROPERTIES_FILE = env.BRANCH_NAME.substring(env.BRANCH_NAME.lastIndexOf('/') + 1) + ".properties" }
 echo "==/Setting default environment variables"
+
+echo "== Setting default application variables"
+if (!env.BR_CMS_ORIGIN_LOCATION ) { env.BR_CMS_ORIGIN_LOCATION=https://feature.visitscotland.com }
+if (!env.BR_RESOURCE_API_ENDPOINT ) { env.BR_RESOURCE_API_ENDPOINT=https://feature-businessevents.visitscotland.com/resourceapi }
+if (!env.BR_X_FORWARDED_HOST ) { env.BR_X_FORWARDED_HOST=feature-businessevents.visitscotland.com }
+echo "==/Setting default application variables"
+
+echo "== Setting default container variables"
+if (!env.VS_CONTAINER_EXEC ) { env.VS_CONTAINER_EXEC="/bin/bash -c \\"node .output/server/index.mjs\\"" }
+echo "==/Setting default container variables"
 
 pipeline {
     options {
@@ -214,9 +226,6 @@ pipeline {
                         echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
                         printenv >> printenv.$STAGE_NAME
                         echo "====/PRINTENV $STAGE_NAME =====" >> printenv.$STAGE_NAME ; echo
-                        export BR_CMS_ORIGIN_LOCATION=https://feature.visitscotland.com
-                        export BR_RESOURCE_API_ENDPOINT=https://feature-businessevents.visitscotland.com/resourceapi
-                        export BR_X_FORWARDED_HOST=feature-businessevents.visitscotland.com
                         yarn build
                     '''
                 }
@@ -228,21 +237,9 @@ pipeline {
                 sh '''
                     set +x
                     echo; echo "running stage $STAGE_NAME on $HOSTNAME"
-                    $VS_CI_DIR/infrastructure/scripts/infrastructure.sh --container-min-port=3010 --container-max-port=3029 findports
-                    #VS_CONTAINER_IMAGE=vs/vs-brxm15:node18
-                    #VS_CONTAINER_NAME=$(echo $JOB_NAME | sed -e "s/\\//_/g")
-                    VS_CONTAINER_USR=$(id -u $USER)
-                    VS_CONTAINER_GRP=$(id -g $USER)
-                    VS_CONTAINER_WD=$PWD
-                    VS_CONTAINER_WORKSPACE=$WORKSPACE
-                    VS_CONTAINER_VOLUME_PERMISSIONS="rw,z"
-                    VS_CONTAINER_PORTS="-p 3000:3000"
-                    VS_CONTAINER_ENVIRONMENT=""
-                    VS_CONTAINER_ENVIRONMENT_FILE="--env-file [FILE_NAME]"
-                    VS_CONTAINER_INIT_EXEC="cat"
                     #VS_CONTAINER_EXEC="NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs"
                     #VS_CONTAINER_EXEC="/bin/bash -c \\"HOME=$PWD; set | tee ./nodeapp.log; NODE_DEBUG=http node $HOME/.output/server/index.mjs 2>&1 | tee -a ./nodeapp.log\\""
-                    VS_CONTAINER_EXEC="/bin/bash -c \\"node .output/server/index.mjs\\""
+                    echo $VS_CONTAINER_EXEC
                     VS_RUNNING_CONTAINER_ID=$(docker ps -aq --filter "name=^$VS_CONTAINER_NAME$")
                     echo; echo "==== PRINTENV $STAGE_NAME =====" > printenv.$STAGE_NAME
                     printenv >> printenv.$STAGE_NAME
