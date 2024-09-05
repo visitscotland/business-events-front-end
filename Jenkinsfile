@@ -47,7 +47,7 @@ if (!env.BR_X_FORWARDED_HOST ) { env.BR_X_FORWARDED_HOST = "feature-businesseven
 echo "==/Setting default application variables"
 
 echo "== Setting default container variables"
-if (!env.VS_CONTAINER_EXEC ) { env.VS_CONTAINER_EXEC = "/bin/bash -c \\"node .output/server/index.mjs\\"" }
+if (!env.VS_CONTAINER_EXEC ) { env.VS_CONTAINER_EXEC = "/bin/bash -c \"node .output/server/index.mjs\"" }
 echo "==/Setting default container variables"
 
 pipeline {
