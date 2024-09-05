@@ -86,7 +86,7 @@ if [ -z "$VS_CONTAINER_WD" ]; then VS_CONTAINER_WD=$PWD; fi
 if [ -z "$VS_CONTAINER_WORKSPACE" ]; then VS_CONTAINER_WORKSPACE=$WORKSPACE; fi
 if [ -z "$VS_CONTAINER_VOLUME_PERMISSIONS" ]; then VS_CONTAINER_VOLUME_PERMISSIONS="rw,z"; fi
 if [ -z "$VS_CONTAINER_PORTS" ]; then VS_CONTAINER_PORTS="-p 3000:3000"; fi
-if [ -z "$VS_CONTAINER_ENVIRONMENT" ]; then unset VS_CONTAINER_ENVIRONMENT=; fi
+#if [ -z "$VS_CONTAINER_ENVIRONMENT" ]; then VS_CONTAINER_ENVIRONMENT=; fi
 if [ -z "$VS_CONTAINER_ENVIRONMENT_FILE" ]; then VS_CONTAINER_ENVIRONMENT_FILE="--env-file [FILE_NAME]"; fi
 if [ -z "$VS_CONTAINER_INIT_EXEC" ]; then VS_CONTAINER_INIT_EXEC="cat"; fi
 #  ==== (D)SSR Application Variables ====
@@ -694,7 +694,11 @@ findDynamicPorts() {
     done
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - for service $SERVICE: $MAPPINGS" 
   done
-  if [ ! -z "$VS_CONTAINER_PORT_MAPPINGS" ]; then echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - Docker will be presented with: $VS_CONTAINER_PORT_MAPPINGS"; fi
+  if [ ! -z "$VS_CONTAINER_PORT_MAPPINGS" ]; then 
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - Docker will be presented with: $VS_CONTAINER_PORT_MAPPINGS"
+  else
+    echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME]  - Port mappings were not set"
+  fi
   echo ""
 }
 
