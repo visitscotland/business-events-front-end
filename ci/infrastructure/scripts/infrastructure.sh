@@ -1074,11 +1074,12 @@ case $METHOD in
   ;;
   findports)
     checkVariables
-    defaultSettings
-    findHippoArtifact
+    defaultSettingsct
     setPortRange
     findBasePort
     findDynamicPorts
+    exportVSVariables
+    copyVSVariables
   ;;
   packagesstartifact)
     checkVariables

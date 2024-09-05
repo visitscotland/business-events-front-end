@@ -6,15 +6,14 @@ thisAgent = "docker-02"
 // please see ci/README_PIPELINE_VARIABLES.md or consult Web Operations for details on environment variables and their purposes
 echo "== Setting conditional environment variables"
 if (BRANCH_NAME == "develop" && (JOB_NAME ==~ "develop-brc-businessevents.visitscotland.com(-mb)?/develop")) {
-  echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
-  env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3003"
-  env.VS_RELEASE_SNAPSHOT = "FALSE"
+    echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
+    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3003"
+    env.VS_RELEASE_SNAPSHOT = "FALSE"
 } else if (BRANCH_NAME ==~ "ops/feature-environment(s)?-enhancements" && (JOB_NAME ==~ "feature.visitscotland.(com|org)(-mb)?/ops%2Ffeature-environment(s)?-enhancements")) {
-  echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
-  env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3009"
+    echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
+    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3009"
 } else {
-  echo "=== No conditional environment variables found for branch $BRANCH_NAME in job $JOB_NAME, using dedaults"
-  // thisAgent should always be set to "docker-02" unless you have been informed otherwise!
+    echo "=== No conditional environment variables found for branch $BRANCH_NAME in job $JOB_NAME, using dedaults"
 }
 echo "==/Setting conditional environment variables"
 
@@ -29,9 +28,6 @@ if (!env.VS_BRC_STACK_URI) { env.VS_BRC_STACK_URI = "visitscotland" }
 if (!env.VS_BRC_ENV) { env.VS_BRC_ENV = "demo" }
 if (!env.VS_BRC_STACK_URL) { env.VS_BRC_STACK_URL = "https://api.${VS_BRC_STACK_URI}.bloomreach.cloud" }
 if (!env.VS_BRC_STACK_API_VERSION) { env.VS_BRC_STACK_API_VERSION = "v3" }
-if (!env.VS_CONTAINER_BASE_PORT_MIN ) { env.VS_CONTAINER_BASE_PORT_MIN = 3010 }
-if (!env.VS_CONTAINER_BASE_PORT_MAX ) { env.VS_CONTAINER_BASE_PORT_MAX = 3029 }
-if (!env.VS_CONTAINER_PRESERVE) { env.VS_CONTAINER_PRESERVE = "TRUE" }
 if (!env.VS_DOCKER_IMAGE_NAME) { env.VS_DOCKER_IMAGE_NAME = "vs/vs-brxm15:node18" }
 if (!env.VS_DOCKER_BUILDER_IMAGE_NAME) { env.VS_DOCKER_BUILDER_IMAGE_NAME = "vs/vs-brxm15-builder:node18" }
 if (!env.VS_SKIP_BUILD_FOR_BRANCH) { env.VS_SKIP_BUILD_FOR_BRANCH = "feature/VS-1865-feature-environments-enhancements-log4j" }
@@ -47,7 +43,10 @@ if (!env.BR_X_FORWARDED_HOST ) { env.BR_X_FORWARDED_HOST = "feature-businesseven
 echo "==/Setting default application variables"
 
 echo "== Setting default container variables"
+if (!env.VS_CONTAINER_BASE_PORT_MIN ) { env.VS_CONTAINER_BASE_PORT_MIN = 3010 }
+if (!env.VS_CONTAINER_BASE_PORT_MAX ) { env.VS_CONTAINER_BASE_PORT_MAX = 3029 }
 if (!env.VS_CONTAINER_EXEC ) { env.VS_CONTAINER_EXEC = "/bin/bash -c \"node .output/server/index.mjs\"" }
+if (!env.VS_CONTAINER_PRESERVE) { env.VS_CONTAINER_PRESERVE = "TRUE" }
 echo "==/Setting default container variables"
 
 pipeline {
@@ -64,76 +63,73 @@ pipeline {
     }
 
     stages {
-	stage ('Pre-build') {
-	    steps {
+	    stage ('Pre-build') {
+	        steps {
                 // Set any defined build property overrides for this work-in-progress branch
-	        sh '''
-	          set +x
-	          echo; echo "running stage $STAGE_NAME on $HOSTNAME"
-	          echo; echo "== printenv in $STAGE_NAME =="; printenv | sort; echo "==/printenv in $STAGE_NAME =="; echo
-	          echo; echo "setting default properties using /infrastructure.sh setvars"
-	          $VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars
-	          echo
-	          echo "== printenv after setvars in $STAGE_NAME =="; printenv | sort; echo "==/printenv after setvars in $STAGE_NAME =="
-	          echo
-	          echo; echo "looking for branch specific properties file at $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
-	          echo " - if the pipeline fails at this point please check the format of your properties file!"
-	        '''
+	            sh '''
+    	            set +x
+	                echo; echo "running stage $STAGE_NAME on $HOSTNAME"
+	                echo; echo "== printenv in $STAGE_NAME =="; printenv | sort; echo "==/printenv in $STAGE_NAME =="; echo
+	                echo; echo "setting default properties using /infrastructure.sh setvars"
+	                $VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars
+	                echo
+	                echo "== printenv after setvars in $STAGE_NAME =="; printenv | sort; echo "==/printenv after setvars in $STAGE_NAME =="
+	                echo
+	                echo; echo "looking for branch specific properties file at $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
+	                echo " - if the pipeline fails at this point please check the format of your properties file!"
+	            '''
 	        // make all branch-specific variables available to pipeline, load file must be in env.VARIABLE="VALUE" format
 	        script {
-	          if (fileExists("$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE")) {
-	            echo "loading environment variables from $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
-	            load "$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
-	            sh '''
-	              set +x
-	              echo
-	              echo "== printenv after load of $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE in $STAGE_NAME =="
-	              printenv | sort
-	              echo "==/printenv after load of $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE in $STAGE_NAME =="
-	              echo
+	            if (fileExists("$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE")) {
+	                echo "loading environment variables from $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
+    	            load "$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
+	                sh '''
+    	                set +x
+	                    echo; echo "== printenv after load of $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE in $STAGE_NAME =="
+	                    printenv | sort
+	                    echo "==/printenv after load of $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE in $STAGE_NAME =="; echo
 	            '''
 	          } else {
 	            echo "branch specific properties won't be loaded, file $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE does not exist"
 	          }
 	        }
-		// run infrastructure.sh to set default variables and then import them into the pipeline
-		script {
-	          if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
-	            sh '''
-	              set +x
-	              echo; echo "setting default properties using infrastructure.sh setvars"
-	              $VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars
-	              echo; echo "== printenv after setvars in $STAGE_NAME =="; printenv | sort; echo "==/printenv after setvars in $STAGE_NAME =="
-	            '''
-	          } else {
-	              echo; echo "infrastructure.sh was not found - default environment variables will not be set"
-	          }
-		}
-		script {
-	          if (fileExists("$WORKSPACE/ci/vs-last-env.quoted")) {
-	            echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
-	            load "$WORKSPACE/ci/vs-last-env.quoted"
-	            echo "found ${env.VS_COMMIT_AUTHOR}"
-	          }
-		}
-		script {
-	            sh '''
-			set +x
-			echo; echo "== printenv after load of $WORKSPACE/ci/vs-last-env.quoted in $STAGE_NAME =="
-			printenv | sort
-			echo "==/printenv after load of $WORKSPACE/ci/vs-last-env.quoted in $STAGE_NAME =="
-			echo
-		    '''
-		}
-	    }
+		    // run infrastructure.sh to set default variables and then import them into the pipeline
+		    script {
+	            if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
+	                sh '''
+	                    set +x
+	                    echo; echo "setting default properties using infrastructure.sh setvars"
+	                    $VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars
+	                    echo; echo "== printenv after setvars in $STAGE_NAME =="; printenv | sort; echo "==/printenv after setvars in $STAGE_NAME =="
+	                '''
+	            } else {
+	                echo; echo "infrastructure.sh was not found - default environment variables will not be set"
+	            }
+		    }
+		    script {
+	            if (fileExists("$WORKSPACE/ci/vs-last-env.quoted")) {
+	                echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
+	                load "$WORKSPACE/ci/vs-last-env.quoted"
+	                echo "found ${env.VS_COMMIT_AUTHOR}"
+	            }
+		    }
+		    script {
+                sh '''
+			        set +x
+			        echo; echo "== printenv after load of $WORKSPACE/ci/vs-last-env.quoted in $STAGE_NAME =="
+			        printenv | sort
+			        echo "==/printenv after load of $WORKSPACE/ci/vs-last-env.quoted in $STAGE_NAME =="; echo
+		        '''
+            }
+        }
 	} // end stage
 
         stage ('SCM checkout') {
             agent {
                 docker {
-                image 'vs/vs-brxm15-builder:node18'
-                label thisAgent
-                reuseNode true
+                    image 'vs/vs-brxm15-builder:node18'
+                    label thisAgent
+                    reuseNode true
                 }
             }
             steps {
@@ -185,9 +181,9 @@ pipeline {
         stage ('Run Tests') {
             agent {
                 docker {
-                image 'vs/vs-brxm15-builder:node18'
-                label thisAgent
-                reuseNode true
+                    image 'vs/vs-brxm15-builder:node18'
+                    label thisAgent
+                    reuseNode true
                 }
             }
             steps {
@@ -210,9 +206,9 @@ pipeline {
         stage ('NPM Build') {
             agent {
                 docker {
-                image 'vs/vs-brxm15-builder:node18'
-                label thisAgent
-                reuseNode true
+                    image 'vs/vs-brxm15-builder:node18'
+                    label thisAgent
+                    reuseNode true
                 }
             }
             steps {
@@ -251,7 +247,7 @@ pipeline {
                     else
                         echo "no container found with name: $VS_CONTAINER_NAME"
                     fi
-                    docker run -t -d -u $VS_CONTAINER_USR:$VS_CONTAINER_GRP $VS_CONTAINER_PORTS --workdir $VS_CONTAINER_WD --volume $VS_CONTAINER_WORKSPACE:$VS_CONTAINER_WORKSPACE:$VS_CONTAINER_VOLUME_PERMISSIONS --volume $VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_VOLUME_PERMISSIONS $VS_CONTAINER_ENVIRONMENT --name $VS_CONTAINER_NAME --hostname $VS_CONTAINER_NAME $VS_DOCKER_IMAGE_NAME $VS_CONTAINER_INIT_EXEC
+                    docker run -t -d -u $VS_CONTAINER_USR:$VS_CONTAINER_GRP $VS_CONTAINER_PORT_MAPPINGS --workdir $VS_CONTAINER_WD --volume $VS_CONTAINER_WORKSPACE:$VS_CONTAINER_WORKSPACE:$VS_CONTAINER_VOLUME_PERMISSIONS --volume $VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_VOLUME_PERMISSIONS $VS_CONTAINER_ENVIRONMENT --name $VS_CONTAINER_NAME --hostname $VS_CONTAINER_NAME $VS_DOCKER_IMAGE_NAME $VS_CONTAINER_INIT_EXEC
                     VS_CONTAINER_ID=$(docker ps -aq --filter "name=^$VS_CONTAINER_NAME$")
                     docker exec -d -t $VS_CONTAINER_ID /bin/bash -c "NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs 2>&1 | tee -a ./nodeapp.log"
                 '''
