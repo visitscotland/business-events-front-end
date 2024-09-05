@@ -232,7 +232,6 @@ pipeline {
             }
             steps {
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh ''
                     sh '''
                         set +x
                         echo; echo "running stage $STAGE_NAME on $HOSTNAME"
