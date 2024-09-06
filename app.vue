@@ -26,12 +26,6 @@
                 </template>
             </br-page>
         </div>
-        <noscript>
-            <component :is="'style'">
-            .skeleton-site { display: none !important }
-            .hydrate { display: block !important }
-            </component>
-        </noscript>
     </div>
 </template>
 
@@ -74,7 +68,9 @@ const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 const isMounted = ref(false);
 
 onMounted(() => {
-    isMounted.value = true;
+    setTimeout(() => {
+        isMounted.value = true;
+    }, 50);
 });
 
 // let deLocalisedRoute = route;
