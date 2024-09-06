@@ -161,7 +161,7 @@ if (page && image && image.value) {
     if (preload.value) {
         useHead({
             link: [{
-                rel: 'prefetch',
+                rel: 'preload',
                 href: imageValue.getOriginal().getUrl(),
             }],
         });
