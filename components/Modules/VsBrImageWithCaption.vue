@@ -163,6 +163,7 @@ if (page && image && image.value) {
             link: [{
                 rel: 'preload',
                 href: imageValue.getOriginal().getUrl(),
+                as: 'image',
             }],
         });
     }
