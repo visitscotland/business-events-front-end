@@ -22,7 +22,6 @@
                     :is-video="true"
                     :is-hero="true"
                     :use-lazy-loading="false"
-                    :preload="true"
                     variant="large"
                     :image="heroImage"
                     :video-id="youtubeId"
@@ -37,7 +36,6 @@
                     :is-video="false"
                     :is-hero="true"
                     :use-lazy-loading="false"
-                    :preload="true"
                     variant="large"
                     :image="heroImage"
                 />

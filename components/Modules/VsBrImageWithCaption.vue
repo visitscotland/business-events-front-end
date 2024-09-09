@@ -112,7 +112,6 @@ interface IProps {
     videoBtn?: string,
     smallPlayButton?: boolean
     useLazyLoading?: boolean,
-    preload?: boolean,
     noAltText?: boolean
     showToggle?: boolean
 };
@@ -125,7 +124,6 @@ const props = withDefaults(defineProps<IProps>(), {
     alignment: 'left',
     smallPlayButton: false,
     useLazyLoading: true,
-    preload: false,
     noAltText: false,
     showToggle: true,
     videoId: '',
@@ -145,7 +143,6 @@ const {
     videoBtn,
     smallPlayButton,
     useLazyLoading,
-    preload,
     noAltText,
     showToggle,
 } = toRefs(props);
@@ -157,16 +154,6 @@ let imageData: any;
 if (page && image && image.value) {
     imageValue = page.getContent(image.value.$ref);
     imageData = imageValue.model.data;
-
-    if (preload.value) {
-        useHead({
-            link: [{
-                rel: 'preload',
-                href: imageValue.getOriginal().getUrl(),
-                as: 'image',
-            }],
-        });
-    }
 }
 
 </script>
