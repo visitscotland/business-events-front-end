@@ -1120,6 +1120,13 @@ case $METHOD in
     setPortRange
     findBasePort
     findDynamicPorts
+    if [ ! "$VS_CONTAINER_PRESERVE" == "TRUE" ]; then
+      containerCreateAndStart
+    elif [ "$VS_CONTAINER_PRESERVE" == "TRUE" ] && [ -z "$CONTAINER_ID" ]; then
+      containerCreateAndStart
+    else
+      echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] re-using existing container $CONTAINER_ID"; echo "" 
+    fi
     containerUpdates
     containerStartSSH
     containerStartTailon
