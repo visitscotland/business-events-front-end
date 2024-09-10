@@ -1,7 +1,7 @@
 <template>
     <div>
         <VsBrSkeleton
-            v-show="!isMounted"
+            v-show="!hideSkeleton"
         />
         <div
             class="hydrate"
@@ -66,10 +66,13 @@ const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 // ];
 
 const isMounted = ref(false);
+const hideSkeleton = ref(false);
 
 onMounted(() => {
+    isMounted.value = true;
+
     setTimeout(() => {
-        isMounted.value = true;
+        hideSkeleton.value = true;
     }, 50);
 });
 
