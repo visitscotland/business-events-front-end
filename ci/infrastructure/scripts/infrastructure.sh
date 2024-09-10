@@ -1081,7 +1081,7 @@ case $METHOD in
   ;;
   findports)
     checkVariables
-    defaultSettingsct
+    defaultSetting
     setPortRange
     findBasePort
     findDynamicPorts

@@ -47,6 +47,7 @@ if (!env.VS_CONTAINER_BASE_PORT_MIN ) { env.VS_CONTAINER_BASE_PORT_MIN = 3010 }
 if (!env.VS_CONTAINER_BASE_PORT_MAX ) { env.VS_CONTAINER_BASE_PORT_MAX = 3029 }
 if (!env.VS_CONTAINER_EXEC ) { env.VS_CONTAINER_EXEC = "/bin/bash -c \"node .output/server/index.mjs\"" }
 if (!env.VS_CONTAINER_PRESERVE) { env.VS_CONTAINER_PRESERVE = "TRUE" }
+env.VS_BRXM_TOMCAT_PORT = 3000
 echo "==/Setting default container variables"
 
 pipeline {
@@ -291,7 +292,7 @@ pipeline {
 	                    sh '''
 	                        set +x
                             VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
-	                        echo; echo "setting default properties using infrastructure.sh setvars"
+	                        echo; echo "setting default properties using infrastructure.sh --debug"
 	                        $VS_CI_DIR/infrastructure/scripts/infrastructure.sh findports
                             if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
 	                            echo; echo "== printenv after setvars in $STAGE_NAME =="
@@ -334,7 +335,7 @@ pipeline {
                     else
                         echo "no container found with name: $VS_CONTAINER_NAME"
                     fi
-                    docker run -t -d -u $VS_CONTAINER_USR:$VS_CONTAINER_GRP $VS_CONTAINER_PORT_MAPPINGS --workdir $VS_CONTAINER_WD --volume $VS_CONTAINER_WORKSPACE:$VS_CONTAINER_WORKSPACE:$VS_CONTAINER_VOLUME_PERMISSIONS --volume $VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_VOLUME_PERMISSIONS $VS_CONTAINER_ENVIRONMENT --name $VS_CONTAINER_NAME --hostname $VS_CONTAINER_NAME_SHORT $VS_DOCKER_IMAGE_NAME $VS_CONTAINER_INIT_EXEC
+                    #docker run -t -d -u $VS_CONTAINER_USR:$VS_CONTAINER_GRP $VS_CONTAINER_BASE_PORT $VS_CONTAINER_PORT_MAPPINGS --workdir $VS_CONTAINER_WD --volume $VS_CONTAINER_WORKSPACE:$VS_CONTAINER_WORKSPACE:$VS_CONTAINER_VOLUME_PERMISSIONS --volume $VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_VOLUME_PERMISSIONS $VS_CONTAINER_ENVIRONMENT --name $VS_CONTAINER_NAME --hostname $VS_CONTAINER_NAME_SHORT $VS_DOCKER_IMAGE_NAME $VS_CONTAINER_INIT_EXEC
                     VS_CONTAINER_ID=$(docker ps -aq --filter "name=^$VS_CONTAINER_NAME$")
                     docker exec -d -t $VS_CONTAINER_ID /bin/bash -c "NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs 2>&1 | tee -a ./nodeapp.log"
                 '''
