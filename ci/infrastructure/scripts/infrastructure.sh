@@ -1108,6 +1108,26 @@ case $METHOD in
     findHippoArtifact
     uploadHippoArtifactBRC
   ;;
+  dssr-server)
+    checkVariables
+    defaultSettings
+    reportSettings
+    checkContainers
+    manageContainers
+    getBranchListFromWorkspace
+    getReservedPortList
+    tidyContainers
+    setPortRange
+    findBasePort
+    findDynamicPorts
+    containerUpdates
+    containerStartSSH
+    containerStartTailon
+    exportVSVariables
+    testSite
+    createBuildReport
+    sendBuildReport  
+  ;;
   *)
     echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] no function specified - running defaults"
     checkVariables
