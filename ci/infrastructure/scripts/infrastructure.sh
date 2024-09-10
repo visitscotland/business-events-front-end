@@ -320,7 +320,7 @@ checkContainers() {
     CONTAINER_STATUS=$(docker inspect --format "{{.State.Status}}" $CONTAINER_ID)
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - $CONTAINER_STATUS container found with ID:$CONTAINER_ID and name $VS_CONTAINER_NAME"
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - checking for base port of container $CONTAINER_ID"
-    CONTAINER_PORT=$(docker inspect --format='{{(index (index .NetworkSettings.Ports "$VS_CONTAINER_INIT_EXEC/tcp") 0).HostPort}}' $CONTAINER_ID)
+    CONTAINER_PORT=$(docker inspect --format='{{(index (index .NetworkSettings.Ports "'$VS_CONTAINER_MAIN_APP_PORT'/tcp") 0).HostPort}}' $CONTAINER_ID)
     if [ ! -z "$CONTAINER_PORT" ]; then
       VS_CONTAINER_BASE_PORT_OVERRIDE=$CONTAINER_PORT
       echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - base port of $CONTAINER_PORT found for container $CONTAINER_ID - setting VS_CONTAINER_BASE_PORT_OVERRIDE"
