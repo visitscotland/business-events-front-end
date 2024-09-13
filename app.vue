@@ -70,10 +70,6 @@ const hideSkeleton = ref(false);
 
 onMounted(() => {
     isMounted.value = true;
-
-    setTimeout(() => {
-        hideSkeleton.value = true;
-    }, 50);
 });
 
 // let deLocalisedRoute = route;
@@ -135,5 +131,10 @@ const mapping = {
         &.vs-sticky-nav {
             top: 0;
         }
+    }
+
+    .hydrate {
+        z-index: 2;
+        position: relative;
     }
 </style>
