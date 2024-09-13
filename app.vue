@@ -136,5 +136,6 @@ const mapping = {
     .hydrate {
         z-index: 2;
         position: relative;
+        background-color: white;
     }
 </style>
