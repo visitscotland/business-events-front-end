@@ -292,8 +292,8 @@ pipeline {
 	                    sh '''
 	                        set +x
                             VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
-	                        echo; echo "setting default properties using infrastructure.sh dssr-server --debug"
-	                        $VS_CI_DIR/infrastructure/scripts/infrastructure.sh dssr-server
+	                        echo; echo "setting default properties using infrastructure.sh dssr-server --map-workspace=true --debug"
+	                        $VS_CI_DIR/infrastructure/scripts/infrastructure.sh dssr-server --map-workspace=true --debug
                             if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
 	                            echo; echo "== printenv after setvars in $STAGE_NAME =="
                                 printenv | sort | tee printenv_4.$VS_STAGE_NAME
