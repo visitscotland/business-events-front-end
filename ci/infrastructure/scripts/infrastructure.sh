@@ -691,8 +691,10 @@ findDynamicPorts() {
   unset VS_CONTAINER_INT_PORT
   for SERVICE in $VS_CONTAINER_SERVICE_LIST; do
     unset MAPPINGS
-    for MAPPING in $(set | egrep "VS_CONTAINER_(INT|EXT)_PORT_$SERVICE"); do
+    for MAPPING in $(set | grep -E "^VS_CONTAINER_(INT|EXT)_PORT_$SERVICE"); do
+      if [ "$VS_DEBUG" == "TRUE" ]; then echo "found MAPPING $MAPPING for SERVICE $SERVICE"; fi
       MAPPINGS=$MAPPING" "$MAPPINGS
+      if [ "$VS_DEBUG" == "TRUE" ]; then echo "added $MAPPING for $SERVICE to MAPPINGS for $MAPPINGS"; fi
     done
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - for service $SERVICE: $MAPPINGS" 
   done
