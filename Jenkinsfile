@@ -48,7 +48,7 @@ if (!env.VS_CONTAINER_BASE_PORT_MIN ) { env.VS_CONTAINER_BASE_PORT_MIN = 3010 }
 if (!env.VS_CONTAINER_BASE_PORT_MAX ) { env.VS_CONTAINER_BASE_PORT_MAX = 3029 }
 if (!env.VS_CONTAINER_EXEC ) { env.VS_CONTAINER_EXEC = "/bin/bash -c \"node .output/server/index.mjs\"" }
 if (!env.VS_CONTAINER_PRESERVE) { env.VS_CONTAINER_PRESERVE = "TRUE" }
-env.VS_CONTAINER_MAIN_APP_PORT = 3000
+if (!env.VS_CONTAINER_MAIN_APP_PORT) { env.VS_CONTAINER_MAIN_APP_PORT = 3000 }
 echo "==/Setting default container variables"
 
 pipeline {
@@ -67,30 +67,33 @@ pipeline {
     stages {
 	    stage ('Pre-build') {
 	        steps {
+                echo "running stage $STAGE_NAME on $HOSTNAME"
                 // Set any defined build property overrides for this work-in-progress branch
 	            sh '''
     	            set +x
-                    VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
-	                echo; echo "running stage $STAGE_NAME on $HOSTNAME"
-                    if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
-	                    echo; echo "== printenv in $STAGE_NAME =="; printenv | sort; echo "==/printenv in $STAGE_NAME =="; echo
-                    else
-                        printenv | sort > printenv.$VS_STAGE_NAME
-                    fi
+                    #VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
+	                
+                    #if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+	                #    echo; echo "== printenv in $STAGE_NAME =="; printenv | sort; echo "==/printenv in $STAGE_NAME =="; echo
+                    #else
+                    #    printenv | sort > printenv.$VS_STAGE_NAME
+                    #fi
                     echo; echo "setting default properties using /infrastructure.sh setvars"
 	                $VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars
-                    if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
-	                    echo; echo "== printenv after setvars in $STAGE_NAME =="
-                        printenv | sort | tee printenv_2.$VS_STAGE_NAME
-                        echo "==/printenv after setvars in $STAGE_NAME =="
-                    else
-                        printenv | sort > printenv_2.$VS_STAGE_NAME
-                    fi
-	                echo; echo "looking for branch specific properties file at $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
-	                echo " - if the pipeline fails at this point please check the format of your properties file!"
+                    #if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+	                #    echo; echo "== printenv after setvars in $STAGE_NAME =="
+                    #    printenv | sort | tee printenv_2.$VS_STAGE_NAME
+                    #    echo "==/printenv after setvars in $STAGE_NAME =="
+                    #else
+                    #    printenv | sort > printenv_2.$VS_STAGE_NAME
+                    #fi
+	                #echo; echo "looking for branch specific properties file at $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
+	                #echo " - if the pipeline fails at this point please check the format of your properties file!"
 	            '''
 	        // make all branch-specific variables available to pipeline, load file must be in env.VARIABLE="VALUE" format
 	        script {
+                echo "looking for branch specific properties file at $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
+                echo " - if the pipeline fails at this point please check the format of your properties file!"
 	            if (fileExists("$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE")) {
 	                echo "loading environment variables from $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
     	            load "$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
@@ -322,7 +325,7 @@ pipeline {
                     VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g")
                     echo $VS_CONTAINER_EXEC
                     #VS_RUNNING_CONTAINER_ID=$(docker ps -aq --filter "name=^$VS_CONTAINER_NAME$")
-                    if [[ "$VS_DEBUG"  =~ ^(TRUE|true)$ ]]; then
+                    if [[ "$VS_DEBUG" =~ ^(TRUE|true)$ ]]; then
                         echo; echo "==== PRINTENV $STAGE_NAME ====="
                         printenv | sort | tee printenv.$VS_STAGE_NAME
                         echo "====/PRINTENV $STAGE_NAME ====="

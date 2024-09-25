@@ -41,6 +41,7 @@ if [ -z "$VS_DOCKER_IMAGE_NAME" ]; then VS_DOCKER_IMAGE_NAME=vs-brxm; fi
 if [ -z "$VS_DOCKERFILE_PATH" ]; then VS_DOCKERFILE_PATH=/home/jenkins/vs-dockerfile; fi
 if [ -z "$VS_DOCKERFILE_NAME" ]; then VS_DOCKERFILE_NAME=vs-brxm; fi
 if [ -z "$VS_DOCKERFILE_LOCN" ]; then VS_DOCKERFILE_LOCN=$VS_DOCKERFILE_PATH/$VS_DOCKERFILE_NAME; fi
+if [ -z "$VS_LOG_DATESTAMP" ]; then VS_LOG_DATESTAMP='echo $(date +%d-%b-%Y" "%H:%M:%S.%3N)'; fi
 #  ==== Hosting Environment Variables ====
 if [ -z "$VS_PROXY_SERVER_SCHEME" ]; then VS_PROXY_SERVER_SCHEME=https; fi
 #if [ -z "$VS_PROXY_SERVER_FQDN" ]; then VS_PROXY_SERVER_FQDN=feature.visitscotland.com; fi
@@ -67,6 +68,7 @@ if [ -z "$VS_BRXM_INSTANCE_HTTP_HOST" ]; then
   fi
 fi
 if [ -z "$VS_BRXM_PERSISTENCE_METHOD" ]; then VS_BRXM_PERSISTENCE_METHOD=h2; fi
+if [ -z "$VS_BUILD_TYPE" ]; then VS_BUILD_TYPE=BRXM; fi
 if [ -z "$VS_CONTAINER_MAIN_APP_PORT" ]; then VS_CONTAINER_MAIN_APP_PORT=8080; fi
 if [ -z "$VS_CONTAINER_PORT_INCREMENT" ]; then VS_CONTAINER_PORT_INCREMENT=100; fi
 if [ -z "$VS_CONTAINER_CONSOLE_FILE" ]; then VS_CONTAINER_CONSOLE_FILE="/tmp/console.out"; fi
@@ -84,7 +86,7 @@ if [ -z "$VS_CONTAINER_USR" ]; then VS_CONTAINER_USR=$(id -u $USER); fi
 if [ -z "$VS_CONTAINER_GRP" ]; then VS_CONTAINER_GRP=$(id -g $USER); fi
 if [ -z "$VS_CONTAINER_WD" ]; then VS_CONTAINER_WD=$PWD; fi
 if [ -z "$VS_CONTAINER_WORKSPACE" ]; then VS_CONTAINER_WORKSPACE=$WORKSPACE; fi
-if [ -z "$VS_CONTAINER_WORKSPACE_MAP" ]; then VS_CONTAINER_WORKSPACE_MAP="false"; fi
+if [ -z "$VS_CONTAINER_WORKSPACE_MAP" ]; then VS_CONTAINER_WORKSPACE_MAP=FALSE; fi
 if [ -z "$VS_CONTAINER_VOLUME_PERMISSIONS" ]; then VS_CONTAINER_VOLUME_PERMISSIONS="rw,z"; fi
 if [ -z "$VS_CONTAINER_PORTS" ]; then VS_CONTAINER_PORTS="-p 3000:3000"; fi
 #if [ -z "$VS_CONTAINER_ENVIRONMENT" ]; then VS_CONTAINER_ENVIRONMENT=; fi
@@ -127,7 +129,7 @@ while [[ $# -gt 0 ]]; do
   THIS_VAR=$(echo $argument | sed -e "s/=.*//g"); #echo $THIS_VAR
   THIS_VAL=$(echo $argument | sed -e "s/.*=//g" | sed -s "s/--.*//g"); #echo $THIS_VAL
   if [ ! -z "$THIS_VAL" ]; then THIS_RESULT="$THIS_VAL"; elif [ ! "${2:0:2}" = "--" ]; then THIS_RESULT="$2"; else THIS_RESULT=""; fi
-  if [ "$VS_DEBUG" == "TRUE" ]; then echo -en "\nread \"$THIS_VAR\" from command line"; fi
+  if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo -en "\nread \"$THIS_VAR\" from command line"; fi
   case $THIS_VAR in
     --debug) if [ ! -z "$THIS_RESULT" ]; then VS_DEBUG=$THIS_RESULT; else VS_DEBUG=TRUE; fi;;
     --ci-dir) if [ ! -z "$THIS_RESULT" ]; then VS_CI_DIR=$THIS_RESULT; fi;;
@@ -169,7 +171,7 @@ checkVariables() {
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] $VS_SCRIPTNAME appears to be running from a Jenkins job"
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - exporting selected variables to $VS_JENKINS_LAST_ENV"
     printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | tee $VS_JENKINS_LAST_ENV
-  elif [[ "$VS_AGENT_IS_DOCKER" =~ ^(TRUE|true)$ ]] && [ ! -z "$JENKINS_SERVER_COOKIE" ]; then
+  elif [ "${VS_AGENT_IS_DOCKER^^}" == "TRUE" ] && [ ! -z "$JENKINS_SERVER_COOKIE" ]; then
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] $VS_SCRIPTNAME appears to be running from a Jenkins job inside a Docker container "
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - exporting selected variables to $VS_JENKINS_LAST_ENV"
     printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | tee $VS_JENKINS_LAST_ENV
@@ -245,7 +247,7 @@ defaultSettings() {
   VS_PARENT_JOB_NAME=$(echo $JOB_NAME | sed -e "s/\/.*//g")
   VS_SCRIPTNAME=$(basename $0)
   VS_SCRIPT_LOG=$VS_CI_DIR/logs/$VS_SCRIPTNAME.log
-  VS_LOG_DATESTAMP='echo $(date +%d-%b-%Y" "%H:%M:%S.%N | sed -e "s/\(\.[0-9][0-9][0-9]\).*$/\1/")'
+  if [ ! -z "$STAGE_NAME"]; then VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g"); fi
   if [ "$VS_SSR_PROXY_ON" == "TRUE" ]; then
     VS_PROXY_QS_SSR="&vs_ssr_proxy=on"
   else
@@ -300,16 +302,28 @@ reportSettings() {
   echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] == from " $VS_SCRIPTNAME
   echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ========================================================================"
   echo ""
-  if [ "$VS_DEBUG" = "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME] ==== printenv ===="; printenv; echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME] ====/printenv ===="; echo ""; fi
-  #if [ "$VS_DEBUG" = "TRUE" ]; then echo "==== set ===="; set; echo "====/set ====";  echo ""; fi
+  if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME] ==== printenv ===="; printenv; echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME] ====/printenv ===="; echo ""; fi
+  #if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "==== set ===="; set; echo "====/set ====";  echo ""; fi
   echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ==== selected Jenkins environment variables ===="
-  set | egrep "^(BRANCH|BUILD|CHANGE|GIT|JENKINS|JOB|RUN|WORKSPACE)"
+  set | egrep "^(BRANCH|BUILD|CHANGE|GIT|JENKINS|JOB|RUN|WORKSPACE)" | sort
   echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ====/selected Jenkins environment variables ===="
   echo ""
-  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ==== selected VS environment variables ===="
-  set | egrep "^(VS_)"
-  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ====/selected VS environment variables ===="
+  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ==== all VS_ environment variables ===="
+  set | egrep "^(VS_)" | sort
+  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ====/all VS_ environment variables ===="
   echo ""
+  writeSettings
+}
+
+writeSettings() {
+  if [ "${VS_DEBUG^^}"  == "TRUE" ]; then
+	  echo; echo "== printenv in ${FUNCNAME} in $STAGE_NAME ==" | tee printenv.${FUNCNAME[1]}.$VS_STAGE_NAME
+    printenv | sort | tee -a printenv.${FUNCNAME[1]}.$VS_STAGE_NAME
+    echo "==/printenv after ${FUNCNAME} in $STAGE_NAME =="
+  else
+    echo; echo "== printenv after $METHOD in $STAGE_NAME ==" > printenv.${FUNCNAME[1]}.$VS_STAGE_NAME
+    printenv | sort >> printenv.${FUNCNAME[1]}.$VS_STAGE_NAME
+  fi
 }
 
 checkContainers() {
@@ -327,7 +341,8 @@ checkContainers() {
       VS_CONTAINER_BASE_PORT_OVERRIDE=$CONTAINER_PORT
       echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - base port of $CONTAINER_PORT found for container $CONTAINER_ID - setting VS_CONTAINER_BASE_PORT_OVERRIDE"
       echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]   - checking other ports (for info)"
-      docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{$p}} -> {{(index $conf 0).HostPort}} {{end}}' $CONTAINER_ID
+      VS_CONTAINER_OTHER_PORTS=$(docker inspect --format='{{range $p, $conf := .NetworkSettings.Ports}} {{$p}} -> {{(index $conf 0).HostPort}} {{end}}' $CONTAINER_ID)
+      echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]   - $VS_CONTAINER_OTHER_PORTS"
     else
       echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - no base port was found for container $CONTAINER_ID"
     fi
@@ -403,7 +418,7 @@ manageContainers() {
   # if container is STOPPED and preserve running is TRUE then - ?
   # if container is running and preserve running is FALSE then - deleteContainers
   # if a port clash and remove when in use is detected then - deleteContainers, the value of preserve doesn't matter in this case
-  if [ ! -z "$CONTAINER_ID" ] && [[ ! "$VS_CONTAINER_PORT_CLASH_PREDICTED" =~ ^(TRUE|true)$ ]]; then
+  if [ ! -z "$CONTAINER_ID" ] && [ ! "${VS_CONTAINER_PORT_CLASH_PREDICTED^^}" == "TRUE" ]; then
     if [ "$VS_CONTAINER_PRESERVE" == "TRUE" ] && [ "$CONTAINER_STATUS" == "running" ]; then
       echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] VS_CONTAINER_PRESERVE is $VS_CONTAINER_PRESERVE so existing container $CONTAINER_ID will be re-used"
     elif [ "$VS_CONTAINER_PRESERVE" == "TRUE" ] && [ ! "$CONTAINER_STATUS" == "running" ]; then
@@ -419,8 +434,8 @@ manageContainers() {
     else
       echo "$(eval $VS_LOG_DATESTAMP) ERROR [$VS_SCRIPTNAME] CONTAINER_ID: $CONTAINER_ID was found but container status could not be determined"
     fi
-  elif [ ! -z "$CONTAINER_ID" ] && [[ "$VS_CONTAINER_PORT_CLASH_PREDICTED" =~ ^(TRUE|true)$ ]]; then
-    if [[ "$VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE" =~ ^(TRUE|true)$ ]]; then
+  elif [ ! -z "$CONTAINER_ID" ] && [ "${VS_CONTAINER_PORT_CLASH_PREDICTED^^}" == "TRUE" ]; then
+    if [ "${VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE}" == "TRUE" ]]; then
       echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE is $VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE and VS_CONTAINER_PORT_CLASH_PREDICTED is $VS_CONTAINER_PORT_CLASH_PREDICTED, so existing container $CONTAINER_ID will be removed"
       deleteContainers
       unset CONTAINER_ID
@@ -474,7 +489,7 @@ getBranchListFromWorkspace() {
   echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] checking for branches and PRs for $VS_PARENT_JOB_NAME listed in workspaces.txt"
   # to-do: gp - update echo above to reflect changes to branch and PR scan method
   for BRANCH in $(cat $JENKINS_HOME/workspace/workspaces.txt | grep "$VS_PARENT_JOB_NAME" | sed -e "s/%2F/\//g" | sed "s/.*\//$VS_PARENT_JOB_NAME\_/g"); do
-    if [ "$VS_DEBUG" = "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  - found branch $BRANCH"; fi
+    if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  - found branch $BRANCH"; fi
     BRANCH_LIST="$BRANCH_LIST $BRANCH"
   done
   # to-do: gp add for loop to check for vs-container-name map files in _PR only (avoid doubles)
@@ -493,16 +508,16 @@ getBranchListFromWorkspace() {
 #        echo "found $VS_CONTAINER_NAME_FILE_FOUND"
         BRANCH=$(cat $VS_CONTAINER_NAME_FILE_FOUND | head -1)
 #        echo "BRANCH=$BRANCH in 2"
-        if [ "$VS_DEBUG" = "TRUE" ] && [ ! -z "$BRANCH" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  - found branch $BRANCH for $(basename $PR) in $VS_CONTAINER_NAME_FILE"; fi
+        if [ "${VS_DEBUG^^}" == "TRUE" ] && [ ! -z "$BRANCH" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  - found branch $BRANCH for $(basename $PR) in $VS_CONTAINER_NAME_FILE"; fi
         if [ ! -z "$BRANCH" ]; then BRANCH_LIST="$BRANCH_LIST $BRANCH"; fi
       elif [ ! -z "$VS_LAST_ENV_FOUND" ] && [ -a $VS_LAST_ENV_FOUND ]; then
 #        echo "found $VS_LAST_ENV_FOUND"
         BRANCH=$(cat $VS_LAST_ENV_FOUND | egrep "(VS_)(CHANGE_BRANCH|CONTAINER_NAME)=" | sed -e "s/.*=//g" | head -1)
 #        echo "BRANCH=$BRANCH in 1"
-        if [ "$VS_DEBUG" = "TRUE" ] && [ ! -z "$BRANCH" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  - found branch $BRANCH for $(basename $PR) in $VS_LAST_ENV"; fi
+        if [ "${VS_DEBUG^^}" == "TRUE" ] && [ ! -z "$BRANCH" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  - found branch $BRANCH for $(basename $PR) in $VS_LAST_ENV"; fi
         if [ ! -z "$BRANCH" ]; then BRANCH_LIST="$BRANCH_LIST $BRANCH"; fi
       else
-        if [ "$VS_DEBUG" = "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  - no branch found for $PR"; fi
+        if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  - no branch found for $PR"; fi
       fi
     fi
   done
@@ -512,9 +527,9 @@ getBranchListFromWorkspace() {
 
 getReservedPortList() {
   echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] checking for base ports reserved by containers in BRANCH_LIST"
-  #if [ "$VS_DEBUG" == "TRUE" ]; then echo "$BRANCH_LIST"; fi
+  #if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "$BRANCH_LIST"; fi
   for BRANCH in $BRANCH_LIST; do
-    #if [ "$VS_DEBUG" == "TRUE" ]; then echo " - checking $BRANCH"; fi
+    #if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo " - checking $BRANCH"; fi
     #RESERVED_PORT=$(docker port $BRANCH 2>/dev/null| awk '{gsub(/.*:/,"");}1')
     RESERVED_PORT=$(docker inspect --format='{{(index (index .NetworkSettings.Ports "'$VS_CONTAINER_MAIN_APP_PORT'/tcp") 0).HostPort}}' $BRANCH 2>/dev/null)
     if [ ! -z "$RESERVED_PORT" ]; then
@@ -523,7 +538,7 @@ getReservedPortList() {
       else
         RESERVED_PORT_LIST="$RESERVED_PORT"
       fi
-      if [ "$VS_DEBUG" == "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  -- $RESERVED_PORT is reserved by $BRANCH"; fi
+      if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  -- $RESERVED_PORT is reserved by $BRANCH"; fi
     fi
   done
   if [ ! -z "$RESERVED_PORT_LIST" ]; then echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - ports $RESERVED_PORT_LIST are reserved"; fi
@@ -692,9 +707,9 @@ findDynamicPorts() {
   for SERVICE in $VS_CONTAINER_SERVICE_LIST; do
     unset MAPPINGS
     for MAPPING in $(set | grep -E "^VS_CONTAINER_(INT|EXT)_PORT_$SERVICE"); do
-      if [ "$VS_DEBUG" == "TRUE" ]; then echo "found MAPPING $MAPPING for SERVICE $SERVICE"; fi
+      if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "found MAPPING $MAPPING for SERVICE $SERVICE"; fi
       MAPPINGS=$MAPPING" "$MAPPINGS
-      if [ "$VS_DEBUG" == "TRUE" ]; then echo "added $MAPPING for $SERVICE to MAPPINGS for $MAPPINGS"; fi
+      if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "added $MAPPING for $SERVICE to MAPPINGS for $MAPPINGS"; fi
     done
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - for service $SERVICE: $MAPPINGS" 
   done
@@ -737,7 +752,7 @@ findHippoArtifact() {
 }
 # prepare SSR app
 rebuildNodeModules() {
-  if [[ "$VS_SSR_PROXY_ON" = "TRUE" && ( "$VS_REBUILD_NODE_MODULES" = "TRUE" || "$VS_REBUILD_NODE_MODULES" = "true" ) && ! "$SAFE_TO_PROCEED" = "FALSE" ]]; then
+  if [[ "${VS_SSR_PROXY_ON^^}" = "TRUE" && ( "${VS_REBUILD_NODE_MODULES^^}" = "TRUE" ) && ! "$SAFE_TO_PROCEED" = "FALSE" ]]; then
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] rebuilding node_modules directory"
     VS_FUNCTION_STARTTIME=$(date +%s)
     if [ -d "$VS_FRONTEND_DIR" ]; then
@@ -790,7 +805,7 @@ uploadHippoArtifactBRC() {
 
 # package SSR app files
 packageSSRArtifact() {
-  if [ "$VS_SSR_PROXY_ON" = "TRUE" ] && [ ! "$SAFE_TO_PROCEED" = "FALSE" ]; then
+  if [ { ] && [ ! "$SAF^^}E_TO_PROCEED" = "FALSE" ]; then
     VS_FUNCTION_STARTTIME=$(date +%s)
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] packaging SSR application"
     if [ -d "$VS_FRONTEND_DIR" ]; then
@@ -814,14 +829,18 @@ packageSSRArtifact() {
 
 # create Docker container
 containerCreateAndStart() {
-  if [ ! "$SAFE_TO_PROCEED" = "FALSE" ]; then
+  if [ "$VS_CONTAINER_PRESERVE" == "TRUE" ] && [ -z "$CONTAINER_ID" ]; then
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] VS_CONTAINER_PRESERVE was set to $VS_CONTAINER_PRESERVE, but no container was found, starting new contanier"
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - setting VS_CONTAINER_PRESERVE to FALSE for this run only"; echo ""
+    VS_CONTAINER_PRESERVE=FALSE
+  fi
+  if [ ! "$SAFE_TO_PROCEED" = "FALSE" ] && [ ! "$VS_CONTAINER_PRESERVE" == "TRUE" ]; then
     VS_CONTAINER_EXPOSE_PORT=$VS_CONTAINER_MAIN_APP_PORT
     echo ""
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] about to create a new Docker container with:"
-    #VS_DOCKER_CMD='docker run -d --name '$VS_CONTAINER_NAME' -p '$VS_CONTAINER_BASE_PORT':'$VS_CONTAINER_EXPOSE_PORT' --env VS_SSR_PROXY_ON='$VS_SSR_PROXY_ON' --env VS_SSR_PACKAGE_NAME='$VS_SSR_PACKAGE_NAME' '$VS_DOCKER_IMAGE_NAME' /bin/bash -c "/usr/local/bin/vs-mysqld-start && /usr/local/bin/vs-hippo && while [ ! -f /home/hippo/tomcat_8080/logs/cms.log ]; do echo no log; sleep 2; done; tail -f /home/hippo/tomcat_8080/logs/cms.log"'
     if [ "$VS_BRXM_PERSISTENCE_METHOD" == "mysql" ]; then
       VS_DOCKER_CMD='docker run -d --name '$VS_CONTAINER_NAME' -p '$VS_CONTAINER_BASE_PORT':'$VS_CONTAINER_EXPOSE_PORT' '$VS_CONTAINER_PORT_MAPPINGS' --env VS_CONTAINER_CONSOLE_FILE=$VS_CONTAINER_CONSOLE_FILE --env VS_HIPPO_REPOSITORY_DIR='$VS_BRXM_REPOSITORY' --env VS_HIPPO_REPOSITORY_PERSIST='$VS_HIPPO_REPOSITORY_PERSIST' --env VS_SSR_PROXY_ON='$VS_SSR_PROXY_ON' --env VS_SSR_PACKAGE_NAME='$VS_SSR_PACKAGE_NAME' --env=VS_SSR_PROXY_TARGET_HOST='$VS_SSR_PROXY_TARGET_HOST' --env VS_CONTAINER_NAME='$VS_CONTAINER_NAME' --env VS_CONTAINER_MAIN_APP_PORT='$VS_CONTAINER_MAIN_APP_PORT' --env VS_BRANCH_NAME='$VS_BRANCH_NAME' --env VS_COMMIT_AUTHOR='$VS_COMMIT_AUTHOR' --env CHANGE_ID='$CHANGE_ID' '$VS_DOCKER_IMAGE_NAME' /bin/bash -c "/usr/local/bin/vs-mysqld-start && while [ ! -f /home/hippo/tomcat_8080/logs/cms.log ]; do echo no log; sleep 2; done; tail -f /home/hippo/tomcat_8080/logs/cms.log"'
-    elif [[ "$VS_CONTAINER_WORKSPACE_MAP" =~ ^(TRUE|true)$ ]]; then
+    elif [ "${VS_CONTAINER_WORKSPACE_MAP}" == "TRUE" ]]; then
       VS_DOCKER_CMD='docker run -t -d -u $VS_CONTAINER_USR:$VS_CONTAINER_GRP --name '$VS_CONTAINER_NAME' --hostname '$VS_CONTAINER_NAME_SHORT' -p '$VS_CONTAINER_BASE_PORT':'$VS_CONTAINER_EXPOSE_PORT' '$VS_CONTAINER_PORT_MAPPINGS' --workdir '$VS_CONTAINER_WD'  --volume $VS_CONTAINER_WORKSPACE:$VS_CONTAINER_WORKSPACE:$VS_CONTAINER_VOLUME_PERMISSIONS --volume $VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_VOLUME_PERMISSIONS --env VS_CONTAINER_CONSOLE_FILE=$VS_CONTAINER_CONSOLE_FILE --env VS_HIPPO_REPOSITORY_DIR='$VS_BRXM_REPOSITORY' --env VS_HIPPO_REPOSITORY_PERSIST='$VS_HIPPO_REPOSITORY_PERSIST' --env VS_SSR_PROXY_ON='$VS_SSR_PROXY_ON' --env VS_SSR_PACKAGE_NAME='$VS_SSR_PACKAGE_NAME' --env=VS_SSR_PROXY_TARGET_HOST='$VS_SSR_PROXY_TARGET_HOST' --env VS_CONTAINER_NAME='$VS_CONTAINER_NAME' --env VS_CONTAINER_MAIN_APP_PORT='$VS_CONTAINER_MAIN_APP_PORT' --env VS_BRANCH_NAME='$VS_BRANCH_NAME' --env VS_COMMIT_AUTHOR='$VS_COMMIT_AUTHOR' --env CHANGE_ID='$CHANGE_ID' $VS_CONTAINER_ENVIRONMENT '$VS_DOCKER_IMAGE_NAME' '$VS_CONTAINER_INIT_EXEC''
     else
       VS_DOCKER_CMD='docker run -d --name '$VS_CONTAINER_NAME' -p '$VS_CONTAINER_BASE_PORT':'$VS_CONTAINER_EXPOSE_PORT' '$VS_CONTAINER_PORT_MAPPINGS' --env VS_CONTAINER_CONSOLE_FILE=$VS_CONTAINER_CONSOLE_FILE --env VS_HIPPO_REPOSITORY_DIR='$VS_BRXM_REPOSITORY' --env VS_HIPPO_REPOSITORY_PERSIST='$VS_HIPPO_REPOSITORY_PERSIST' --env VS_SSR_PROXY_ON='$VS_SSR_PROXY_ON' --env VS_SSR_PACKAGE_NAME='$VS_SSR_PACKAGE_NAME' --env=VS_SSR_PROXY_TARGET_HOST='$VS_SSR_PROXY_TARGET_HOST' --env VS_CONTAINER_NAME='$VS_CONTAINER_NAME' --env VS_CONTAINER_MAIN_APP_PORT='$VS_CONTAINER_MAIN_APP_PORT' --env VS_BRANCH_NAME='$VS_BRANCH_NAME' --env VS_COMMIT_AUTHOR='$VS_COMMIT_AUTHOR' --env CHANGE_ID='$CHANGE_ID' '$VS_DOCKER_IMAGE_NAME' /bin/bash -c "/usr/local/bin/vs-mysqld-start && while [ ! -f /home/hippo/tomcat_8080/logs/cms.log ]; do echo no log; sleep 2; done; tail -f /home/hippo/tomcat_8080/logs/cms.log"'
@@ -833,9 +852,14 @@ containerCreateAndStart() {
       SAFE_TO_PROCEED=FALSE
       FAIL_REASON="Docker failed to start container $VS_CONTAINER_NAME, command exited with $RETURN_CODE"
     fi
-    else
+  elif [ ! "$SAFE_TO_PROCEED" = "FALSE" ] && [ "$VS_CONTAINER_PRESERVE" == "TRUE" ]; then
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] re-using existing container $CONTAINER_ID"; echo ""
+  elif [ "$SAFE_TO_PROCEED" = "FALSE" ]; then
     echo ""
     echo "$(eval $VS_LOG_DATESTAMP) ERROR [$VS_SCRIPTNAME] container will not be started due to previous failures"
+  else
+    echo ""
+    echo "$(eval $VS_LOG_DATESTAMP) ERROR [$VS_SCRIPTNAME] conditions to allow the start of a container could not be met, please contact Web Operations"
   fi
   echo ""
 }
@@ -901,7 +925,7 @@ containerCopyHippoArtifact() {
 }
 
 containerCopySSRArtifact() {
-  if [ "$VS_SSR_PROXY_ON" = "TRUE" ] && [ ! "$SAFE_TO_PROCEED" = "FALSE" ]; then
+  if [ { ] && [ ! "$SAF^^}E_TO_PROCEED" = "FALSE" ]; then
     echo ""
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] about to copy $VS_SSR_PACKAGE_NAME to container $VS_CONTAINER_NAME:/home/hippo"
     docker cp $VS_SSR_PACKAGE_TARGET/$VS_SSR_PACKAGE_NAME $VS_CONTAINER_NAME:/home/hippo
@@ -910,7 +934,7 @@ containerCopySSRArtifact() {
       SAFE_TO_PROCEED=FALSE
       FAIL_REASON="Docker failed to run cp command against $VS_CONTAINER_NAME, command exited with $RETURN_CODE"
     fi
-  elif [ ! "$VS_SSR_PROXY_ON" = "TRUE" ] && [ ! "$SAFE_TO_PROCEED" = "FALSE" ]; then
+  elif [ ! { ] && [ ! "$SAF^^}E_TO_PROCEED" = "FALSE" ]; then
     echo ""
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] docker cp of VS_SSR_PACKAGE_NAME:$VS_SSR_PACKAGE_NAME will not be run due VS_SSR_PROXY_ON:$VS_SSR_PROXY_ON"
   else
@@ -941,6 +965,15 @@ containerStartHippo() {
       SAFE_TO_PROCEED=FALSE
       FAIL_REASON="Docker failed to run exec command in $VS_CONTAINER_NAME, command exited with $RETURN_CODE"
     fi
+  else
+    echo ""
+    echo "$(eval $VS_LOG_DATESTAMP) ERROR [$VS_SCRIPTNAME] docker exec will not be run due to previous failures"
+  fi
+}
+
+containerStartDssr() {
+  if [ ! "$SAFE_TO_PROCEED" = "FALSE" ]; then
+    false
   else
     echo ""
     echo "$(eval $VS_LOG_DATESTAMP) ERROR [$VS_SCRIPTNAME] docker exec will not be run due to previous failures"
@@ -1048,6 +1081,8 @@ createBuildReport() {
 }
 
 testSite() {
+  # to-do:? gp - we could add a loop here to curl the target site until there's an HTTP response or a timeout
+  #            - that way we can ensure the "environment is ready" email doesn't get sent until it's known to be true
   false
 }
 
@@ -1079,11 +1114,13 @@ case $METHOD in
     #checkVariables
     defaultSettings
     createBuildReport
+    writeSettings
   ;;
   findartifact)
     checkVariables
     defaultSettings
     findHippoArtifact
+    writeSettings
   ;;
   findports)
     checkVariables
@@ -1093,11 +1130,13 @@ case $METHOD in
     findDynamicPorts
     exportVSVariables
     copyVSVariables
+    writeSettings
   ;;
   packagesstartifact)
     checkVariables
     defaultSettings
     packageSSRArtifact
+    writeSettings
   ;;
   other)
     false
@@ -1107,17 +1146,26 @@ case $METHOD in
     defaultSettings
     exportVSVariables
     copyVSVariables
+    writeSettings
+  ;;
+  showvars)
+    reportSettings
+    writeSettings
   ;;
   upload-to-brcloud)
     checkVariables
     defaultSettings
     findHippoArtifact
     uploadHippoArtifactBRC
+    writeSettings
   ;;
   dssr-server)
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] entering dssr-server function"
+    VS_BUILD_TYPE=DSSR
     checkVariables
     defaultSettings
-    reportSettings
+    if [ "${VS_DEBUG^^}" == "TRUE" ]; then reportSettings; fi
+    writeSettings
     checkContainers
     manageContainers
     getBranchListFromWorkspace
@@ -1126,14 +1174,8 @@ case $METHOD in
     setPortRange
     findBasePort
     findDynamicPorts
-    if [ ! "$VS_CONTAINER_PRESERVE" == "TRUE" ]; then
-      containerCreateAndStart
-    elif [ "$VS_CONTAINER_PRESERVE" == "TRUE" ] && [ -z "$CONTAINER_ID" ]; then
-      containerCreateAndStart
-    else
-      echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] re-using existing container $CONTAINER_ID"; echo "" 
-    fi
     containerUpdates
+    continerStartDssr
     containerStartSSH
     containerStartTailon
     exportVSVariables
@@ -1181,6 +1223,7 @@ case $METHOD in
     testSite
     createBuildReport
     sendBuildReport
+    writeSettings
   ;;
 esac
 # ====/RUN ====
