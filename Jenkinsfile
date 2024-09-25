@@ -67,7 +67,7 @@ pipeline {
     stages {
 	    stage ('Pre-build') {
 	        steps {
-                echo "running stage $STAGE_NAME on $HOSTNAME"
+                echo "running stage $STAGE_NAME on $NODE_NAME"
                 // Set any defined build property overrides for this work-in-progress branch
 	            sh '''
     	            set +x

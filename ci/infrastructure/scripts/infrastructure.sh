@@ -42,6 +42,7 @@ if [ -z "$VS_DOCKERFILE_PATH" ]; then VS_DOCKERFILE_PATH=/home/jenkins/vs-docker
 if [ -z "$VS_DOCKERFILE_NAME" ]; then VS_DOCKERFILE_NAME=vs-brxm; fi
 if [ -z "$VS_DOCKERFILE_LOCN" ]; then VS_DOCKERFILE_LOCN=$VS_DOCKERFILE_PATH/$VS_DOCKERFILE_NAME; fi
 if [ -z "$VS_LOG_DATESTAMP" ]; then VS_LOG_DATESTAMP='echo $(date +%d-%b-%Y" "%H:%M:%S.%3N)'; fi
+if [ -z "$VS_SCRIPTNAME" ]; then VS_SCRIPTNAME=$(basename $0); fi
 #  ==== Hosting Environment Variables ====
 if [ -z "$VS_PROXY_SERVER_SCHEME" ]; then VS_PROXY_SERVER_SCHEME=https; fi
 #if [ -z "$VS_PROXY_SERVER_FQDN" ]; then VS_PROXY_SERVER_FQDN=feature.visitscotland.com; fi
@@ -58,8 +59,6 @@ if [ -z "$VS_MAIL_HOST" ]; then VS_MAIL_HOST=10.1.1.152; fi
 if [ -z "$VS_MAIL_NOTIFY_BUILD" ]; then VS_MAIL_NOTIFY_BUILD="TRUE"; fi
 if [ -z "$VS_MAIL_NOTIFY_SITE" ]; then VS_MAIL_NOTIFY_SITE="TRUE"; fi
 #  == brXM Instance Variables ==
-if [ -z "$VS_CONTAINER_BASE_PORT_OVERRIDE" ]; then unset VS_CONTAINER_BASE_PORT_OVERRIDE; else echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] VS_CONTAINER_BASE_PORT_OVERRIDE was set to $VS_CONTAINER_BASE_PORT_OVERRIDE before $0 was called"; fi
-if [ -z "$VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE" ]; then unset VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE; else echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE was set to $VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE before $0 was called"; fi
 if [ -z "$VS_BRXM_INSTANCE_HTTP_HOST" ]; then
   if [ ! -z "$VS_PROXY_SERVER_FQDN" ]; then
     VS_BRXM_INSTANCE_HTTP_HOST="$VS_PROXY_SERVER_FQDN"
@@ -170,11 +169,11 @@ checkVariables() {
   elif [ "$LOGNAME" = "jenkins" ] && [ ! -z "$JENKINS_SERVER_COOKIE" ]; then
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] $VS_SCRIPTNAME appears to be running from a Jenkins job"
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - exporting selected variables to $VS_JENKINS_LAST_ENV"
-    printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | tee $VS_JENKINS_LAST_ENV
+    printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | sort | tee $VS_JENKINS_LAST_ENV
   elif [ "${VS_AGENT_IS_DOCKER^^}" == "TRUE" ] && [ ! -z "$JENKINS_SERVER_COOKIE" ]; then
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] $VS_SCRIPTNAME appears to be running from a Jenkins job inside a Docker container "
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - exporting selected variables to $VS_JENKINS_LAST_ENV"
-    printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | tee $VS_JENKINS_LAST_ENV
+    printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | sort | tee $VS_JENKINS_LAST_ENV
   elif [ "$LOGNAME" = "jenkins" ] && [ -z "$JOB_NAME" ] && [ -e $VS_JENKINS_LAST_ENV ]; then
     echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] $VS_SCRIPTNAME was called from a Jenkins workspace but not by a Jenkins job"
     echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME]  - setting Jenkins environment variables from last run"
@@ -234,6 +233,19 @@ defaultSettings() {
     VS_CONTAINER_NAME=$(echo $JOB_NAME | sed -e "s/\/.*//g")"_"$(basename $BRANCH_NAME)
     VS_CONTAINER_NAME_SHORT=$(basename $BRANCH_NAME)
   fi
+  # check for VS_CONTAINER_BASE_PORT_OVERRIDE, ensure it's unset if it's not overridden
+  if [ -z "$VS_CONTAINER_BASE_PORT_OVERRIDE" ]; then
+    unset VS_CONTAINER_BASE_PORT_OVERRIDE
+  else
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] VS_CONTAINER_BASE_PORT_OVERRIDE was set to $VS_CONTAINER_BASE_PORT_OVERRIDE before $0 was called"
+  fi
+  # check for VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE, ensure it's unset if it's not overridden
+  # - this variable is needed when the pipeline is used with fixed port environments where the branch name may change
+  if [ -z "$VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE" ]; then
+    unset VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE
+  else
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE was set to $VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE before $0 was called"
+  fi
   # to-do: gp  - write out VS_CONTAINER_NAME to job's workspace/ci/vs-container-name
   if [ -z "$NODE_NAME" ]; then VS_THIS_SERVER=$HOSTNAME; else VS_THIS_SERVER=$NODE_NAME; fi
   if [ "$VS_CONTAINER_PRESERVE" == "TRUE" ]; then
@@ -245,9 +257,8 @@ defaultSettings() {
   VS_DATESTAMP=$(date +%Y%m%d)
   VS_HOST_IP_ADDRESS=$(/usr/sbin/ip ad sh  | egrep "global noprefixroute" | awk '{print $2}' | sed -e "s/\/.*$//")
   VS_PARENT_JOB_NAME=$(echo $JOB_NAME | sed -e "s/\/.*//g")
-  VS_SCRIPTNAME=$(basename $0)
   VS_SCRIPT_LOG=$VS_CI_DIR/logs/$VS_SCRIPTNAME.log
-  if [ ! -z "$STAGE_NAME" ]; then VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g"); fi
+  if [ ! -z "$STAGE_NAME" ]; then VS_STAGE_NAME=$(echo ${STAGE_NAME,,} | sed -e "s/ /-/g"); fi
   if [ "$VS_SSR_PROXY_ON" == "TRUE" ]; then
     VS_PROXY_QS_SSR="&vs_ssr_proxy=on"
   else
@@ -302,7 +313,12 @@ reportSettings() {
   echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] == from " $VS_SCRIPTNAME
   echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ========================================================================"
   echo ""
-  if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME] ==== printenv ===="; printenv; echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME] ====/printenv ===="; echo ""; fi
+  if [ "${VS_DEBUG^^}" == "TRUE" ]; then
+    echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME] ==== printenv ===="
+    printenv | sort
+    echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME] ====/printenv ===="
+    echo ""
+  fi
   #if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "==== set ===="; set; echo "====/set ====";  echo ""; fi
   echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ==== selected Jenkins environment variables ===="
   set | egrep "^(BRANCH|BUILD|CHANGE|GIT|JENKINS|JOB|RUN|WORKSPACE)" | sort
@@ -317,12 +333,12 @@ reportSettings() {
 
 writeSettings() {
   if [ "${VS_DEBUG^^}"  == "TRUE" ]; then
-	  echo; echo "== printenv in ${FUNCNAME} in $STAGE_NAME ==" | tee printenv.${FUNCNAME[1]}.$VS_STAGE_NAME
-    printenv | sort | tee -a printenv.${FUNCNAME[1]}.$VS_STAGE_NAME
+	  echo; echo "== printenv in ${FUNCNAME} in $STAGE_NAME ==" | tee printenv.${FUNCNAME[1]}.$METHOD.$VS_STAGE_NAME
+    printenv | sort | tee -a printenv.${FUNCNAME[1]}.$METHOD.$VS_STAGE_NAME
     echo "==/printenv after ${FUNCNAME} in $STAGE_NAME =="
   else
-    echo; echo "== printenv after $METHOD in $STAGE_NAME ==" > printenv.${FUNCNAME[1]}.$VS_STAGE_NAME
-    printenv | sort >> printenv.${FUNCNAME[1]}.$VS_STAGE_NAME
+    echo; echo "== printenv after $METHOD in $STAGE_NAME ==" > printenv.${FUNCNAME[1]}.$METHOD.$VS_STAGE_NAME
+    printenv | sort >> printenv.${FUNCNAME[1]}.$METHOD.$VS_STAGE_NAME
   fi
 }
 
