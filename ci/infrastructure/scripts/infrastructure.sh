@@ -904,14 +904,14 @@ containerUpdates() {
       echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - no match for: $THIS_TEST"
     fi
   done
-  docker exec $VS_CONTAINER_NAME /bin/bash -c "find /usr/local/bin -type f | xargs chmod +x"
+  docker exec $VS_CONTAINER_NAME --user root /bin/bash -c "find /usr/local/bin -type f | xargs chmod +x"
 }
 
 containerStartSSH() {
   if [ ! "$SAFE_TO_PROCEED" = "FALSE" ]; then
     echo ""
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] about to enable SSH in container $VS_CONTAINER_NAME:"
-    VS_DOCKER_CMD='docker exec -d $VS_CONTAINER_NAME /bin/bash -c "ssh-keygen -A; /usr/sbin/sshd; echo hippo:$VS_CONTAINER_SSH_PASS_HIPPO | chpasswd; echo root:$VS_CONTAINER_SSH_PASS_ROOT | chpasswd"'
+    VS_DOCKER_CMD='docker exec -d $VS_CONTAINER_NAME --user root /bin/bash -c "ssh-keygen -A; /usr/sbin/sshd; echo hippo:$VS_CONTAINER_SSH_PASS_HIPPO | chpasswd; echo root:$VS_CONTAINER_SSH_PASS_ROOT | chpasswd"'
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - $VS_DOCKER_CMD"
     eval $VS_DOCKER_CMD
     RETURN_CODE=$?; echo $RETURN_CODE
@@ -930,7 +930,7 @@ containerCopyHippoArtifact() {
     if [ ! "$SAFE_TO_PROCEED" = "FALSE" ]; then
     echo ""
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] about to copy $VS_HIPPO_LATEST to container $VS_CONTAINER_NAME:/home/hippo"
-    docker cp $VS_HIPPO_LATEST $VS_CONTAINER_NAME:/home/hippo
+    docker cp --user root $VS_HIPPO_LATEST $VS_CONTAINER_NAME:/home/hippo
     RETURN_CODE=$?; echo $RETURN_CODE
     if [ ! "$RETURN_CODE" = "0" ]; then
       SAFE_TO_PROCEED=FALSE
