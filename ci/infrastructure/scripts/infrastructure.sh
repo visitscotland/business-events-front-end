@@ -161,25 +161,25 @@ echo -en "\n"
 
 # ==== FUNCTIONS ====
 checkVariables() {
-  if [ ! "$DEBUG" == "TRUE" ]; then clear; fi
-  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ==== Checking variables to ensure environment is set up ===="
+  if [ ! "$DEBUG" == "TRUE" ] && [ ! -z "$TERM" ]; then clear; fi
+  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] Checking variables to ensure environment is set up"
   if [ ! "$LOGNAME" = "jenkins" ] && [ -z "$VS_AGENT_IS_DOCKER" ]; then
-    echo "$(eval $VS_LOG_DATESTAMP) ERROR [$VS_SCRIPTNAME] $VS_SCRIPTNAME was not called by the user Jenkins, please switch user"
+    echo "$(eval $VS_LOG_DATESTAMP) ERROR [$VS_SCRIPTNAME] - $VS_SCRIPTNAME was not called by the user Jenkins, please switch user"
     exit 3
   elif [ "$LOGNAME" = "jenkins" ] && [ ! -z "$JENKINS_SERVER_COOKIE" ]; then
-    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] $VS_SCRIPTNAME appears to be running from a Jenkins job"
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] - $VS_SCRIPTNAME appears to be running from a Jenkins job"
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - exporting selected variables to $VS_JENKINS_LAST_ENV"
-    printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | sort | tee $VS_JENKINS_LAST_ENV
+    printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | sort > $VS_JENKINS_LAST_ENV
   elif [ "${VS_AGENT_IS_DOCKER^^}" == "TRUE" ] && [ ! -z "$JENKINS_SERVER_COOKIE" ]; then
-    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] $VS_SCRIPTNAME appears to be running from a Jenkins job inside a Docker container "
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] - $VS_SCRIPTNAME appears to be running from a Jenkins job inside a Docker container "
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - exporting selected variables to $VS_JENKINS_LAST_ENV"
-    printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | sort | tee $VS_JENKINS_LAST_ENV
+    printenv | egrep "JENKINS_(HOME|URL)|JOB_((BASE_)?NAME|(DISPLAY_)?URL)|VS_(DOCKER|BRC|COMMIT)" | sort > $VS_JENKINS_LAST_ENV
   elif [ "$LOGNAME" = "jenkins" ] && [ -z "$JOB_NAME" ] && [ -e $VS_JENKINS_LAST_ENV ]; then
-    echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] $VS_SCRIPTNAME was called from a Jenkins workspace but not by a Jenkins job"
+    echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] - $VS_SCRIPTNAME was called from a Jenkins workspace but not by a Jenkins job"
     echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME]  - setting Jenkins environment variables from last run"
     source $VS_JENKINS_LAST_ENV
   elif [ "$LOGNAME" = "jenkins" ] && [ -z "$JOB_NAME" ] && [ ! -d ./target ] && [ ! -z "$VS_WORKING_DIR" ]; then
-    echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] $VS_SCRIPTNAME was not called from within Jenkins workspace"
+    echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] - $VS_SCRIPTNAME was not called from within Jenkins workspace"
     echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME]  - switching to $VS_WORKING_DIR"
     checkVariables
     cd $VS_WORKING_DIR
@@ -259,7 +259,7 @@ defaultSettings() {
   VS_PARENT_JOB_NAME=$(echo $JOB_NAME | sed -e "s/\/.*//g")
   VS_SCRIPT_LOG=$VS_CI_DIR/logs/$VS_SCRIPTNAME.log
   if [ ! -z "$STAGE_NAME" ]; then VS_STAGE_NAME=$(echo ${STAGE_NAME,,} | sed -e "s/ /-/g"); fi
-  if [ "$VS_SSR_PROXY_ON" == "TRUE" ]; then
+  if [ "${VS_SSR_PROXY_ON^^}" == "TRUE" ]; then
     VS_PROXY_QS_SSR="&vs_ssr_proxy=on"
   else
     VS_PROXY_QS_SSR="&vs_ssr_proxy=off"
@@ -333,11 +333,11 @@ reportSettings() {
 
 writeSettings() {
   if [ "${VS_DEBUG^^}"  == "TRUE" ]; then
-	  echo; echo "== printenv in ${FUNCNAME} in $STAGE_NAME ==" | tee printenv.${FUNCNAME[1]}.$METHOD.$VS_STAGE_NAME
+	  echo; echo "== printenv in ${FUNCNAME} in $VS_STAGE_NAME ==" | tee printenv.${FUNCNAME[1]}.$METHOD.$VS_STAGE_NAME
     printenv | sort | tee -a printenv.${FUNCNAME[1]}.$METHOD.$VS_STAGE_NAME
-    echo "==/printenv after ${FUNCNAME} in $STAGE_NAME =="
+    echo "==/printenv after ${FUNCNAME} in $VS_STAGE_NAME =="
   else
-    echo; echo "== printenv after $METHOD in $STAGE_NAME ==" > printenv.${FUNCNAME[1]}.$METHOD.$VS_STAGE_NAME
+    echo; echo "== printenv in $METHOD in $VS_STAGE_NAME ==" > printenv.${FUNCNAME[1]}.$METHOD.$VS_STAGE_NAME
     printenv | sort >> printenv.${FUNCNAME[1]}.$METHOD.$VS_STAGE_NAME
   fi
 }
