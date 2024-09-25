@@ -823,7 +823,7 @@ uploadHippoArtifactBRC() {
 
 # package SSR app files
 packageSSRArtifact() {
-  if [ { ] && [ ! "$SAF^^}E_TO_PROCEED" = "FALSE" ]; then
+  if [ "${VS_SSR_PROXY_ON^^}" == "TRUE" ] && [ ! "${SAFE_TO_PROCEED^^}" == "FALSE" ]; then
     VS_FUNCTION_STARTTIME=$(date +%s)
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] packaging SSR application"
     if [ -d "$VS_FRONTEND_DIR" ]; then
@@ -858,7 +858,7 @@ containerCreateAndStart() {
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] about to create a new Docker container with:"
     if [ "$VS_BRXM_PERSISTENCE_METHOD" == "mysql" ]; then
       VS_DOCKER_CMD='docker run -d --name '$VS_CONTAINER_NAME' -p '$VS_CONTAINER_BASE_PORT':'$VS_CONTAINER_EXPOSE_PORT' '$VS_CONTAINER_PORT_MAPPINGS' --env VS_CONTAINER_CONSOLE_FILE=$VS_CONTAINER_CONSOLE_FILE --env VS_HIPPO_REPOSITORY_DIR='$VS_BRXM_REPOSITORY' --env VS_HIPPO_REPOSITORY_PERSIST='$VS_HIPPO_REPOSITORY_PERSIST' --env VS_SSR_PROXY_ON='$VS_SSR_PROXY_ON' --env VS_SSR_PACKAGE_NAME='$VS_SSR_PACKAGE_NAME' --env=VS_SSR_PROXY_TARGET_HOST='$VS_SSR_PROXY_TARGET_HOST' --env VS_CONTAINER_NAME='$VS_CONTAINER_NAME' --env VS_CONTAINER_MAIN_APP_PORT='$VS_CONTAINER_MAIN_APP_PORT' --env VS_BRANCH_NAME='$VS_BRANCH_NAME' --env VS_COMMIT_AUTHOR='$VS_COMMIT_AUTHOR' --env CHANGE_ID='$CHANGE_ID' '$VS_DOCKER_IMAGE_NAME' /bin/bash -c "/usr/local/bin/vs-mysqld-start && while [ ! -f /home/hippo/tomcat_8080/logs/cms.log ]; do echo no log; sleep 2; done; tail -f /home/hippo/tomcat_8080/logs/cms.log"'
-    elif [ "${VS_CONTAINER_WORKSPACE_MAP^^}" == "TRUE" ]; then
+    elif [ "${VS_BUILD_TYPE^^}" == "DSSR" ]; then
       VS_DOCKER_CMD='docker run -t -d -u $VS_CONTAINER_USR:$VS_CONTAINER_GRP --name '$VS_CONTAINER_NAME' --hostname '$VS_CONTAINER_NAME_SHORT' -p '$VS_CONTAINER_BASE_PORT':'$VS_CONTAINER_EXPOSE_PORT' '$VS_CONTAINER_PORT_MAPPINGS' --workdir '$VS_CONTAINER_WD'  --volume $VS_CONTAINER_WORKSPACE:$VS_CONTAINER_WORKSPACE:$VS_CONTAINER_VOLUME_PERMISSIONS --volume $VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_WORKSPACE@tmp:$VS_CONTAINER_VOLUME_PERMISSIONS --env VS_CONTAINER_CONSOLE_FILE=$VS_CONTAINER_CONSOLE_FILE --env VS_HIPPO_REPOSITORY_DIR='$VS_BRXM_REPOSITORY' --env VS_HIPPO_REPOSITORY_PERSIST='$VS_HIPPO_REPOSITORY_PERSIST' --env VS_SSR_PROXY_ON='$VS_SSR_PROXY_ON' --env VS_SSR_PACKAGE_NAME='$VS_SSR_PACKAGE_NAME' --env=VS_SSR_PROXY_TARGET_HOST='$VS_SSR_PROXY_TARGET_HOST' --env VS_CONTAINER_NAME='$VS_CONTAINER_NAME' --env VS_CONTAINER_MAIN_APP_PORT='$VS_CONTAINER_MAIN_APP_PORT' --env VS_BRANCH_NAME='$VS_BRANCH_NAME' --env VS_COMMIT_AUTHOR='$VS_COMMIT_AUTHOR' --env CHANGE_ID='$CHANGE_ID' $VS_CONTAINER_ENVIRONMENT '$VS_DOCKER_IMAGE_NAME' '$VS_CONTAINER_INIT_EXEC''
     else
       VS_DOCKER_CMD='docker run -d --name '$VS_CONTAINER_NAME' -p '$VS_CONTAINER_BASE_PORT':'$VS_CONTAINER_EXPOSE_PORT' '$VS_CONTAINER_PORT_MAPPINGS' --env VS_CONTAINER_CONSOLE_FILE=$VS_CONTAINER_CONSOLE_FILE --env VS_HIPPO_REPOSITORY_DIR='$VS_BRXM_REPOSITORY' --env VS_HIPPO_REPOSITORY_PERSIST='$VS_HIPPO_REPOSITORY_PERSIST' --env VS_SSR_PROXY_ON='$VS_SSR_PROXY_ON' --env VS_SSR_PACKAGE_NAME='$VS_SSR_PACKAGE_NAME' --env=VS_SSR_PROXY_TARGET_HOST='$VS_SSR_PROXY_TARGET_HOST' --env VS_CONTAINER_NAME='$VS_CONTAINER_NAME' --env VS_CONTAINER_MAIN_APP_PORT='$VS_CONTAINER_MAIN_APP_PORT' --env VS_BRANCH_NAME='$VS_BRANCH_NAME' --env VS_COMMIT_AUTHOR='$VS_COMMIT_AUTHOR' --env CHANGE_ID='$CHANGE_ID' '$VS_DOCKER_IMAGE_NAME' /bin/bash -c "/usr/local/bin/vs-mysqld-start && while [ ! -f /home/hippo/tomcat_8080/logs/cms.log ]; do echo no log; sleep 2; done; tail -f /home/hippo/tomcat_8080/logs/cms.log"'
@@ -904,14 +904,14 @@ containerUpdates() {
       echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - no match for: $THIS_TEST"
     fi
   done
-  docker exec $VS_CONTAINER_NAME --user root /bin/bash -c "find /usr/local/bin -type f | xargs chmod +x"
+  docker exec --user root $VS_CONTAINER_NAME /bin/bash -c "find /usr/local/bin -type f | xargs chmod +x"
 }
 
 containerStartSSH() {
   if [ ! "$SAFE_TO_PROCEED" = "FALSE" ]; then
     echo ""
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] about to enable SSH in container $VS_CONTAINER_NAME:"
-    VS_DOCKER_CMD='docker exec -d $VS_CONTAINER_NAME --user root /bin/bash -c "ssh-keygen -A; /usr/sbin/sshd; echo hippo:$VS_CONTAINER_SSH_PASS_HIPPO | chpasswd; echo root:$VS_CONTAINER_SSH_PASS_ROOT | chpasswd"'
+    VS_DOCKER_CMD='docker exec --user root -d $VS_CONTAINER_NAME /bin/bash -c "ssh-keygen -A; /usr/sbin/sshd; echo hippo:$VS_CONTAINER_SSH_PASS_HIPPO | chpasswd; echo root:$VS_CONTAINER_SSH_PASS_ROOT | chpasswd"'
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - $VS_DOCKER_CMD"
     eval $VS_DOCKER_CMD
     RETURN_CODE=$?; echo $RETURN_CODE
@@ -943,7 +943,7 @@ containerCopyHippoArtifact() {
 }
 
 containerCopySSRArtifact() {
-  if [ { ] && [ ! "$SAF^^}E_TO_PROCEED" = "FALSE" ]; then
+  if [ "${VS_SSR_PROXY_ON^^}" == "TRUE" ] && [ ! "${SAFE_TO_PROCEED^^}" == "FALSE" ]; then
     echo ""
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] about to copy $VS_SSR_PACKAGE_NAME to container $VS_CONTAINER_NAME:/home/hippo"
     docker cp $VS_SSR_PACKAGE_TARGET/$VS_SSR_PACKAGE_NAME $VS_CONTAINER_NAME:/home/hippo
@@ -952,7 +952,7 @@ containerCopySSRArtifact() {
       SAFE_TO_PROCEED=FALSE
       FAIL_REASON="Docker failed to run cp command against $VS_CONTAINER_NAME, command exited with $RETURN_CODE"
     fi
-  elif [ ! { ] && [ ! "$SAF^^}E_TO_PROCEED" = "FALSE" ]; then
+  elif [ ! "${VS_SSR_PROXY_ON^^}" == "TRUE" ] && [ ! "${SAFE_TO_PROCEED^^}" == "FALSE" ]; then
     echo ""
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] docker cp of VS_SSR_PACKAGE_NAME:$VS_SSR_PACKAGE_NAME will not be run due VS_SSR_PROXY_ON:$VS_SSR_PROXY_ON"
   else
@@ -964,12 +964,8 @@ containerCopySSRArtifact() {
 containerStartHippo() {
   if [ ! "$SAFE_TO_PROCEED" = "FALSE" ]; then
     echo ""
-    # temporary mamangement of node app here until changes can be made in vs-hippo
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] about to execute "/usr/bin/pkill node" in container $VS_CONTAINER_NAME"
     docker exec -d $VS_CONTAINER_NAME /usr/bin/pkill node
-    #VS_DOCKER_CMD='docker exec -d $VS_CONTAINER_NAME /bin/bash -c "for PID in $(ps -ef | grep "java" | grep "$VS_CONTAINER_MAIN_APP_PORT" | awk \'{print $2}\'); do echo "terminating $PID"; kill -9 $PID; done"'
-    #echo "about to execute $VS_DOCKER_CMD in container $VS_CONTAINER_NAME"
-    #eval $VS_DOCKER_CMD 
     if [ "$VS_BRXM_PERSISTENCE_METHOD" == "mysql" ]; then
       VS_DOCKER_CMD='docker exec -d $VS_CONTAINER_NAME /bin/bash -c "/usr/local/bin/vs-hippo --persistence-method=mysql >> $VS_CONTAINER_CONSOLE_FILE"'
     else
@@ -1001,7 +997,7 @@ containerStartDssr() {
 containerStartTailon() {
   if [ ! "$SAFE_TO_PROCEED" = "FALSE" ]; then
     echo ""
-    VS_DOCKER_CMD='docker exec -d $VS_CONTAINER_NAME /bin/bash -c "pkill tailon; /usr/local/bin/tailon --relative-root /tailon -b :$VS_CONTAINER_INT_PORT_TLN '"\""'alias=hippo,/home/hippo/tomcat_8080/logs/*'"\""' > /tmp/tailon.log"'
+    VS_DOCKER_CMD='docker exec --user root -d $VS_CONTAINER_NAME /bin/bash -c "pkill tailon; /usr/local/bin/tailon --relative-root /tailon -b :$VS_CONTAINER_INT_PORT_TLN '"\""'alias=hippo,/home/hippo/tomcat_8080/logs/*'"\""' > /tmp/tailon.log"'
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] about to execute VS_DOCKER_CMD in container $VS_CONTAINER_NAME"
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - $VS_DOCKER_CMD"
     eval $VS_DOCKER_CMD
