@@ -149,7 +149,7 @@ while [[ $# -gt 0 ]]; do
     --tidy-containers) if [ ! -z "$THIS_RESULT" ]; then VS_TIDY_CONTAINERS=$THIS_RESULT; else VS_TIDY_CONTAINERS=TRUE; fi;;
     --working-dir) if [ ! -z "$THIS_RESULT" ]; then VS_WORKING_DIR=$THIS_RESULT; fi;;
     --map-workspace) if [ ! -z "$THIS_RESULT" ]; then VS_CONTAINER_WORKSPACE_MAP=$THIS_RESULT; fi;;
-    --quiet) if [ ! -z "$THIS_RESULT" ]; then VS_SCRIPT_RUN_QUIET=TRUE; fi
+    --quiet) if [ ! -z "$THIS_RESULT" ]; then VS_SCRIPT_RUN_QUIET=TRUE; fi;;
     *)
       if [ "$DEBUG" == "TRUE" ]; then echo -en " - not a valid argument - SKIPPING"; fi
     ;;
