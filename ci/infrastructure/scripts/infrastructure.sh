@@ -1206,7 +1206,12 @@ case $METHOD in
     sendBuildReport  
   ;;
   *)
-    echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] no function specified - running defaults"
+    if [ ! -z "$METHOD" ]; then
+      echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] called with method $METHOD but no such method found - running defaults"
+    else
+      echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] no function specified - running defaults"
+    fi
+    METHOD=none
     checkVariables
     defaultSettings
     reportSettings
