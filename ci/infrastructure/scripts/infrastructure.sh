@@ -247,7 +247,7 @@ defaultSettings() {
   VS_PARENT_JOB_NAME=$(echo $JOB_NAME | sed -e "s/\/.*//g")
   VS_SCRIPTNAME=$(basename $0)
   VS_SCRIPT_LOG=$VS_CI_DIR/logs/$VS_SCRIPTNAME.log
-  if [ ! -z "$STAGE_NAME"]; then VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g"); fi
+  if [ ! -z "$STAGE_NAME" ]; then VS_STAGE_NAME=$(echo $STAGE_NAME | sed -e "s/ /-/g"); fi
   if [ "$VS_SSR_PROXY_ON" == "TRUE" ]; then
     VS_PROXY_QS_SSR="&vs_ssr_proxy=on"
   else
@@ -1174,8 +1174,9 @@ case $METHOD in
     setPortRange
     findBasePort
     findDynamicPorts
+    containerCreateAndStart
     containerUpdates
-    continerStartDssr
+    containerStartDssr
     containerStartSSH
     containerStartTailon
     exportVSVariables
