@@ -149,6 +149,7 @@ while [[ $# -gt 0 ]]; do
     --tidy-containers) if [ ! -z "$THIS_RESULT" ]; then VS_TIDY_CONTAINERS=$THIS_RESULT; else VS_TIDY_CONTAINERS=TRUE; fi;;
     --working-dir) if [ ! -z "$THIS_RESULT" ]; then VS_WORKING_DIR=$THIS_RESULT; fi;;
     --map-workspace) if [ ! -z "$THIS_RESULT" ]; then VS_CONTAINER_WORKSPACE_MAP=$THIS_RESULT; fi;;
+    --quiet) if [ ! -z "$THIS_RESULT" ]; then VS_SCRIPT_RUN_QUIET=TRUE; fi
     *)
       if [ "$DEBUG" == "TRUE" ]; then echo -en " - not a valid argument - SKIPPING"; fi
     ;;
@@ -319,15 +320,16 @@ reportSettings() {
     echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME] ====/printenv ===="
     echo ""
   fi
-  #if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "==== set ===="; set; echo "====/set ====";  echo ""; fi
-  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ==== selected Jenkins environment variables ===="
-  set | egrep "^(BRANCH|BUILD|CHANGE|GIT|JENKINS|JOB|RUN|WORKSPACE)" | sort
-  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ====/selected Jenkins environment variables ===="
-  echo ""
-  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ==== all VS_ environment variables ===="
-  set | egrep "^(VS_)" | sort
-  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ====/all VS_ environment variables ===="
-  echo ""
+  if [ "${VS_DEBUG^^}" == "TRUE" ]; then
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ==== selected Jenkins environment variables ===="
+    set | egrep "^(BRANCH|BUILD|CHANGE|GIT|JENKINS|JOB|RUN|WORKSPACE)" | sort
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ====/selected Jenkins environment variables ===="
+    echo ""
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ==== all VS_ environment variables ===="
+    set | egrep "^(VS_)" | sort
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] ====/all VS_ environment variables ===="
+    echo ""
+  fi
   writeSettings
 }
 
@@ -1166,6 +1168,9 @@ case $METHOD in
   ;;
   showvars)
     reportSettings
+    writeSettings
+  ;;
+  writevars)
     writeSettings
   ;;
   upload-to-brcloud)
