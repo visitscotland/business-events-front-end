@@ -9,7 +9,7 @@
                 lg="3"
             >
                 <VsFooterAccordionItem
-                    :title="menuItem.model.title"
+                    :title="menuItem.model.title ? menuItem.model.title : ''"
                     :control-id="`footer_accordion_item${index}`"
                 >
                     <template #icon-open>

@@ -82,6 +82,8 @@
 </template>
 
 <script lang="ts" setup>
+/* eslint no-undef: 0 */
+
 import { toRefs, inject } from 'vue';
 
 import type { Page } from '@bloomreach/spa-sdk';

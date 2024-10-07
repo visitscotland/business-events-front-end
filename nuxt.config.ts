@@ -60,7 +60,4 @@ export default defineNuxtConfig({
             '@visitscotland/component-library',
         ],
     },
-    experimental: {
-        inlineSSRStyles: false,
-    },
 });

@@ -1,7 +1,7 @@
 <template>
     <div>
         <VsBrSkeleton
-            v-show="!isMounted"
+            v-show="!hideSkeleton"
         />
         <div
             class="hydrate"
@@ -26,12 +26,6 @@
                 </template>
             </br-page>
         </div>
-        <noscript>
-            <component :is="'style'">
-            .skeleton-site { display: none !important }
-            .hydrate { display: block !important }
-            </component>
-        </noscript>
     </div>
 </template>
 
@@ -72,6 +66,7 @@ const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
 // ];
 
 const isMounted = ref(false);
+const hideSkeleton = ref(false);
 
 onMounted(() => {
     isMounted.value = true;
@@ -136,5 +131,11 @@ const mapping = {
         &.vs-sticky-nav {
             top: 0;
         }
+    }
+
+    .hydrate {
+        z-index: 2;
+        position: relative;
+        background-color: white;
     }
 </style>
