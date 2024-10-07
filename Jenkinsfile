@@ -5,16 +5,24 @@ thisAgent = "docker-02"
 // set any environment-specific environment variables here using the format: env.MY_VAR = "conditional_value" }
 // please see ci/README_PIPELINE_VARIABLES.md or consult Web Operations for details on environment variables and their purposes
 echo "== Setting conditional environment variables"
-if (BRANCH_NAME == "develop" && (JOB_NAME ==~ "develop-brc-businessevents.visitscotland.com(-mb)?/develop")) {
+if (BRANCH_NAME == "main" && (JOB_NAME ==~ "feature-businessevents.visitscotland.com(-frontend)?(-mb)?/main")) {
+    echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
+    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3000"
+} else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "develop-businessevents.visitscotland.com(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3003"
-    env.VS_RELEASE_SNAPSHOT = "FALSE"
+} else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "develop-brc-businessevents.visitscotland.com(-frontend)?(-mb)?/main")) {
+    echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
+    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3001"
+} else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "release-brc-businessevents.visitscotland.com(-frontend)?(-mb)?/main")) {
+    echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
+    env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3002"
 } else if (BRANCH_NAME ==~ "ops/(feature-environment(s)?-enhancements|pipeline-updates)" && (JOB_NAME ==~ "feature(-(businessevents|support))?.visitscotland.(com|org)(-mb)?(-frontend)?/ops%(25)?2F(feature-environment(s)?-enhancements|pipeline-updates)")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3009"
     env.VS_CONTAINER_PRESERVE = "FALSE"
 } else {
-    echo "=== No conditional environment variables found for branch $BRANCH_NAME in job $JOB_NAME, using dedaults"
+    echo "=== No conditional environment variables found for branch $BRANCH_NAME in job $JOB_NAME, using defaults"
 }
 echo "==/Setting conditional environment variables"
 
