@@ -1,5 +1,6 @@
 <template>
     <div class="vs-sticky-nav" :class="{ 'has-edit-button': page.isPreview() }">
+        <VsBrSkipTo />
         <header>
             <VsGlobalMenu
                 :active-site="configStore.isBusinessEvents
@@ -67,6 +68,8 @@ import {
     VsMegaNavStaticLink,
     VsAccordion,
 } from '@visitscotland/component-library/components';
+
+import VsBrSkipTo from '~/components/Base/VsBrSkipTo.vue';
 
 const props = defineProps<{ component: Component, page: Page }>();
 
