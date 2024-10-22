@@ -16,7 +16,7 @@
                 >
                     <VsRichTextWrapper
                         variant="lead"
-                        class="mb-9 mb-lg-10"
+                        class="mb-300 mb-lg-400"
                     >
                         <VsBrRichText :input-content="data.copy.value" />
                     </VsRichTextWrapper>
@@ -39,7 +39,7 @@
                 >
                     <VsImg
                         src="/illustrations/newsletter.svg"
-                        class="mt-10 mt-sm-2 w-100 h-auto"
+                        class="mt-400 mt-sm-050 w-100 h-auto"
                         style="aspect-ratio:267/206"
                     />
                 </VsCol>
