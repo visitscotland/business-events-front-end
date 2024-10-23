@@ -1,10 +1,10 @@
 <template>
     <VsContainer
-        class="py-4"
+        class="py-100"
     >
         <VsAlert>
             <div>
-                <p class="text-danger pb-2">
+                <p class="text-danger pb-050">
                     <strong>CMS ERROR!</strong>
                 </p>
 

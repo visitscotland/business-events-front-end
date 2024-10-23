@@ -41,7 +41,7 @@
         <!-- TODO - labels -->
         <VsBrProductSearch
             v-if="productSearch && productSearch.position === 'Top'"
-            class="mb-9 mb-lg-12 pt-9"
+            class="mb-300 mb-lg-600 pt-300"
         />
     </NuxtLazyHydrate>
 
@@ -56,7 +56,7 @@
         <!-- TODO - labels -->
         <VsBrProductSearch
             v-if="productSearch && productSearch.position === 'Bottom'"
-            class="mt-9 mt-lg-12"
+            class="mt-300 mt-lg-600"
         />
     </NuxtLazyHydrate>
 
