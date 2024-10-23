@@ -557,10 +557,10 @@
     "@babel/helper-validator-identifier" "^7.24.7"
     to-fast-properties "^2.0.0"
 
-"@bloomreach/spa-sdk@^23.3.2":
-  version "23.3.2"
-  resolved "https://registry.yarnpkg.com/@bloomreach/spa-sdk/-/spa-sdk-23.3.2.tgz#c318dad8465dd45f91adf73fe54c25399e484161"
-  integrity sha512-o4vq+DlYaQTZzwVICJI0AJDrBLKTeRBDrpamJq7aj5TyLsNaRrCSXYrX4DiYGru2Ssq7HR6ENrQumRdux78YkA==
+"@bloomreach/spa-sdk@^23.4.4":
+  version "23.4.4"
+  resolved "https://registry.yarnpkg.com/@bloomreach/spa-sdk/-/spa-sdk-23.4.4.tgz#d873ca327c1d6e76015d99b66645567de854c02f"
+  integrity sha512-wrnfZVPfbIoDgV1i9DS2OokS6JV86ubaNKqzZl8dsSMwO/gpOt3zx3xM7ocRWPh4XXJLviEBqeikvqpv9PzGew==
   dependencies:
     cookie "0.4.1"
     dom-serializer "2.0.0"
