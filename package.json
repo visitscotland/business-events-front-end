@@ -26,20 +26,20 @@
     "nuxt-lazy-hydrate": "^1.0.0"
   },
   "dependencies": {
-    "@bloomreach/spa-sdk": "^23.3.2",
+    "@bloomreach/spa-sdk": "^23.4.4",
     "@bloomreach/vue3-sdk": "^22.0.5",
-    "@pinia/nuxt": "^0.5.3",
+    "@pinia/nuxt": "^0.5.5",
     "@visitscotland/component-library": "^4.0.2",
     "axios": "^1.7.7",
-    "commitizen": "^4.3.0",
+    "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
     "lint-staged": "^15.2.10",
     "mitt": "^3.0.0",
     "nuxt-jsonld": "^2.0.8",
     "pinia": "^2.2.4",
-    "sass": "^1.77.8",
+    "sass": "^1.80.3",
     "standard-version": "^9.5.0",
-    "typescript": "^5.5.4",
+    "typescript": "^5.6.3",
     "youtube-vue3": "^0.1.15"
   },
   "overrides": {
