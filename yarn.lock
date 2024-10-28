@@ -2370,10 +2370,10 @@
     node-gyp-build "^4.2.2"
     resolve-from "^5.0.0"
 
-"@visitscotland/component-library@^4.0.0":
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/@visitscotland/component-library/-/component-library-4.0.0.tgz#bed864d7cf722a4e6fa176a9370168e3915acfda"
-  integrity sha512-dCmR4xOZYxBOCKn/0oxJCtttqfHiA7xNVlfK+HeHfl37IzPv/UK3vFGn14ceXz7qBmaZY3wQM05acl75/oa6wQ==
+"@visitscotland/component-library@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/@visitscotland/component-library/-/component-library-4.0.2.tgz#3b07b3ccc7780eaa8ce294217d592ef0512f447c"
+  integrity sha512-RYL/CXjaMI026lezbC8fTvTmSpZ3m19i7Cqmnw9+OhMqOCIV5jN/ikANw1aYcnSnYok8eefJPA+JmZDKxctdZQ==
   dependencies:
     "@mapbox/geojson-extent" "^1.0.1"
     "@pinia/testing" "^0.1.3"
@@ -4854,7 +4854,7 @@ es-to-primitive@^1.2.1:
     is-date-object "^1.0.1"
     is-symbol "^1.0.2"
 
-esbuild@^0.20.1, esbuild@^0.20.2:
+esbuild@^0.20.2:
   version "0.20.2"
   resolved "https://registry.npmjs.org/esbuild/-/esbuild-0.20.2.tgz"
   integrity sha512-WdOOppmUNU+IbZ0PaDiTst80zjnrOkyJNHoKupIcVyU8Lvla3Ugx94VzkQ32Ijqd7UhHJy75gNWDMUekcrSJ6g==
@@ -10358,18 +10358,7 @@ vite-plugin-vue-inspector@^5.1.2:
     kolorist "^1.8.0"
     magic-string "^0.30.4"
 
-vite@^5.0.0, vite@^5.1.3:
-  version "5.2.11"
-  resolved "https://registry.npmjs.org/vite/-/vite-5.2.11.tgz"
-  integrity sha512-HndV31LWW05i1BLPMUCE1B9E9GFbOu1MbenhS58FuK6owSO5qHm7GiCotrNY1YE5rMeQSFBGmT5ZaLEjFizgiQ==
-  dependencies:
-    esbuild "^0.20.1"
-    postcss "^8.4.38"
-    rollup "^4.13.0"
-  optionalDependencies:
-    fsevents "~2.3.3"
-
-vite@^5.3.4:
+vite@^5.0.0, vite@^5.1.3, vite@^5.3.4:
   version "5.3.5"
   resolved "https://registry.yarnpkg.com/vite/-/vite-5.3.5.tgz#b847f846fb2b6cb6f6f4ed50a830186138cb83d8"
   integrity sha512-MdjglKR6AQXQb9JGiS7Rc2wC6uMjcm7Go/NHNO63EwiJXfuk9PgqiP/n5IDJCziMkfw9n4Ubp7lttNwz+8ZVKA==
