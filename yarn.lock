@@ -2484,10 +2484,10 @@
     node-gyp-build "^4.2.2"
     resolve-from "^5.0.0"
 
-"@visitscotland/component-library@^4.0.2":
-  version "4.0.2"
-  resolved "https://registry.yarnpkg.com/@visitscotland/component-library/-/component-library-4.0.2.tgz#3b07b3ccc7780eaa8ce294217d592ef0512f447c"
-  integrity sha512-RYL/CXjaMI026lezbC8fTvTmSpZ3m19i7Cqmnw9+OhMqOCIV5jN/ikANw1aYcnSnYok8eefJPA+JmZDKxctdZQ==
+"@visitscotland/component-library@^4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@visitscotland/component-library/-/component-library-4.0.3.tgz#8fd6efb16aeb1cf0b7455d8b81b37d9ab91d5704"
+  integrity sha512-Y07N8kv70Wfa6bElRbFUw+YagkEXIep+thlzfnNmfH1w5xaNZjqcX3qQLU6ApXvN5gSRIyPNhokHkXbtqZ8E4A==
   dependencies:
     "@mapbox/geojson-extent" "^1.0.1"
     "@pinia/testing" "^0.1.3"
@@ -8736,15 +8736,6 @@ postcss@^8.4.38:
     picocolors "^1.0.0"
     source-map-js "^1.2.0"
 
-postcss@^8.4.39:
-  version "8.4.40"
-  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.40.tgz#eb81f2a4dd7668ed869a6db25999e02e9ad909d8"
-  integrity sha512-YF2kKIUzAofPMpfH6hOi2cGnv/HrUlfucspc7pDyvv7kGdqXrfj8SCl/t8owkEgKEuu8ZcRjSOxFxVLqwChZ2Q==
-  dependencies:
-    nanoid "^3.3.7"
-    picocolors "^1.0.1"
-    source-map-js "^1.2.0"
-
 postcss@^8.4.43, postcss@^8.4.47:
   version "8.4.47"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.47.tgz#5bf6c9a010f3e724c503bf03ef7947dcb0fea365"
@@ -9222,7 +9213,7 @@ rollup-plugin-visualizer@^5.12.0:
     source-map "^0.7.4"
     yargs "^17.5.1"
 
-rollup@^4.13.0, rollup@^4.18.0:
+rollup@^4.18.0:
   version "4.24.0"
   resolved "https://registry.yarnpkg.com/rollup/-/rollup-4.24.0.tgz#c14a3576f20622ea6a5c9cad7caca5e6e9555d05"
   integrity sha512-DOmrlGSXNk1DM0ljiQA+i+o0rSLhtii1je5wgk60j49d1jHT5YYttBv1iWOnYSTG+fZZESUOSNiAl89SIet+Cg==
@@ -10581,18 +10572,7 @@ vite-plugin-vue-inspector@5.1.3:
     kolorist "^1.8.0"
     magic-string "^0.30.4"
 
-vite@^5.0.0, vite@^5.1.3:
-  version "5.3.5"
-  resolved "https://registry.yarnpkg.com/vite/-/vite-5.3.5.tgz#b847f846fb2b6cb6f6f4ed50a830186138cb83d8"
-  integrity sha512-MdjglKR6AQXQb9JGiS7Rc2wC6uMjcm7Go/NHNO63EwiJXfuk9PgqiP/n5IDJCziMkfw9n4Ubp7lttNwz+8ZVKA==
-  dependencies:
-    esbuild "^0.21.3"
-    postcss "^8.4.39"
-    rollup "^4.13.0"
-  optionalDependencies:
-    fsevents "~2.3.3"
-
-vite@^5.4.5:
+vite@^5.0.0, vite@^5.1.3, vite@^5.4.5:
   version "5.4.10"
   resolved "https://registry.yarnpkg.com/vite/-/vite-5.4.10.tgz#d358a7bd8beda6cf0f3b7a450a8c7693a4f80c18"
   integrity sha512-1hvaPshuPUtxeQ0hsVH3Mud0ZanOLwVTneA1EgbAM5LhaZEqyPWGRQ7BtaMvUrTDeEaC8pxtj6a6jku3x4z6SQ==
