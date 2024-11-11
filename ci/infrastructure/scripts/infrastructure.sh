@@ -66,6 +66,7 @@ if [ -z "$VS_BRXM_INSTANCE_HTTP_HOST" ]; then
     VS_BRXM_INSTANCE_HTTP_HOST=localhost
   fi
 fi
+
 if [ -z "$VS_BRXM_PERSISTENCE_METHOD" ]; then VS_BRXM_PERSISTENCE_METHOD=h2; fi
 if [ -z "$VS_BUILD_TYPE" ]; then VS_BUILD_TYPE=BRXM; fi
 if [ -z "$VS_CONTAINER_MAIN_APP_PORT" ]; then VS_CONTAINER_MAIN_APP_PORT=8080; fi
@@ -147,6 +148,8 @@ while [[ $# -gt 0 ]]; do
     --reuse-container) if [ ! -z "$THIS_RESULT" ]; then VS_CONTAINER_PRESERVE=$THIS_RESULT; else VS_CONTAINER_PRESERVE=TRUE; fi;;
     --single-function) if [ ! -z "$THIS_RESULT" ]; then VS_THIS_FUNCTION=$THIS_RESULT; fi;;
     --tidy-containers) if [ ! -z "$THIS_RESULT" ]; then VS_TIDY_CONTAINERS=$THIS_RESULT; else VS_TIDY_CONTAINERS=TRUE; fi;;
+    --vs-brxm-host) if [ ! -z "$THIS_RESULT" ]; then VS_BRXM_HOST=$THIS_RESULT; fi;;
+    --vs-brxm-port) if [ ! -z "$THIS_RESULT" ]; then VS_BRXM_PORT=$THIS_RESULT; fi;;
     --working-dir) if [ ! -z "$THIS_RESULT" ]; then VS_WORKING_DIR=$THIS_RESULT; fi;;
     --map-workspace) if [ ! -z "$THIS_RESULT" ]; then VS_CONTAINER_WORKSPACE_MAP=$THIS_RESULT; fi;;
     --quiet) if [ ! -z "$THIS_RESULT" ]; then VS_SCRIPT_RUN_QUIET=TRUE; fi;;
@@ -204,6 +207,7 @@ defaultSettings() {
   unset VS_PARENT_JOB_NAME
   unset RESERVED_PORT_LIST
   unset VS_CONTAINER_PORT_MAPPINGS
+  VS_HOST_IP_ADDRESS=$(/usr/sbin/ip ad sh  | egrep "global noprefixroute" | awk '{print $2}' | sed -e "s/\/.*$//")
   # set, and create if missing, VS_CI_DIR
   if [ -z "$VS_CI_DIR" ]; then
     if [ ! -z "$WORKSPACE" ]; then
@@ -228,10 +232,10 @@ defaultSettings() {
   fi
   # set unique container name from JOB_NAME and VS_BRANCH_NAME - removing / characters
   if [ -z "$VS_CONTAINER_NAME" ]&&[ "$VS_BRANCH_NAME" != "branch-not-found" ]; then
-    VS_CONTAINER_NAME=$(echo $JOB_NAME | sed -e "s/\/.*//g")"_"$(basename $VS_BRANCH_NAME)
+    VS_CONTAINER_NAME=$(dirname $JOB_NAME | sed -e "s/\//_/g")"_"$(basename $VS_BRANCH_NAME)
     VS_CONTAINER_NAME_SHORT=$(basename $VS_BRANCH_NAME)
   else
-    VS_CONTAINER_NAME=$(echo $JOB_NAME | sed -e "s/\/.*//g")"_"$(basename $BRANCH_NAME)
+    VS_CONTAINER_NAME=$(dirname $JOB_NAME | sed -e "s/\//_/g")"_"$(basename $BRANCH_NAME)
     VS_CONTAINER_NAME_SHORT=$(basename $BRANCH_NAME)
   fi
   # check for VS_CONTAINER_BASE_PORT_OVERRIDE, ensure it's unset if it's not overridden
@@ -453,7 +457,7 @@ manageContainers() {
       echo "$(eval $VS_LOG_DATESTAMP) ERROR [$VS_SCRIPTNAME] CONTAINER_ID: $CONTAINER_ID was found but container status could not be determined"
     fi
   elif [ ! -z "$CONTAINER_ID" ] && [ "${VS_CONTAINER_PORT_CLASH_PREDICTED^^}" == "TRUE" ]; then
-    if [ "${VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE}" == "TRUE" ]]; then
+    if [ "${VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE}" == "TRUE" ]; then
       echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE is $VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE and VS_CONTAINER_PORT_CLASH_PREDICTED is $VS_CONTAINER_PORT_CLASH_PREDICTED, so existing container $CONTAINER_ID will be removed"
       deleteContainers
       unset CONTAINER_ID
@@ -930,7 +934,7 @@ containerCopyHippoArtifact() {
     if [ ! "$SAFE_TO_PROCEED" = "FALSE" ]; then
     echo ""
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] about to copy $VS_HIPPO_LATEST to container $VS_CONTAINER_NAME:/home/hippo"
-    docker cp --user root $VS_HIPPO_LATEST $VS_CONTAINER_NAME:/home/hippo
+    docker cp $VS_HIPPO_LATEST $VS_CONTAINER_NAME:/home/hippo
     RETURN_CODE=$?; echo $RETURN_CODE
     if [ ! "$RETURN_CODE" = "0" ]; then
       SAFE_TO_PROCEED=FALSE
