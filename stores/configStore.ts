@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 
 interface IConfigState {
-    isBusinessEvents: boolean,
+    activeSite: string,
     productSearch: any,
     otyml: any,
     pageItems: any[],
@@ -14,7 +14,7 @@ interface IConfigState {
 
 const useConfigStore = defineStore('configStore', {
     state: (): IConfigState => ({
-        isBusinessEvents: false,
+        activeSite: '',
         productSearch: {
         },
         otyml: null,
@@ -23,6 +23,7 @@ const useConfigStore = defineStore('configStore', {
         },
         newsletterSignpost: {
         },
+        gtm: null,
         locale: '',
         pageMetaData: {
         },

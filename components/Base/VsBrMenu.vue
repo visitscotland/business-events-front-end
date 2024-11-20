@@ -3,7 +3,7 @@
         <VsBrSkipTo />
         <header>
             <VsGlobalMenu
-                :active-site="configStore.isBusinessEvents
+                :active-site="configStore.activeSite === 'be'
                     ? 'https://businessevents.visitscotland.com/'
                     : 'https://www.visitscotland.com/'"
             />

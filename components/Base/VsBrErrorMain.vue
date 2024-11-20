@@ -57,7 +57,7 @@ if (page.value) {
 
     const componentModels = component.value.getModels();
 
-    configStore.isBusinessEvents = componentModels['business-events'];
+    configStore.activeSite = componentModels['site-id'];
     configStore.labels = componentModels.labels;
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
