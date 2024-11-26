@@ -2508,10 +2508,10 @@
     node-gyp-build "^4.2.2"
     resolve-from "^5.0.0"
 
-"@visitscotland/component-library@~4.2.1":
-  version "4.2.2"
-  resolved "https://registry.yarnpkg.com/@visitscotland/component-library/-/component-library-4.2.2.tgz#6bc7b8c7c876dba8064e160932b2fec430495189"
-  integrity sha512-DAZMxTnDY+ur1Gv+RLkwAG4ir5E2ImT2c+/pwp3UvXQKR1zC3waeK5L0yP2HWEZNK9DsC12Piz6pj+ypNh8E1A==
+"@visitscotland/component-library@4.2.1":
+  version "4.2.1"
+  resolved "https://registry.yarnpkg.com/@visitscotland/component-library/-/component-library-4.2.1.tgz#3a246a026c3f93fa269dcddf7fb734052add0344"
+  integrity sha512-f/70CcTx8z44Sna3EKJH/FwaafahmrH3Y7aFkl2UHwMlgD8F61YFniVlV07uYgC4HMGt3Sx+ikis4kbXshG2cw==
   dependencies:
     "@mapbox/geojson-extent" "^1.0.1"
     "@pinia/testing" "^0.1.3"
@@ -6954,11 +6954,6 @@ is-unicode-supported@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/is-unicode-supported/-/is-unicode-supported-0.1.0.tgz"
   integrity sha512-knxG2q4UC3u8stRGyAVJCOdxFmv5DZiRcdlIaAQXAbSfJya+OhopNotLQrstBhququ4ZpuKbDc/8S6mgXgPFPw==
-
-is-unicode-supported@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/is-unicode-supported/-/is-unicode-supported-1.3.0.tgz#d824984b616c292a2e198207d4a609983842f714"
-  integrity sha512-43r2mRvz+8JRIKnWJ+3j8JtjRKZ6GmjzfaE/qiBJnikNnYv/6bagRJ1kUhNk8R5EX/GkobD+r+sfxCPJsiKBLQ==
 
 is-utf8@^0.2.1:
   version "0.2.1"
