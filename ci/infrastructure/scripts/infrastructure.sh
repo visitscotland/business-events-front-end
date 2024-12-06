@@ -1046,20 +1046,20 @@ createBuildReport() {
     echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "# To configure your browser session for this branch please follow this link:"
     if [ "${VS_BUILD_TYPE^^}" == "BRXM" ]; then
-		echo "#   - $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/?vs_brxm_host=$VS_HOST_IP_ADDRESS&vs_brxm_port=$VS_CONTAINER_BASE_PORT&vs_brxm_http_host=$VS_BRXM_INSTANCE_HTTP_HOST&vs_ssr_http_port=$VS_CONTAINER_EXT_PORT_SSR&vs_tln_http_port=$VS_CONTAINER_EXT_PORT_TLN&vs_feature_branch=$BRANCH_NAME$VS_PROXY_QS_SSR" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "# Thereafter, until you clear the settings, you will be able to access the environment on the following URLs" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "#  - site:    $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "#  - cms:     $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/cms/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "#  - console: $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/cms/console/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "#  - logs:    $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/logs/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#   - $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/?vs_brxm_host=$VS_HOST_IP_ADDRESS&vs_brxm_port=$VS_CONTAINER_BASE_PORT&vs_brxm_http_host=$VS_BRXM_INSTANCE_HTTP_HOST&vs_ssr_http_port=$VS_CONTAINER_EXT_PORT_SSR&vs_tln_http_port=$VS_CONTAINER_EXT_PORT_TLN&vs_feature_branch=$BRANCH_NAME$VS_PROXY_QS_SSR" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "# Thereafter, until you clear the settings, you will be able to access the environment on the following URLs" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#  - site:    $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#  - cms:     $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/cms/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#  - console: $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/cms/console/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#  - logs:    $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/logs/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     elif [ "${VS_BUILD_TYPE^^}" == "DSSR" ]; then
-		echo "#   - $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/?vs-dssr-host=$VS_HOST_IP_ADDRESS&vs-dssr-http-port=$VS_CONTAINER_BASE_PORT&vs-brxm-host=$VS_BRXM_HOST&vs-brxm-port=$VS_BRXM_PORT&vs_brxm_http_host=$VS_BRXM_INSTANCE_HTTP_HOST&vs_tln_http_port=$VS_CONTAINER_EXT_PORT_TLN&vs_feature_branch=$BRANCH_NAME" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "# Thereafter, until you clear the settings, you will be able to access the environment on the following URLs" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "#  - site:    $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "#  - cms:     $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/cms/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "#             this will redirect you to this branch's associated BRXM site/cms" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#   - $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/?vs-dssr-host=$VS_HOST_IP_ADDRESS&vs-dssr-http-port=$VS_CONTAINER_BASE_PORT&vs-brxm-host=$VS_BRXM_HOST&vs-brxm-port=$VS_BRXM_PORT&vs_brxm_http_host=$VS_BRXM_INSTANCE_HTTP_HOST&vs_tln_http_port=$VS_CONTAINER_EXT_PORT_TLN&vs_feature_branch=$BRANCH_NAME" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "# Thereafter, until you clear the settings, you will be able to access the environment on the following URLs" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#  - site:    $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#  - cms:     $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/cms/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#             this will redirect you to this branch's associated BRXM site/cms" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
 	fi
 	if [ ! -z "$VS_CONTAINER_EXT_PORT_TLN" ]; then
 		echo "#  - tailon:  $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/tailon/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
@@ -1069,13 +1069,13 @@ createBuildReport() {
     echo "#   - $VS_PROXY_SERVER_SCHEME://$VS_PROXY_SERVER_FQDN/?vs-reset" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
   	if [ "${VS_BUILD_TYPE^^}" == "BRXM" ]; then
-		echo "# Direct Tomcat access - available only on the Digital Development network" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "#   - http://$VS_HOST_IP_ADDRESS:$VS_CONTAINER_BASE_PORT/cms/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "#   - http://$VS_HOST_IP_ADDRESS:$VS_CONTAINER_BASE_PORT/site/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "#     -  both need a HOST header of \"localhost:8080\" to be passed with the request" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "# Direct Tomcat access - available only on the Digital Development network" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#   - http://$VS_HOST_IP_ADDRESS:$VS_CONTAINER_BASE_PORT/cms/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#   - http://$VS_HOST_IP_ADDRESS:$VS_CONTAINER_BASE_PORT/site/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#     -  both need a HOST header of \"localhost:8080\" to be passed with the request" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     elif [ "${VS_BUILD_TYPE^^}" == "DSSR" ]; then
-		echo "# Direct Node app access - available only on the Digital Development network" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-		echo "#   - http://$VS_HOST_IP_ADDRESS:$VS_CONTAINER_BASE_PORT/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "# Direct Node app access - available only on the Digital Development network" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+		  echo "#   - http://$VS_HOST_IP_ADDRESS:$VS_CONTAINER_BASE_PORT/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
 	fi
     echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     if [ ! -z "$VS_CONTAINER_EXT_PORT_SSR" ]&&[ "${VS_BUILD_TYPE^^}" == "BRXM" ]; then
