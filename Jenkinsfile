@@ -8,6 +8,7 @@ echo "== Setting conditional environment variables"
 if (BRANCH_NAME == "main" && (JOB_NAME ==~ "feature-businessevents.visitscotland.com(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3000"
+    env.VS_TIDY_CONTAINERS = "TRUE"
 } else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "develop-businessevents.visitscotland.com(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3004"
