@@ -137,7 +137,7 @@ pipeline {
                 sh 'set +x; node --version; exit 0'
                 sh 'set +x; npm --version; exit 0'
                 sh 'set +x; yarn --version; exit 0'
-                sh 'set +x; echo "==== TOOLS CHECK ====="; echo'
+                sh 'set +x; echo "====/TOOLS CHECK ====="; echo'
                 checkout scm
             }
         } //end stage
