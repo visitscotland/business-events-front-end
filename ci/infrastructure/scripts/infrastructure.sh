@@ -695,7 +695,7 @@ findBasePort() {
 findDynamicPorts() {
   echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] finding free ports from $VS_CONTAINER_BASE_PORT in increments of $VS_CONTAINER_PORT_INCREMENT to dynamically map to other services on the new container - up to $VS_CONTAINER_DYN_PORT_MAX"
   THIS_PORT=$VS_CONTAINER_BASE_PORT
-  echo "" > $VS_MAIL_NOTIFY_BUILD_MESSAGE_EXTRA
+  echo "# " > $VS_MAIL_NOTIFY_BUILD_MESSAGE_EXTRA
   for VS_CONTAINER_INT_PORT in $(set | grep -E "^VS_CONTAINER_INT_PORT_"); do
     VS_CONTAINER_SERVICE=$(echo "$VS_CONTAINER_INT_PORT" | sed -e "s/.*_//g" | sed -e "s/=.*//g")
     VS_CONTAINER_SERVICE_PORT=$(echo "$VS_CONTAINER_INT_PORT" | sed -e "s/.*=//g")
@@ -707,7 +707,7 @@ findDynamicPorts() {
       if [ "$FREE" = "" ]; then
         #echo " - netstat says $THIS_PORT is free - using it"
 	      eval "VS_CONTAINER_EXT_PORT_"$VS_CONTAINER_SERVICE"="$THIS_PORT
-        echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - service $VS_CONTAINER_SERVICE on port $VS_CONTAINER_SERVICE_PORT has been mapped to external port $THIS_PORT" >> $VS_MAIL_NOTIFY_BUILD_MESSAGE_EXTRA
+          echo "# service $VS_CONTAINER_SERVICE on port $VS_CONTAINER_SERVICE_PORT has been mapped to external port $THIS_PORT" >> $VS_MAIL_NOTIFY_BUILD_MESSAGE_EXTRA
 	      THIS_DOCKER_MAP="-p $THIS_PORT:$VS_CONTAINER_SERVICE_PORT"
 	      VS_CONTAINER_PORT_MAPPINGS="$THIS_DOCKER_MAP $VS_CONTAINER_PORT_MAPPINGS"
 	      break
@@ -729,9 +729,9 @@ findDynamicPorts() {
   for SERVICE in $VS_CONTAINER_SERVICE_LIST; do
     unset MAPPINGS
     for MAPPING in $(set | grep -E "^VS_CONTAINER_(INT|EXT)_PORT_$SERVICE"); do
-      if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "found MAPPING $MAPPING for SERVICE $SERVICE"; fi
+      if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  found MAPPING $MAPPING for SERVICE $SERVICE"; fi
       MAPPINGS=$MAPPING" "$MAPPINGS
-      if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "added $MAPPING for $SERVICE to MAPPINGS for $MAPPINGS"; fi
+      if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  added $MAPPING for $SERVICE to MAPPINGS for $MAPPINGS"; fi
     done
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME]  - for service $SERVICE: $MAPPINGS" 
   done
@@ -1078,7 +1078,7 @@ createBuildReport() {
 		echo "#   - http://$VS_HOST_IP_ADDRESS:$VS_CONTAINER_BASE_PORT/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
 	fi
     echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
-    if [ ! -z "$VS_CONTAINER_EXT_PORT_SSR" ]; then
+    if [ ! -z "$VS_CONTAINER_EXT_PORT_SSR" ]&&[ "${VS_BUILD_TYPE^^}" == "BRXM" ]; then
       echo "# Direct SSR access - available only on the Web Development LAN" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
       echo "#   - http://$VS_HOST_IP_ADDRESS:$VS_CONTAINER_EXT_PORT_SSR/site/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
       echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
