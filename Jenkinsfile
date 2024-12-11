@@ -33,7 +33,6 @@ echo "==/Setting conditional environment variables"
 echo "== Setting default pipeline environment variables"
 if (!env.VS_CI_DIR) { env.VS_CI_DIR = "ci" }
 if (!env.VS_BRANCH_PROPERTIES_DIR) { env.VS_BRANCH_PROPERTIES_DIR = env.VS_CI_DIR + "/properties" }
-if (!env.VS_BRANCH_PROPERTIES_FILE) { env.VS_BRANCH_PROPERTIES_FILE = env.BRANCH_NAME.substring(env.BRANCH_NAME.lastIndexOf('/') + 1) + ".properties" }
 if (!env.VS_BRC_STACK_URI) { env.VS_BRC_STACK_URI = "visitscotland" }
 if (!env.VS_BRC_ENV) { env.VS_BRC_ENV = "demo" }
 if (!env.VS_BRC_STACK_URL) { env.VS_BRC_STACK_URL = "https://api.${VS_BRC_STACK_URI}.bloomreach.cloud" }
@@ -46,6 +45,11 @@ if (!env.VS_USE_DOCKER_BUILDER) { env.VS_USE_DOCKER_BUILDER = "TRUE" }
 if (!env.VS_RELEASE_SNAPSHOT) { env.VS_RELEASE_SNAPSHOT = "FALSE" }
 if (!env.VS_PROXY_SERVER_FQDN) { env.VS_PROXY_SERVER_FQDN = "feature-businessevents.visitscotland.com" }
 if (!env.HOSTNAME) { env.HOSTNAME = env.NODE_NAME }
+if (!env.VS_BRANCH_PROPERTIES_FILE && !env.CHANGE_BRANCH) {
+	env.VS_BRANCH_PROPERTIES_FILE = env.BRANCH_NAME.substring(env.BRANCH_NAME.lastIndexOf('/') + 1) + ".properties" 
+} else if (!env.VS_BRANCH_PROPERTIES_FILE && env.CHANGE_BRANCH) {
+	env.VS_BRANCH_PROPERTIES_FILE = env.CHANGE_BRANCH.substring(env.CHANGE_BRANCH.lastIndexOf('/') + 1) + ".properties" 
+}
 echo "==/Setting default environment variables"
 
 echo "== Setting default application variables"
