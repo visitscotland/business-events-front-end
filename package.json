@@ -35,7 +35,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "lint-staged": "^15.2.10",
     "mitt": "^3.0.0",
-    "nuxt-jsonld": "^2.0.8",
+    "nuxt-jsonld": "^2.1.0",
     "pinia": "^2.3.0",
     "sass": "^1.81.0",
     "standard-version": "^9.5.0",
