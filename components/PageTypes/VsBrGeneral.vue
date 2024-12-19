@@ -134,6 +134,7 @@ if (page.value) {
         if (
             pageItems[firstNonPersonalisationModule].type === 'ListLinksModule'
             || pageItems[firstNonPersonalisationModule].type === 'MultiImageLinksModule'
+            || pageItems[firstNonPersonalisationModule].type === 'SingleImageLinksModule'
         ) {
             firstModuleIsLink = true;
         }
