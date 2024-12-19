@@ -122,13 +122,21 @@ if (page.value) {
         otyml = configStore.otyml;
     }
 
-    if (pageItems && pageItems.length
-        && (
-            pageItems[0].type === 'ListLinksModule'
-            || pageItems[0].type === 'MultiImageLinksModule'
-        )
-    ) {
-        firstModuleIsLink = true;
+    console.log(pageItems[0].type);
+
+    if (pageItems && pageItems.length) {
+        let firstNonPersonalisationModule = 0;
+
+        if (pageItems.length > 1 && pageItems[0].type === 'PersonalisationModule') {
+            firstNonPersonalisationModule = 1;
+        }
+
+        if (
+            pageItems[firstNonPersonalisationModule].type === 'ListLinksModule'
+            || pageItems[firstNonPersonalisationModule].type === 'MultiImageLinksModule'
+        ) {
+            firstModuleIsLink = true;
+        }
     }
 }
 </script>
