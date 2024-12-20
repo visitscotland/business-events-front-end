@@ -122,8 +122,6 @@ if (page.value) {
         otyml = configStore.otyml;
     }
 
-    console.log(pageItems[0].type);
-
     if (pageItems && pageItems.length) {
         let firstNonPersonalisationModule = 0;
 
