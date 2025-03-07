@@ -33,7 +33,7 @@
     "axios": "^1.7.9",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
-    "lint-staged": "^15.2.10",
+    "lint-staged": "^15.4.3",
     "mitt": "^3.0.0",
     "nuxt-jsonld": "^2.0.8",
     "pinia": "^2.3.0",
