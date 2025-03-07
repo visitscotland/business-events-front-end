@@ -5,20 +5,20 @@ thisAgent = "docker-02"
 // set any environment-specific environment variables here using the format: env.MY_VAR = "conditional_value" }
 // please see ci/README_PIPELINE_VARIABLES.md or consult Web Operations for details on environment variables and their purposes
 echo "== Setting conditional environment variables"
-if (BRANCH_NAME == "main" && (JOB_NAME ==~ "feature-businessevents.visitscotland.com(-frontend)?(-mb)?/main")) {
+if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?feature-businessevents.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3000"
     env.VS_TIDY_CONTAINERS = "TRUE"
-} else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "develop-businessevents.visitscotland.com(-frontend)?(-mb)?/main")) {
+} else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-businessevents.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3004"
-} else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "develop-brc-businessevents.visitscotland.com(-frontend)?(-mb)?/main")) {
+} else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?develop-brc-businessevents.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3001"
-} else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "release-brc-businessevents.visitscotland.com(-frontend)?(-mb)?/main")) {
+} else if (BRANCH_NAME == "main" && (JOB_NAME ==~ "([^/]*/)?release-brc-businessevents.visitscotland.(com|org)(-frontend)?(-mb)?/main")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3002"
-} else if (BRANCH_NAME ==~ "ops/(feature-environment(s)?-enhancements|pipeline-updates)" && (JOB_NAME ==~ "feature(-(businessevents|support))?.visitscotland.(com|org)(-mb)?(-frontend)?/ops%(25)?2F(feature-environment(s)?-enhancements|pipeline-updates)")) {
+} else if (BRANCH_NAME ==~ "ops/(feature-environment(s)?-enhancements|pipeline-updates)" && (JOB_NAME ==~ "([^/]*/)?feature(-(businessevents|support))?.visitscotland.(com|org)(-mb)?(-frontend)?/ops%(25)?2F(feature-environment(s)?-enhancements|pipeline-updates)")) {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3009"
     env.VS_CONTAINER_PRESERVE = "FALSE"
@@ -33,7 +33,6 @@ echo "==/Setting conditional environment variables"
 echo "== Setting default pipeline environment variables"
 if (!env.VS_CI_DIR) { env.VS_CI_DIR = "ci" }
 if (!env.VS_BRANCH_PROPERTIES_DIR) { env.VS_BRANCH_PROPERTIES_DIR = env.VS_CI_DIR + "/properties" }
-if (!env.VS_BRANCH_PROPERTIES_FILE) { env.VS_BRANCH_PROPERTIES_FILE = env.BRANCH_NAME.substring(env.BRANCH_NAME.lastIndexOf('/') + 1) + ".properties" }
 if (!env.VS_BRC_STACK_URI) { env.VS_BRC_STACK_URI = "visitscotland" }
 if (!env.VS_BRC_ENV) { env.VS_BRC_ENV = "demo" }
 if (!env.VS_BRC_STACK_URL) { env.VS_BRC_STACK_URL = "https://api.${VS_BRC_STACK_URI}.bloomreach.cloud" }
@@ -44,7 +43,13 @@ if (!env.VS_SKIP_BUILD_FOR_BRANCH) { env.VS_SKIP_BUILD_FOR_BRANCH = "feature/VS-
 if (!env.VS_SSR_PROXY_ON) { env.VS_SSR_PROXY_ON = "TRUE" }
 if (!env.VS_USE_DOCKER_BUILDER) { env.VS_USE_DOCKER_BUILDER = "TRUE" }
 if (!env.VS_RELEASE_SNAPSHOT) { env.VS_RELEASE_SNAPSHOT = "FALSE" }
+if (!env.VS_PROXY_SERVER_FQDN) { env.VS_PROXY_SERVER_FQDN = "feature-businessevents.visitscotland.com" }
 if (!env.HOSTNAME) { env.HOSTNAME = env.NODE_NAME }
+if (!env.VS_BRANCH_PROPERTIES_FILE && !env.CHANGE_BRANCH) {
+	env.VS_BRANCH_PROPERTIES_FILE = env.BRANCH_NAME.substring(env.BRANCH_NAME.lastIndexOf('/') + 1) + ".properties" 
+} else if (!env.VS_BRANCH_PROPERTIES_FILE && env.CHANGE_BRANCH) {
+	env.VS_BRANCH_PROPERTIES_FILE = env.CHANGE_BRANCH.substring(env.CHANGE_BRANCH.lastIndexOf('/') + 1) + ".properties" 
+}
 echo "==/Setting default environment variables"
 
 echo "== Setting default application variables"
@@ -57,7 +62,7 @@ echo "== Setting default container variables"
 if (!env.VS_CONTAINER_BASE_PORT_MIN ) { env.VS_CONTAINER_BASE_PORT_MIN = 3010 }
 if (!env.VS_CONTAINER_BASE_PORT_MAX ) { env.VS_CONTAINER_BASE_PORT_MAX = 3029 }
 if (!env.VS_CONTAINER_EXEC ) { env.VS_CONTAINER_EXEC = "/bin/bash -c \"node .output/server/index.mjs\"" }
-if (!env.VS_CONTAINER_PRESERVE) { env.VS_CONTAINER_PRESERVE = "TRUE" }
+if (!env.VS_CONTAINER_PRESERVE) { env.VS_CONTAINER_PRESERVE = "FALSE" }
 if (!env.VS_CONTAINER_MAIN_APP_PORT) { env.VS_CONTAINER_MAIN_APP_PORT = 3000 }
 echo "==/Setting default container variables"
 
@@ -71,7 +76,8 @@ pipeline {
     agent {label thisAgent}
 
     environment {
-        GITHUB_PAT_JENKINS_CI = credentials('github-pat-jenkins-ci')
+		//GITHUB_PAT_JENKINS_CI = credentials('github-pat-jenkins-ci')
+		GITHUB_PAT_JENKINS_CI = "not-in-use"
     }
 
     stages {
@@ -137,7 +143,7 @@ pipeline {
                 sh 'set +x; node --version; exit 0'
                 sh 'set +x; npm --version; exit 0'
                 sh 'set +x; yarn --version; exit 0'
-                sh 'set +x; echo "==== TOOLS CHECK ====="; echo'
+                sh 'set +x; echo "====/TOOLS CHECK ====="; echo'
                 checkout scm
             }
         } //end stage
@@ -145,9 +151,9 @@ pipeline {
         stage ('Install Dependencies') {
             agent {
                 docker {
-                image 'vs/vs-brxm15-builder:node18'
-                label thisAgent
-                reuseNode true
+                	image 'vs/vs-brxm15-builder:node18'
+                	label thisAgent
+                	reuseNode true
                 }
             }
             steps {
