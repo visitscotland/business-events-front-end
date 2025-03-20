@@ -56,6 +56,7 @@ const route = useRoute().path;
 // Get API endpoint from the server side.
 const { data: endpoint } = await useFetch('/api/getEndpoint');
 const { data: xForwardedhost } = await useFetch('/api/getXForwardedHost');
+const runtimeConfig = useRuntimeConfig();
 
 // let locale = '/site/resourceapi';
 
@@ -79,14 +80,14 @@ onMounted(() => {
 try {
     const config = {
         sessionSampleRate: 1,
-        identityPoolId: 'eu-west-2:5f7e7633-959d-4c43-9757-f7071c972f64',
-        endpoint: 'https://dataplane.rum.eu-west-2.amazonaws.com',
+        identityPoolId: runtimeConfig.public.AWS_IDENTITY_POOL_ID,
+        endpoint: runtimeConfig.public.AWS_RUM_ENPOINT,
         telemetries: ['performance'],
         allowCookies: false,
         enableXRay: false,
     };
 
-    const APPLICATION_ID = 'edf0c2d2-8329-41c4-bc73-3b2e838a2b49';
+    const APPLICATION_ID = runtimeConfig.public.AWS_RUM_APPLICATION_ID;
     const APPLICATION_VERSION = '1.0.0';
     const APPLICATION_REGION = 'eu-west-2';
 
@@ -125,7 +126,7 @@ if (window && window.location) {
     serverId = searchParams.get(PREVIEW_SERVER_ID_KEY);
 }
 
-const runtimeConfig = useRuntimeConfig();
+// const runtimeConfig = useRuntimeConfig();
 
 if (process.server && xForwardedhost.value) {
     axios.defaults.headers.common.Host = xForwardedhost.value;
@@ -154,7 +155,7 @@ const mapping = {
 };
 </script>
 
-<style lang='scss">
+<style lang="scss">
     .has-edit-button {
         position: relative;
 
