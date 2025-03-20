@@ -20,9 +20,9 @@ export default defineNuxtConfig({
             BR_CMS_ORIGIN_LOCATION: process.env.BR_CMS_ORIGIN_LOCATION,
             BR_NUXT_APP_DEBUG: process.env.BR_NUXT_APP_DEBUG,
             COMP_LIBRARY_VERSION: clVersion,
-            AWS_IDENTITY_POOL_ID: 'eu-west-2:5f7e7633-959d-4c43-9757-f7071c972f64',
-            AWS_RUM_ENPOINT: 'https://dataplane.rum.eu-west-2.amazonaws.com',
-            AWS_RUM_APPLICATION_ID: 'edf0c2d2-8329-41c4-bc73-3b2e838a2b49',
+            AWS_IDENTITY_POOL_ID: process.env.AWS_IDENTITY_POOL_ID,
+            AWS_RUM_ENPOINT: process.env.AWS_RUM_ENPOINT,
+            AWS_RUM_APPLICATION_ID: process.env.AWS_RUM_APPLICATION_ID,
 
         },
     },
