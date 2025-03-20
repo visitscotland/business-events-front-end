@@ -2,11 +2,7 @@
     <div class="vs-sticky-nav" :class="{ 'has-edit-button': page.isPreview() }">
         <VsBrSkipTo />
         <header>
-            <VsGlobalMenu
-                :active-site="configStore.activeSite === 'be'
-                    ? 'https://businessevents.visitscotland.com/'
-                    : 'https://www.visitscotland.com/'"
-            />
+            <VsGlobalMenu />
 
             <BrManageMenuButton :menu="menuData" />
 
