@@ -126,8 +126,6 @@ if (window && window.location) {
     serverId = searchParams.get(PREVIEW_SERVER_ID_KEY);
 }
 
-// const runtimeConfig = useRuntimeConfig();
-
 if (process.server && xForwardedhost.value) {
     axios.defaults.headers.common.Host = xForwardedhost.value;
 }

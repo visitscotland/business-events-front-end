@@ -14,17 +14,12 @@ BR_RESOURCE_API_ENDPOINT=http://businessevents.local:8080/site/resourceapi
 BR_CMS_ORIGIN_LOCATION=http://localhost:8080
 ```
 
-To enable local and development testing of the RUM user data capture, add the following values to the nuxt.config file. Variable values can be found in our AWS account.
+To enable local and development testing of the RUM user data capture, add the following values to the .env file. Variable values can be found in our AWS account.
 
 ```bash
-runtimeConfig: {
-    public: {
-        AWS_IDENTITY_POOL_ID: 'identy-pool-id-here'
-        AWS_RUM_ENPOINT: 'rum-endpoint-here',
-        AWS_RUM_APPLICATION_ID: 'rum-app-id-here',
-
-    },
-},
+AWS_IDENTITY_POOL_ID=identy-pool-id-here
+AWS_RUM_ENPOINT=rum-endpoint-here
+AWS_RUM_APPLICATION_ID=rum-app-id-here
 ```
 
 ## Setup
