@@ -20,6 +20,10 @@ export default defineNuxtConfig({
             BR_CMS_ORIGIN_LOCATION: process.env.BR_CMS_ORIGIN_LOCATION,
             BR_NUXT_APP_DEBUG: process.env.BR_NUXT_APP_DEBUG,
             COMP_LIBRARY_VERSION: clVersion,
+            AWS_IDENTITY_POOL_ID: process.env.AWS_IDENTITY_POOL_ID,
+            AWS_RUM_ENPOINT: process.env.AWS_RUM_ENPOINT,
+            AWS_RUM_APPLICATION_ID: process.env.AWS_RUM_APPLICATION_ID,
+
         },
     },
     vite: {
