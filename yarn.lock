@@ -3173,10 +3173,10 @@ available-typed-arrays@^1.0.7:
   dependencies:
     possible-typed-array-names "^1.0.0"
 
-aws-rum-web@^1.19.0:
-  version "1.19.0"
-  resolved "https://registry.yarnpkg.com/aws-rum-web/-/aws-rum-web-1.19.0.tgz#4d5ae3bcdcb2a8fcf98b2942688bc66530b5c55e"
-  integrity sha512-V3sUSC3U8IYsQS0vK/rmACjzFugG07Zd01SII6JMvEB1/axEQ+SxUTK+nCyJdpCFPB3TuhpFwcfq5PVkn/MJ7w==
+aws-rum-web@^1.21.0:
+  version "1.21.0"
+  resolved "https://registry.yarnpkg.com/aws-rum-web/-/aws-rum-web-1.21.0.tgz#0ce1fc7e70c34f701dc40bfede8eac1b9b1b5911"
+  integrity sha512-7hRpB7JNb9j4dlytUJbSSm9N4R8fWBa3GLJfhhvm6Vtl3OjpZhiVejEiLVZNUI5qmbqQZuNppJ4lKiDUzud9HA==
   dependencies:
     "@aws-crypto/sha256-js" "^2.0.2"
     "@aws-sdk/fetch-http-handler" "^3.36.0"
