@@ -213,6 +213,15 @@ pipeline {
         } //end stage
 
         stage ('Deploy') {
+	    when {
+		anyOf {
+			branch 'main'
+			branch 'release/*'
+			changeRequest()
+			environment name: 'VS_BUILD_FEATURE_ENVIRONMENT', value: 'true'
+			expression {return env.VS_BUILD_FEATURE_ENVIRONMENT ==~ /(TRUE|true)/}
+		}
+	    }
             steps {
                 echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME"
                 // the two script blocks below are necessary to allow infrastructure.sh to set variables and then import them back to the pipeline

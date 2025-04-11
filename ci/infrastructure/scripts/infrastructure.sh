@@ -234,9 +234,11 @@ defaultSettings() {
   if [ -z "$VS_CONTAINER_NAME" ]&&[ "$VS_BRANCH_NAME" != "branch-not-found" ]; then
     VS_CONTAINER_NAME=$(dirname $JOB_NAME | sed -e "s/\//_/g")"_"$(basename $VS_BRANCH_NAME)
     VS_CONTAINER_NAME_SHORT=$(basename $VS_BRANCH_NAME)
+    VS_CONTAINER_NAME_BASE=$(dirname $JOB_NAME | sed -e "s/\//_/g")
   else
     VS_CONTAINER_NAME=$(dirname $JOB_NAME | sed -e "s/\//_/g")"_"$(basename $BRANCH_NAME)
     VS_CONTAINER_NAME_SHORT=$(basename $BRANCH_NAME)
+    VS_CONTAINER_NAME_BASE=$(dirname $JOB_NAME | sed -e "s/\//_/g")
   fi
   # check for VS_CONTAINER_BASE_PORT_OVERRIDE, ensure it's unset if it's not overridden
   if [ -z "$VS_CONTAINER_BASE_PORT_OVERRIDE" ]; then
@@ -262,6 +264,7 @@ defaultSettings() {
   VS_DATESTAMP=$(date +%Y%m%d)
   VS_HOST_IP_ADDRESS=$(/usr/sbin/ip ad sh  | egrep "global noprefixroute" | awk '{print $2}' | sed -e "s/\/.*$//")
   VS_PARENT_JOB_NAME=$(echo $JOB_NAME | sed -e "s/\/.*//g")
+  VS_PARENT_JOB_NAME_FULL=$(dirname $JOB_NAME)
   VS_SCRIPT_LOG=$VS_CI_DIR/logs/$VS_SCRIPTNAME.log
   if [ ! -z "$STAGE_NAME" ]; then VS_STAGE_NAME=$(echo ${STAGE_NAME,,} | sed -e "s/ /-/g"); fi
   if [ "${VS_SSR_PROXY_ON^^}" == "TRUE" ]; then
@@ -508,9 +511,9 @@ getPullRequestListViaCurl() {
 }
 
 getBranchListFromWorkspace() {
-  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] checking for branches and PRs for $VS_PARENT_JOB_NAME listed in workspaces.txt"
+  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] checking for branches and PRs for $VS_PARENT_JOB_NAME_FULL listed in workspaces.txt"
   # to-do: gp - update echo above to reflect changes to branch and PR scan method
-  for BRANCH in $(cat $JENKINS_HOME/workspace/workspaces.txt | grep "$VS_PARENT_JOB_NAME" | sed -e "s/%2F/\//g" | sed "s/.*\//$VS_PARENT_JOB_NAME\_/g"); do
+  for BRANCH in $(cat $JENKINS_HOME/workspace/workspaces.txt | grep "$VS_PARENT_JOB_NAME_FULL" | sed -e "s/%2F/\//g; s#.*/#$VS_PARENT_JOB_NAME_FULL\_#g; s#/#_#g"); do
     if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  - found branch $BRANCH"; fi
     BRANCH_LIST="$BRANCH_LIST $BRANCH"
   done
@@ -518,7 +521,7 @@ getBranchListFromWorkspace() {
   #           for PR in [logic above | grep _PR] check PR's workspace/ci for vs-container-name file
   #           cat the file for a branch name and add those branches to BRANCH_LIST (some)
   
-  for PR in $(cat $JENKINS_HOME/workspace/workspaces.txt | grep "$VS_PARENT_JOB_NAME/PR-"); do
+  for PR in $(cat $JENKINS_HOME/workspace/workspaces.txt | grep "$VS_PARENT_JOB_NAME_FULL/PR-"); do
     PR_DIR=$(cat $JENKINS_HOME/workspace/workspaces.txt | grep -a1 "$PR" | tail -1)
     unset BRANCH VS_LAST_ENV_FOUND VS_CONTAINER_NAME_FILE_FOUND
     if [ ! -z "$JENKINS_HOME/workspace/$PR_DIR" ] && [ -d $JENKINS_HOME/workspace/$PR_DIR ]; then
@@ -570,8 +573,8 @@ getReservedPortList() {
 tidyContainers() {
   # tidy containers when building the "develop" branch
   if [ "$GIT_BRANCH" == "develop" ]||[ "${VS_TIDY_CONTAINERS^^}" == "TRUE" ]; then
-    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] checking all containers on $NODE_NAME matching $VS_PARENT_JOB_NAME*"
-    for CONTAINER in $(docker ps -a --filter "name=$VS_PARENT_JOB_NAME*" --format "table {{.Names}}" | tail -n +2); do
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] checking all containers on $NODE_NAME matching $VS_CONTAINER_NAME_BASE*"
+    for CONTAINER in $(docker ps -a --filter "name=$VS_CONTAINER_NAME_BASE*" --format "table {{.Names}}" | tail -n +2); do
       CONTAINER_MATCHED=
       ALL_CONTAINER_LIST="$ALL_CONTAINER_LIST $CONTAINER"
       #echo "checking to see if there's a branch for $CONTAINER"
