@@ -249,7 +249,7 @@ defaultSettings() {
   # check for VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE, ensure it's unset if it's not overridden
   # - this variable is needed when the pipeline is used with fixed port environments where the branch name may change
   if [ -z "$VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE" ]; then
-    unset VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE
+    VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE="unset"
   else
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE was set to $VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE before $0 was called"
   fi
@@ -465,7 +465,7 @@ manageContainers() {
       deleteContainers
       unset CONTAINER_ID
     else
-      echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE is $VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE but VS_CONTAINER_PORT_CLASH_PREDICTED is $VS_CONTAINER_PORT_CLASH_PREDICTED, so existing container $CONTAINER_ID will be left"
+      echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME]  VS_CONTAINER_PORT_CLASH_PREDICTED is $VS_CONTAINER_PORT_CLASH_PREDICTED but VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE is $VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE, so existing container $CONTAINER_ID will be left and this operation will be marked as a failure"
     fi
   else
     echo "$(eval $VS_LOG_DATESTAMP) INFO [$VS_SCRIPTNAME] No CONTAINER_ID was found"
