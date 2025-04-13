@@ -5,7 +5,7 @@ thisAgent = "docker-02"
 // set any environment-specific environment variables here using the format: env.MY_VAR = "conditional_value" }
 // please see ci/README_PIPELINE_VARIABLES.md or consult Web Operations for details on environment variables and their purposes
 echo "== Setting conditional environment variables"
-if (BRANCH_NAME ==~ "ops/(feature-environment(s)?-enhancements|pipeline-updates)" {
+if (BRANCH_NAME ==~ "ops/(feature-environment(s)?-enhancements|pipeline-updates))" {
     echo "=== Setting conditional environment variables for branch $BRANCH_NAME in job $JOB_NAME"
     // no conditional environent variables are being set here, this section if for example only
 } else {
