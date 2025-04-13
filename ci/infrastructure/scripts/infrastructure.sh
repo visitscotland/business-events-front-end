@@ -1084,6 +1084,14 @@ createBuildReport() {
     if [ ! -z "$VS_CONTAINER_EXT_PORT_SSR" ]&&[ "${VS_BUILD_TYPE^^}" == "BRXM" ]; then
       echo "# Direct SSR access - available only on the Web Development LAN" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
       echo "#   - http://$VS_HOST_IP_ADDRESS:$VS_CONTAINER_EXT_PORT_SSR/site/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+    if [ ! -z "$VS_BRXM_DSSR_SITES" ]; then
+      echo "Resource API URLs for SPA-SDK/DSSR sites" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+      for SITE in $VS_BRXM_DSSR_SITES; do
+        echo " - https://$SITE/resourceapi?vs_brxm_host=$VS_HOST_IP_ADDRESS&vs_brxm_port=$VS_CONTAINER_BASE_PORT&vs-no-redirect" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+      done
+      echo "NOTE: the vs-no-redirect query string parameter allows the content to be served without redirecting to a bare URL"
+      echo "      this is necessary to allow non-browser requests, such as those from the front-end to the resourceapi, to be served"
+      echo "      to view a fully integrated SPA-SDK/DSSR site, please use the configuration URL provided by the CI job for that site/branch"
       echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     fi
     if [ ! -z "$VS_CONTAINER_EXT_PORT_SSH" ]; then
