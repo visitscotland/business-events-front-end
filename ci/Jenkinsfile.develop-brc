@@ -45,7 +45,7 @@ if (!env.VS_CONTAINER_EXEC ) { env.VS_CONTAINER_EXEC = "/bin/bash -c \"node .out
 // debug version w/log "NODE_DEBUG=cluster,net,http,fs,tls,module,timers node .output/server/index.mjs 2>&1 | tee -a ./nodeapp.log"
 if (!env.VS_CONTAINER_PRESERVE) { env.VS_CONTAINER_PRESERVE = "FALSE" }
 if (!env.VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE) { env.VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE = "TRUE" }
-if (!env.VS_CONTAINER_BASE_PORT_OVERRIDE) { env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3004" }
+if (!env.VS_CONTAINER_BASE_PORT_OVERRIDE) { env.VS_CONTAINER_BASE_PORT_OVERRIDE = "3001" }
 if (!env.VS_CONTAINER_MAIN_APP_PORT) { env.VS_CONTAINER_MAIN_APP_PORT = 3000 }
 echo "==/Setting default container variables"
 
