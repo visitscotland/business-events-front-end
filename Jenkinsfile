@@ -37,11 +37,10 @@ if (!env.VS_BRC_STACK_URI) { env.VS_BRC_STACK_URI = "visitscotland" }
 if (!env.VS_BRC_ENV) { env.VS_BRC_ENV = "demo" }
 if (!env.VS_BRC_STACK_URL) { env.VS_BRC_STACK_URL = "https://api.${VS_BRC_STACK_URI}.bloomreach.cloud" }
 if (!env.VS_BRC_STACK_API_VERSION) { env.VS_BRC_STACK_API_VERSION = "v3" }
+if (!env.VS_BUILD_FEATURE_ENVIRONMENT) { env.VS_BUILD_FEATURE_ENVIRONMENT = "false" }
 if (!env.VS_DOCKER_IMAGE_NAME) { env.VS_DOCKER_IMAGE_NAME = "vs/vs-brxm15:node18" }
 if (!env.VS_DOCKER_BUILDER_IMAGE_NAME) { env.VS_DOCKER_BUILDER_IMAGE_NAME = "vs/vs-brxm15-builder:node18" }
-if (!env.VS_SKIP_BUILD_FOR_BRANCH) { env.VS_SKIP_BUILD_FOR_BRANCH = "feature/VS-1865-feature-environments-enhancements-log4j" }
 if (!env.VS_SSR_PROXY_ON) { env.VS_SSR_PROXY_ON = "TRUE" }
-if (!env.VS_USE_DOCKER_BUILDER) { env.VS_USE_DOCKER_BUILDER = "TRUE" }
 if (!env.VS_RELEASE_SNAPSHOT) { env.VS_RELEASE_SNAPSHOT = "FALSE" }
 if (!env.VS_PROXY_SERVER_FQDN) { env.VS_PROXY_SERVER_FQDN = "feature-businessevents.visitscotland.com" }
 if (!env.HOSTNAME) { env.HOSTNAME = env.NODE_NAME }
@@ -50,7 +49,7 @@ if (!env.VS_BRANCH_PROPERTIES_FILE && !env.CHANGE_BRANCH) {
 } else if (!env.VS_BRANCH_PROPERTIES_FILE && env.CHANGE_BRANCH) {
 	env.VS_BRANCH_PROPERTIES_FILE = env.CHANGE_BRANCH.substring(env.CHANGE_BRANCH.lastIndexOf('/') + 1) + ".properties" 
 }
-echo "==/Setting default environment variables"
+echo "==/Setting default pipeline environment variables"
 
 echo "== Setting default application variables"
 if (!env.BR_CMS_ORIGIN_LOCATION ) { env.BR_CMS_ORIGIN_LOCATION = "https://feature.visitscotland.com" }
@@ -83,14 +82,14 @@ pipeline {
     stages {
 	    stage ('Pre-build') {
 	        steps {
-                echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME"
-                //!//echo "calling \"/infrastructure.sh setvars\" to set default pipeline variables"
-                //!// Set any defined build property overrides for this work-in-progress branch
+                    echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME"
+                    //!//echo "calling \"/infrastructure.sh setvars\" to set default pipeline variables"
+                    //!// Set any defined build property overrides for this work-in-progress branch
 	            //!//sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars'
 	            // make all branch-specific variables available to pipeline, load file must be in env.VARIABLE="VALUE" format
 	            script {
-                    echo "looking for branch specific properties file at $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
-                    echo " - if the pipeline fails at this point please check the format of your properties file!"
+                        echo "looking for branch specific properties file at $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
+                        echo " - if the pipeline fails at this point please check the format of your properties file!"
 	                if (fileExists("$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE")) {
 	                    echo "loading environment variables from $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
     	                load "$WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE"
@@ -98,11 +97,11 @@ pipeline {
 	                    echo "branch specific properties won't be loaded, file $WORKSPACE/$VS_BRANCH_PROPERTIES_DIR/$VS_BRANCH_PROPERTIES_FILE does not exist"
 	                }
 	            }
-		        // the two script blocks below are necessary to allow infrastructure.sh to set variables and then import them back to the pipeline
-                //  - if we determine that none of these variables are actually used until the Deploy stage, then this is not necessary
-                //  - the printenv commands in every stage are useful for debugging but may not be required long-term
-                // run infrastructure.sh to set default variables and then import them into the pipeline
-		        script {
+		    // the two script blocks below are necessary to allow infrastructure.sh to set variables and then import them back to the pipeline
+                    //  - if we determine that none of these variables are actually used until the Deploy stage, then this is not necessary
+                    //  - the printenv commands in every stage are useful for debugging but may not be required long-term
+                    // run infrastructure.sh to set default variables and then import them into the pipeline
+		    script {
 	                if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
                         echo "calling \"/infrastructure.sh setvars\" to set default pipeline variables"
 	                    sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh setvars --quiet'
@@ -110,7 +109,7 @@ pipeline {
 	                    echo; echo "infrastructure.sh was not found - default environment variables will not be set"
 	                }
 		        }
-		        script {
+		    script {
 	                if (fileExists("$WORKSPACE/ci/vs-last-env.quoted")) {
 	                    echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
 	                    load "$WORKSPACE/ci/vs-last-env.quoted"
@@ -119,14 +118,14 @@ pipeline {
 	                } else {
 	                    echo; echo "$WORKSPACE/ci/vs-last-env.quoted - default environment variables will not be loaded"
 	                }
-		        }
-            }
+		    }
+                }
 	    } // end stage
 
         stage ('SCM checkout') {
             agent {
                 docker {
-                    image 'vs/vs-brxm15-builder:node18'
+		    image '$VS_DOCKER_BUILDER_IMAGE_NAME'
                     label thisAgent
                     reuseNode true
                 }
@@ -151,9 +150,9 @@ pipeline {
         stage ('Install Dependencies') {
             agent {
                 docker {
-                	image 'vs/vs-brxm15-builder:node18'
-                	label thisAgent
-                	reuseNode true
+		    image 'vs/vs-brxm15-builder:node18'
+		    label thisAgent
+		    reuseNode true
                 }
             }
             steps {
@@ -171,7 +170,7 @@ pipeline {
         stage ('Run Tests') {
             agent {
                 docker {
-                    image 'vs/vs-brxm15-builder:node18'
+                    image '$VS_DOCKER_BUILDER_IMAGE_NAME'
                     label thisAgent
                     reuseNode true
                 }
@@ -193,26 +192,33 @@ pipeline {
         stage ('NPM Build') {
             agent {
                 docker {
-                    image 'vs/vs-brxm15-builder:node18'
+                    image '$VS_DOCKER_BUILDER_IMAGE_NAME'
                     label thisAgent
                     reuseNode true
                 }
             }
             steps {
                 echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME"
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh '''
-                        set +x
-                        export HOME=$WORKSPACE
-                        export npm_config_cache=$HOME/.npm
-                        if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
-                        yarn build
-                    '''
-                }
+                sh '''
+                    set +x
+                    export HOME=$WORKSPACE
+                    export npm_config_cache=$HOME/.npm
+                    if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
+                    yarn build
+                '''
             }
         } //end stage
 
         stage ('Deploy') {
+	    when {
+		anyOf {
+		    branch 'main'
+		    branch 'release/*'
+		    changeRequest()
+		    environment name: 'VS_BUILD_FEATURE_ENVIRONMENT', value: 'true'
+		    expression {return env.VS_BUILD_FEATURE_ENVIRONMENT ==~ /(TRUE|true)/}
+		}
+	    }
             steps {
                 echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME"
                 // the two script blocks below are necessary to allow infrastructure.sh to set variables and then import them back to the pipeline

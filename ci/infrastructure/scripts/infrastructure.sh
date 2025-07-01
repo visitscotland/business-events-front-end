@@ -234,9 +234,11 @@ defaultSettings() {
   if [ -z "$VS_CONTAINER_NAME" ]&&[ "$VS_BRANCH_NAME" != "branch-not-found" ]; then
     VS_CONTAINER_NAME=$(dirname $JOB_NAME | sed -e "s/\//_/g")"_"$(basename $VS_BRANCH_NAME)
     VS_CONTAINER_NAME_SHORT=$(basename $VS_BRANCH_NAME)
+    VS_CONTAINER_NAME_BASE=$(dirname $JOB_NAME | sed -e "s/\//_/g")
   else
     VS_CONTAINER_NAME=$(dirname $JOB_NAME | sed -e "s/\//_/g")"_"$(basename $BRANCH_NAME)
     VS_CONTAINER_NAME_SHORT=$(basename $BRANCH_NAME)
+    VS_CONTAINER_NAME_BASE=$(dirname $JOB_NAME | sed -e "s/\//_/g")
   fi
   # check for VS_CONTAINER_BASE_PORT_OVERRIDE, ensure it's unset if it's not overridden
   if [ -z "$VS_CONTAINER_BASE_PORT_OVERRIDE" ]; then
@@ -247,7 +249,7 @@ defaultSettings() {
   # check for VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE, ensure it's unset if it's not overridden
   # - this variable is needed when the pipeline is used with fixed port environments where the branch name may change
   if [ -z "$VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE" ]; then
-    unset VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE
+    VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE="unset"
   else
     echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE was set to $VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE before $0 was called"
   fi
@@ -262,6 +264,7 @@ defaultSettings() {
   VS_DATESTAMP=$(date +%Y%m%d)
   VS_HOST_IP_ADDRESS=$(/usr/sbin/ip ad sh  | egrep "global noprefixroute" | awk '{print $2}' | sed -e "s/\/.*$//")
   VS_PARENT_JOB_NAME=$(echo $JOB_NAME | sed -e "s/\/.*//g")
+  VS_PARENT_JOB_NAME_FULL=$(dirname $JOB_NAME)
   VS_SCRIPT_LOG=$VS_CI_DIR/logs/$VS_SCRIPTNAME.log
   if [ ! -z "$STAGE_NAME" ]; then VS_STAGE_NAME=$(echo ${STAGE_NAME,,} | sed -e "s/ /-/g"); fi
   if [ "${VS_SSR_PROXY_ON^^}" == "TRUE" ]; then
@@ -462,7 +465,7 @@ manageContainers() {
       deleteContainers
       unset CONTAINER_ID
     else
-      echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME] VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE is $VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE but VS_CONTAINER_PORT_CLASH_PREDICTED is $VS_CONTAINER_PORT_CLASH_PREDICTED, so existing container $CONTAINER_ID will be left"
+      echo "$(eval $VS_LOG_DATESTAMP) WARN  [$VS_SCRIPTNAME]  VS_CONTAINER_PORT_CLASH_PREDICTED is $VS_CONTAINER_PORT_CLASH_PREDICTED but VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE is $VS_CONTAINER_REMOVE_WHEN_PORT_IN_USE, so existing container $CONTAINER_ID will be left and this operation will be marked as a failure"
     fi
   else
     echo "$(eval $VS_LOG_DATESTAMP) INFO [$VS_SCRIPTNAME] No CONTAINER_ID was found"
@@ -508,9 +511,9 @@ getPullRequestListViaCurl() {
 }
 
 getBranchListFromWorkspace() {
-  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] checking for branches and PRs for $VS_PARENT_JOB_NAME listed in workspaces.txt"
+  echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] checking for branches and PRs for $VS_PARENT_JOB_NAME_FULL listed in workspaces.txt"
   # to-do: gp - update echo above to reflect changes to branch and PR scan method
-  for BRANCH in $(cat $JENKINS_HOME/workspace/workspaces.txt | grep "$VS_PARENT_JOB_NAME" | sed -e "s/%2F/\//g" | sed "s/.*\//$VS_PARENT_JOB_NAME\_/g"); do
+  for BRANCH in $(cat $JENKINS_HOME/workspace/workspaces.txt | grep "$VS_PARENT_JOB_NAME_FULL" | sed -e "s/%2F/\//g; s#.*/#$VS_PARENT_JOB_NAME_FULL\_#g; s#/#_#g"); do
     if [ "${VS_DEBUG^^}" == "TRUE" ]; then echo "$(eval $VS_LOG_DATESTAMP) DEBUG [$VS_SCRIPTNAME]  - found branch $BRANCH"; fi
     BRANCH_LIST="$BRANCH_LIST $BRANCH"
   done
@@ -518,7 +521,7 @@ getBranchListFromWorkspace() {
   #           for PR in [logic above | grep _PR] check PR's workspace/ci for vs-container-name file
   #           cat the file for a branch name and add those branches to BRANCH_LIST (some)
   
-  for PR in $(cat $JENKINS_HOME/workspace/workspaces.txt | grep "$VS_PARENT_JOB_NAME/PR-"); do
+  for PR in $(cat $JENKINS_HOME/workspace/workspaces.txt | grep "$VS_PARENT_JOB_NAME_FULL/PR-"); do
     PR_DIR=$(cat $JENKINS_HOME/workspace/workspaces.txt | grep -a1 "$PR" | tail -1)
     unset BRANCH VS_LAST_ENV_FOUND VS_CONTAINER_NAME_FILE_FOUND
     if [ ! -z "$JENKINS_HOME/workspace/$PR_DIR" ] && [ -d $JENKINS_HOME/workspace/$PR_DIR ]; then
@@ -570,8 +573,8 @@ getReservedPortList() {
 tidyContainers() {
   # tidy containers when building the "develop" branch
   if [ "$GIT_BRANCH" == "develop" ]||[ "${VS_TIDY_CONTAINERS^^}" == "TRUE" ]; then
-    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] checking all containers on $NODE_NAME matching $VS_PARENT_JOB_NAME*"
-    for CONTAINER in $(docker ps -a --filter "name=$VS_PARENT_JOB_NAME*" --format "table {{.Names}}" | tail -n +2); do
+    echo "$(eval $VS_LOG_DATESTAMP) INFO  [$VS_SCRIPTNAME] checking all containers on $NODE_NAME matching $VS_CONTAINER_NAME_BASE*"
+    for CONTAINER in $(docker ps -a --filter "name=$VS_CONTAINER_NAME_BASE*" --format "table {{.Names}}" | tail -n +2); do
       CONTAINER_MATCHED=
       ALL_CONTAINER_LIST="$ALL_CONTAINER_LIST $CONTAINER"
       #echo "checking to see if there's a branch for $CONTAINER"
@@ -1081,6 +1084,15 @@ createBuildReport() {
     if [ ! -z "$VS_CONTAINER_EXT_PORT_SSR" ]&&[ "${VS_BUILD_TYPE^^}" == "BRXM" ]; then
       echo "# Direct SSR access - available only on the Web Development LAN" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
       echo "#   - http://$VS_HOST_IP_ADDRESS:$VS_CONTAINER_EXT_PORT_SSR/site/" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+    fi
+    if [ ! -z "$VS_BRXM_DSSR_SITES" ]; then
+      echo "Resource API URLs for SPA-SDK/DSSR sites" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+      for SITE in $VS_BRXM_DSSR_SITES; do
+        echo " - https://$SITE/resourceapi?vs_brxm_host=$VS_HOST_IP_ADDRESS&vs_brxm_port=$VS_CONTAINER_BASE_PORT&vs-no-redirect" | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
+      done
+      echo "NOTE: the vs-no-redirect query string parameter allows the content to be served without redirecting to a bare URL"
+      echo "      this is necessary to allow non-browser requests, such as those from the front-end to the resourceapi, to be served"
+      echo "      to view a fully integrated SPA-SDK/DSSR site, please use the configuration URL provided by the CI job for that site/branch"
       echo "# " | tee -a $VS_MAIL_NOTIFY_BUILD_MESSAGE
     fi
     if [ ! -z "$VS_CONTAINER_EXT_PORT_SSH" ]; then
