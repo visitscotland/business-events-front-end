@@ -110,7 +110,7 @@ if (page && module.links) {
 
 </script>
 
-<style>
+<style lang="scss">
     div.link-list-module {
         span {
             display: block;
