@@ -1,0 +1,88 @@
+.cludo-assistant {
+    --assistant-top-bar-background-color: #200F2E !important;
+}
+
+.cludo-assistant-container {
+    border: 0 !important
+}
+
+.cludo-tab-bar__tab--active {
+    --active-tab-text-color: #A8308C !important;
+}
+
+.assistant-chat-form__conversation-controls-container .cludo-button {
+    --button-foreground-color: #1F49D6 !important;
+    --button-outline-color: #1F49D6 !important;
+
+    --button-background-color--hover: #1F49D6 !important;
+    --button-foreground-color--hover: #FFFFFF !important;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.assistant-chat-form__conversation-controls-container .cludo-button:hover {
+    background-color: var(--button-background-color--hover) !important;
+    color: var(--button-foreground-color--hover) !important;
+}
+
+.assistant-chat-form__conversation-controls-container .cludo-button:hover i {
+    background-color: var(--button-foreground-color--hover) !important;
+}
+
+.assistant-chat-form__conversation-controls-container .cludo-button:focus {
+    background-color: var(--button-background-color--hover) !important;
+    color: var(--button-foreground-color--hover) !important;
+}
+
+.assistant-chat-form__conversation-controls-container .cludo-button:focus i {
+    background-color: var(--button-foreground-color--hover) !important;
+}
+
+
+.assistant-chat-form__input {
+    --assistant-qa-input-outline-color: #535396 !important;
+}
+
+.cludo-assistant-button {
+    --button-background-color: #FFFFFF !important;
+    --button-foreground-color: #1F49D6 !important;
+    --button-outline-color: #1F49D6 !important;
+    --button-background-color--hover: #1F49D6 !important;
+    --button-foreground-color--hover: #FFFFFF !important;
+
+    background-color: var(--button-background-color) !important;
+    border: 2px solid var(--button-outline-color) !important;
+}
+
+.cludo-assistant-button:hover {
+    background-color: var(--button-background-color--hover) !important;
+    color: var(--button-foreground-color--hover) !important;
+}
+
+.cludo-assistant-button:focus {
+    background-color: var(--button-background-color--hover) !important;
+    color: var(--button-foreground-color--hover) !important;
+}
+
+.assistant-result-item__result-path {
+    display: none !important;
+}
+
+.cludo-expanding-shortcut__expanding-section {
+    top: auto !important;
+    bottom: calc(100% + 8px) !important;
+    right: 8px !important;
+    box-shadow: 0 5px 20px -4px rgba(16, 24, 40, 0.25), 0px 4px 6px -2px rgba(16, 24, 40, .25) !important;
+    max-height: 250px;
+    overflow-y: scroll;
+}
+
+.assistant-suggested-pages-region__expanding-shortcut-wrapper .cludo-expanding-shortcut__expanding-section {
+    bottom: auto !important;
+    top: calc(100% + 8px) !important;
+}
+
+.cludo-expanding-shortcut__expanding-section .cludo-button {
+    margin-top: 5px !important;
+    margin-bottom: 5px !important;
+}

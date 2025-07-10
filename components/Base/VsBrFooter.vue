@@ -110,6 +110,8 @@
 </template>
 
 <script lang="ts" setup>
+/* eslint no-undef: 0 */
+
 import {
     toRefs, ref, defineAsyncComponent, onMounted,
 } from 'vue';
@@ -177,6 +179,16 @@ const VsBrIconFonts = defineAsyncComponent(() => import('../Utils/VsBrIconFonts.
 
 onMounted(() => {
     isMounted.value = true;
+});
+
+useHead({
+    link: [
+        {
+            rel: 'stylesheet',
+            type: 'text/css',
+            href: '/styles/cludo-chatbot.css',
+        },
+    ],
 });
 
 </script>
