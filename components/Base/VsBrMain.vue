@@ -4,13 +4,13 @@
         :class="{ 'has-edit-button': page.isPreview() }"
     >
         <BrManageContentButton
-            :content="document"
+            :content="pageDocument"
         />
 
         <VsBrGtm />
 
         <VsBrPageViewEvent
-            :data="document.model.data"
+            :data="pageDocument.model.data"
             :page-type="pageName"
         />
 
@@ -59,7 +59,7 @@ let pageComponent : any = {
 };
 let pageName : string = '';
 
-let document : any = {
+let pageDocument : any = {
 };
 
 const configStore = useConfigStore();
@@ -91,9 +91,9 @@ if (page.value) {
     configStore.gtm = componentModels.gtm;
     configStore.pageMetaData = componentModels.metadata;
 
-    document = page.value.getDocument();
+    pageDocument = page.value.getDocument();
 
-    configStore.locale = document.model.data.localeString;
+    configStore.locale = pageDocument.model.data.localeString;
 
     let langString = '';
 
@@ -122,19 +122,19 @@ if (page.value) {
     const runtimeConfig = useRuntimeConfig();
 
     useHead({
-        title: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+        title: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
         meta: [
             {
                 name: 'title',
-                content: `${document.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
+                content: `${pageDocument.model.data.seoTitle} ${configStore.getLabel('seo', 'title-suffix')}`,
             },
             {
                 name: 'description',
-                content: document.model.data.seoDescription,
+                content: pageDocument.model.data.seoDescription,
             },
             {
                 name: 'robots',
-                content: document.model.data.noIndex ? 'noindex' : '',
+                content: pageDocument.model.data.noIndex ? 'noindex' : '',
             },
         ],
         htmlAttrs: {
@@ -167,6 +167,35 @@ if (page.value) {
                 href: useRequestURL().toString(),
             },
         ],
+    });
+
+    onMounted(() => {
+        const customerId = componentModels.cludoCustomerId;
+        const cludoEngineId = componentModels.cludoEngineId;
+        const cludoExperienceId = componentModels.cludoExperienceId;
+
+        window.cludoCustomerId = customerId;
+        window.cludoEngineId = cludoEngineId;
+        window.cludoExperienceId = cludoExperienceId;
+
+        const cludoExperienceBuilder = document.createElement('script');
+        cludoExperienceBuilder.id = 'cludo-experience-manager';
+        cludoExperienceBuilder.src = 'https://customer.cludo.com/scripts/bundles/experiences/manager.js';
+        cludoExperienceBuilder.defer = true;
+
+        if (customerId && customerId !== 'not-defined') {
+            cludoExperienceBuilder.setAttribute('data-cid', customerId);
+        }
+
+        if (cludoEngineId && cludoEngineId !== 'not-defined') {
+            cludoExperienceBuilder.setAttribute('data-eid', cludoEngineId);
+        }
+
+        if (cludoExperienceId && cludoExperienceId !== 'not-defined') {
+            cludoExperienceBuilder.setAttribute('data-xid', cludoExperienceId);
+        }
+
+        document.body.appendChild(cludoExperienceBuilder);
     });
 }
 
