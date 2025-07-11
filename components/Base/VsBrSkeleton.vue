@@ -20,7 +20,7 @@
     </div>
 </template>
 
-<style>
+<style lang="scss">
     .skeleton-site {
         opacity: 0.4;
         width: 100vw;

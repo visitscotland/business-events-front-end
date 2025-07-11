@@ -235,7 +235,7 @@ const getLgSize = (index: number, linksLength: number) => {
 
 </script>
 
-<style>
+<style lang="scss">
     div.multi-image-links-module {
         span {
             display: block;
