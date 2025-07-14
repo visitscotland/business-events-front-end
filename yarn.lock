@@ -689,12 +689,12 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
-"@bloomreach/spa-sdk@^23.4.4":
-  version "23.4.4"
-  resolved "https://registry.yarnpkg.com/@bloomreach/spa-sdk/-/spa-sdk-23.4.4.tgz#d873ca327c1d6e76015d99b66645567de854c02f"
-  integrity sha512-wrnfZVPfbIoDgV1i9DS2OokS6JV86ubaNKqzZl8dsSMwO/gpOt3zx3xM7ocRWPh4XXJLviEBqeikvqpv9PzGew==
+"@bloomreach/spa-sdk@^24.1.2":
+  version "24.1.2"
+  resolved "https://registry.yarnpkg.com/@bloomreach/spa-sdk/-/spa-sdk-24.1.2.tgz#df732fd7ebffbecfd6aff3678cecc19813afd171"
+  integrity sha512-gsxaYPqTiLMSoY6Ly0PLtXePhYKGmnDoaszVn+crwpW9kONuv4vm9AnFBo4VAVvipVyYkU9BQYF4LfxAolcY5A==
   dependencies:
-    cookie "0.4.1"
+    cookie "0.7.2"
     dom-serializer "2.0.0"
     domutils "3.0.1"
     emittery "0.7.2"
@@ -4226,10 +4226,10 @@ cookie-es@^1.2.2:
   resolved "https://registry.yarnpkg.com/cookie-es/-/cookie-es-1.2.2.tgz#18ceef9eb513cac1cb6c14bcbf8bdb2679b34821"
   integrity sha512-+W7VmiVINB+ywl1HGXJXmrqkOhpKrIiVZV6tQuV54ZyQC7MMuBt81Vc336GMLoHBq5hV/F9eXgt5Mnx0Rha5Fg==
 
-cookie@0.4.1:
-  version "0.4.1"
-  resolved "https://registry.npmjs.org/cookie/-/cookie-0.4.1.tgz"
-  integrity sha512-ZwrFkGJxUR3EIoXtO+yVE69Eb7KlixbaeAWfBQB9vVsNn/o+Yw69gBWSSDK825hQNdN+wF8zELf3dFNl/kxkUA==
+cookie@0.7.2:
+  version "0.7.2"
+  resolved "https://registry.yarnpkg.com/cookie/-/cookie-0.7.2.tgz#556369c472a2ba910f2979891b526b3436237ed7"
+  integrity sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==
 
 copy-anything@^3.0.2:
   version "3.0.5"
