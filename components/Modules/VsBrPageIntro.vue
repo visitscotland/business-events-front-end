@@ -58,13 +58,13 @@
         </template>
 
         <template
-            #vs-blog-data
+            #vs-article-data
             v-if="blog"
         >
-            <VsBlogDetails
-                :blog-author="blogAuthor"
-                :blog-publish-date="blogDate"
-                :blog-read-time="blogTime"
+            <VsArticleDetails
+                :article-author="blogAuthor"
+                :article-publish-date="blogDate"
+                :article-read-time="blogTime"
             />
         </template>
 
@@ -83,7 +83,7 @@
 <script lang="ts" setup>
 import { inject, toRefs } from 'vue';
 
-import { VsPageIntro, VsBlogDetails } from '@visitscotland/component-library/components';
+import { VsPageIntro, VsArticleDetails } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
 import themeCalculator from '~/composables/themeCalculator.ts';
