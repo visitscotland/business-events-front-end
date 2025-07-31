@@ -14,7 +14,7 @@
                 >
                     <template #icon-open>
                         <VsIcon
-                            name="fa-regular fa-chevron-up"
+                            icon="fa-regular fa-chevron-up"
                             variant="inverse"
                             size="xs"
                         />
@@ -22,7 +22,7 @@
 
                     <template #icon-closed>
                         <VsIcon
-                            name="fa-regular fa-chevron-down"
+                            icon="fa-regular fa-chevron-down"
                             variant="inverse"
                             size="xs"
                         />
@@ -65,7 +65,7 @@
                     v-for="(link, key, index) in configStore.labels['navigation.social-media']"
                     :key="index"
                     :href="link"
-                    :icon="key === 'twitter' ? 'x-twitter' : key"
+                    :icon="`fab fa-${key === 'twitter' ? 'x-twitter' : key}`"
                 />
             </vsfootersocialmenu>
         </template>
