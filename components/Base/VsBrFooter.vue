@@ -101,6 +101,8 @@
 </template>
 
 <script lang="ts" setup>
+/* eslint no-undef: 0 */
+
 import {
     toRefs, ref, onMounted,
 } from 'vue';
@@ -166,6 +168,16 @@ const isMounted = ref(false);
 
 onMounted(() => {
     isMounted.value = true;
+});
+
+useHead({
+    link: [
+        {
+            rel: 'stylesheet',
+            type: 'text/css',
+            href: '/styles/cludo-chatbot.css',
+        },
+    ],
 });
 
 </script>
