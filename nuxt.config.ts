@@ -26,6 +26,7 @@ export default defineNuxtConfig({
 
         },
     },
+
     vite: {
         resolve: {
             preserveSymlinks: true,
@@ -42,26 +43,32 @@ export default defineNuxtConfig({
     vue: {
         runtimeCompiler: true,
     },
+
     components: [
         {
             path: '~/components',
             pathPrefix: false,
         },
     ],
+
     buildModules: [
         '@nuxtjs/dotenv',
     ],
+
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
         'nuxt-lazy-hydrate',
     ],
+
     'nuxt-jsonld': {
         disableOptionsAPI: true,
     },
+
     css: [
         '@visitscotland/component-library/style.css',
     ],
+
     build: {
         transpile: [
             'bootstrap-vue-next',
