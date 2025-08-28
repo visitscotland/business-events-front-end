@@ -15,7 +15,7 @@ if (!env.VS_DOCKER_BUILDER_IMAGE_NAME) { env.VS_DOCKER_BUILDER_IMAGE_NAME = "vs/
 if (!env.VS_SSR_PROXY_ON) { env.VS_SSR_PROXY_ON = "TRUE" }
 if (!env.VS_USE_DOCKER_BUILDER) { env.VS_USE_DOCKER_BUILDER = "TRUE" }
 if (!env.VS_RELEASE_SNAPSHOT) { env.VS_RELEASE_SNAPSHOT = "FALSE" }
-if (!env.VS_PROXY_SERVER_FQDN) { env.VS_PROXY_SERVER_FQDN = "release-brc-support.visitscotland.org" }
+if (!env.VS_PROXY_SERVER_FQDN) { env.VS_PROXY_SERVER_FQDN = "release-brc-businessevents.visitscotland.com" }
 if (!env.HOSTNAME) { env.HOSTNAME = env.NODE_NAME }
 if (!env.VS_BRANCH_PROPERTIES_FILE && !env.CHANGE_BRANCH) {
     env.VS_BRANCH_PROPERTIES_FILE = env.BRANCH_NAME.substring(env.BRANCH_NAME.lastIndexOf('/') + 1) + ".properties" 
@@ -102,8 +102,7 @@ pipeline {
                 }
             }
             steps {
-                echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME in pipeline"
-                sh 'running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME in shell'
+                echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME"
                 sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh writevars --quiet'
                 sh '''
                     set +x
@@ -148,8 +147,8 @@ pipeline {
                 }
             }
             steps {
+                echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME"
                 catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    sh 'echo; echo "running stage $STAGE_NAME on $HOSTNAME"'
                     sh '''
                         set +x
                         export HOME=$WORKSPACE
@@ -215,6 +214,25 @@ pipeline {
         }
         }
             steps {
+                echo "running stage $STAGE_NAME in $HOSTNAME on $NODE_NAME"
+                // the two script blocks below are necessary to allow infrastructure.sh to set variables and then import them back to the pipeline
+                //  - in a future iteration, where the container is started by the shell script, these will no longer be required
+                script {
+                    if (fileExists("$WORKSPACE/ci/infrastructure/scripts/infrastructure.sh")) {
+                        sh '$VS_CI_DIR/infrastructure/scripts/infrastructure.sh dssr-server --map-workspace=true'
+                    } else {
+                        echo; echo "infrastructure.sh was not found - no container will be created"
+                    }
+                }
+                script {
+                    if (fileExists("$WORKSPACE/ci/vs-last-env.quoted")) {
+                        echo "loading environment variables from $WORKSPACE/ci/vs-last-env.quoted"
+                        load "$WORKSPACE/ci/vs-last-env.quoted"
+                        echo "found ${env.VS_COMMIT_AUTHOR}"
+                    } else {
+                        echo; echo "$WORKSPACE/ci/vs-last-env.quoted - updated environment variables will not be loaded"
+                    }
+                }
                 sh '''
                     set +x
                     echo $VS_CONTAINER_EXEC
