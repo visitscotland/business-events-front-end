@@ -2628,10 +2628,10 @@
     picomatch "^4.0.2"
     resolve-from "^5.0.0"
 
-"@visitscotland/component-library@^5.5.2":
-  version "5.5.2"
-  resolved "https://registry.yarnpkg.com/@visitscotland/component-library/-/component-library-5.5.2.tgz#78224dfc6b13f4cd0eddd5e2d811fc47b69b645c"
-  integrity sha512-tFEBlLG0AZw1TXfPT6HnPkvTdZSQJAGVN9ublCqCEU6WKX99xggiYVAqEaqsHpjzJOX6U36h3lyaqBomPvAIqQ==
+"@visitscotland/component-library@^5.5.3":
+  version "5.5.3"
+  resolved "https://registry.yarnpkg.com/@visitscotland/component-library/-/component-library-5.5.3.tgz#a1ab93ad9478a37ded832bd8c07933a7c94221f6"
+  integrity sha512-fjYIkHZ/96WGrEIk1CSsgZmMhLQtttY7PuPNs1OL1oWFz6HIzy7PpXYfMcCECJ/7Dt60sqqVM5LZ7Ktc7eectQ==
   dependencies:
     "@mapbox/geojson-extent" "^1.0.1"
     "@pinia/testing" "^0.1.3"
