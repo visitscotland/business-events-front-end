@@ -39,6 +39,40 @@ if (page && page.isPreview()) {
     isPreviewMode = true;
 }
 
+const attachCivicEvents = (counter = 1) => {
+    if (counter < 10) {
+        if (typeof window !== 'undefined' && window.google_tag_manager) {
+            // GTM can't call browser events directly, so we need to listen for events on the
+            // datalayer and then latch our code onto those.
+            const originalDataLayerPush = window.dataLayer.push;
+
+            window.dataLayer.push = (arg : any) => {
+                if (arg) {
+                    originalDataLayerPush(arg);
+                } else {
+                    originalDataLayerPush();
+                }
+
+                if (arg && arg.event === 'cookie_permission_loaded') {
+                    setTimeout(() => {
+                        window.dispatchEvent(new Event('cookieManagerLoaded'));
+                    });
+                }
+
+                if (arg && arg.event === 'cookie_permission_changed') {
+                    setTimeout(() => {
+                        window.dispatchEvent(new Event('cookiesUpdated'));
+                    });
+                }
+            };
+        } else {
+            setTimeout(() => {
+                attachCivicEvents(counter + 1);
+            }, 200);
+        }
+    }
+};
+
 if (id && !isPreviewMode) {
     useHead({
         script: [
@@ -49,6 +83,8 @@ if (id && !isPreviewMode) {
             })(window,document,'script','dataLayer','${id}');`,
         ],
     });
+
+    attachCivicEvents();
 }
 
 if (isPreviewMode && window) {
