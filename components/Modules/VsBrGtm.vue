@@ -40,7 +40,7 @@ if (page && page.isPreview()) {
 }
 
 const attachCivicEvents = (counter = 1) => {
-    if (counter < 10) {
+    if (counter < 20) {
         if (typeof window !== 'undefined' && window.google_tag_manager) {
             // GTM can't call browser events directly, so we need to listen for events on the
             // datalayer and then latch our code onto those.
@@ -68,7 +68,7 @@ const attachCivicEvents = (counter = 1) => {
         } else {
             setTimeout(() => {
                 attachCivicEvents(counter + 1);
-            }, 200);
+            }, 500);
         }
     }
 };
