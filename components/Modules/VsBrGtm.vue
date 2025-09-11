@@ -39,29 +39,31 @@ if (page && page.isPreview()) {
     isPreviewMode = true;
 }
 
+// Checks if a given dataLayer event represents either Civic loading or cookie
+// permissions updating, and fires off events for the component library.
+const checkEvent = (event) => {
+    if (event === 'cookie_permission_loaded') {
+        setTimeout(() => {
+            window.dispatchEvent(new Event('cookieManagerLoaded'));
+        });
+    }
+
+    if (event === 'cookie_permission_changed') {
+        setTimeout(() => {
+            window.dispatchEvent(new Event('cookiesUpdated'));
+        });
+    }
+};
+
 // To avoid an awkward race condition, we need to check if civic was loaded before we find the
 // datalayer, as well as listening for it being loaded afterwards.
 const checkIfCivicLoaded = () => {
     for (let x = 0; x < window.dataLayer.length; x++) {
-        let argEvent = '';
+        const dataLayerEvent = window.dataLayer[x];
 
-        if (window.dataLayer[x].value && window.dataLayer[x].value.event) {
-            argEvent = window.dataLayer[x].value.event;
-        } else if (window.dataLayer[x].event) {
-            argEvent = window.dataLayer[x].event;
-        }
+        const eventString = dataLayerEvent?.value?.event ?? dataLayerEvent?.event ?? '';
 
-        if (argEvent === 'cookie_permission_loaded') {
-            setTimeout(() => {
-                window.dispatchEvent(new Event('cookieManagerLoaded'));
-            });
-        }
-
-        if (argEvent === 'cookie_permission_changed') {
-            setTimeout(() => {
-                window.dispatchEvent(new Event('cookiesUpdated'));
-            });
-        }
+        checkEvent(eventString);
     }
 };
 
@@ -74,7 +76,7 @@ const attachCivicEvents = (counter = 1) => {
             // datalayer and then latch our code onto those.
             const originalDataLayerPush = window.dataLayer.push;
 
-            window.dataLayer.push = (arg : any) => {
+            window.dataLayer.push = (arg) => {
                 let res = null;
 
                 if (arg) {
@@ -83,25 +85,9 @@ const attachCivicEvents = (counter = 1) => {
                     return originalDataLayerPush();
                 }
 
-                let argEvent = '';
+                const eventString = arg?.value?.event ?? arg?.event ?? '';
 
-                if (arg.value && arg.value.event) {
-                    argEvent = arg.value.event;
-                } else if (arg.event) {
-                    argEvent = arg.event;
-                }
-
-                if (argEvent === 'cookie_permission_loaded') {
-                    setTimeout(() => {
-                        window.dispatchEvent(new Event('cookieManagerLoaded'));
-                    });
-                }
-
-                if (argEvent === 'cookie_permission_changed') {
-                    setTimeout(() => {
-                        window.dispatchEvent(new Event('cookiesUpdated'));
-                    });
-                }
+                checkEvent(eventString);
 
                 return res;
             };
