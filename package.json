@@ -38,7 +38,7 @@
     "mitt": "^3.0.0",
     "nuxt-jsonld": "^2.0.8",
     "pinia": "^2.3.0",
-    "sass": "^1.81.0",
+    "sass": "^1.93.0",
     "standard-version": "^9.5.0",
     "typescript": "^5.7.2",
     "youtube-vue3": "^0.1.15"
