@@ -29,7 +29,7 @@
     "@bloomreach/spa-sdk": "^23.4.4",
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@pinia/nuxt": "^0.5.1",
-    "@visitscotland/component-library": "^5.5.4",
+    "@visitscotland/component-library": "^5.6.1",
     "aws-rum-web": "^1.19.0",
     "axios": "^1.8.2",
     "commitizen": "^4.3.1",
