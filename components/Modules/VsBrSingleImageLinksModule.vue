@@ -20,7 +20,7 @@
             <VsMegalinkSingleImage
                 :title="module.innerTitle"
                 :button-link="module.cta && module.cta.link ? formatLink(module.cta.link) : ''"
-                :alternate="module.alignment === 'left' ? true : false"
+                :alternate="module.alternate"
             >
                 <template
                     #vs-single-image
@@ -28,7 +28,7 @@
                 >
                     <VsBrImageWithCaption
                         :mobile-overlap="true"
-                        :alignment="module.alignment"
+                        :alignment="module.alternate === true ? 'left' : 'right'"
                         :image="module.image.cmsImage
                             ? module.image.cmsImage
                             : module.image.externalImage"
