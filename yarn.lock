@@ -109,7 +109,7 @@
     "@babel/highlight" "^7.24.2"
     picocolors "^1.0.0"
 
-"@babel/code-frame@^7.27.1":
+"@babel/code-frame@^7.26.2", "@babel/code-frame@^7.27.1":
   version "7.27.1"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.27.1.tgz#200f715e66d52a23b221a9435534a91cc13ad5be"
   integrity sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==
@@ -1189,7 +1189,7 @@
     unimport "^5.2.0"
     untyped "^2.0.0"
 
-"@nuxt/kit@^3.15.4", "@nuxt/kit@^3.19.3", "@nuxt/kit@^3.3.2", "@nuxt/kit@^3.9.0":
+"@nuxt/kit@^3.15.4", "@nuxt/kit@^3.19.3", "@nuxt/kit@^3.3.2", "@nuxt/kit@^3.9.0", "@nuxt/kit@^3.3.2", "@nuxt/kit@^3.9.0":
   version "3.20.1"
   resolved "https://registry.yarnpkg.com/@nuxt/kit/-/kit-3.20.1.tgz#0cf6d00b1fda03408d9e2ab3048b8cad73abb2e9"
   integrity sha512-TIslaylfI5kd3AxX5qts0qyrIQ9Uq3HAA1bgIIJ+c+zpDfK338YS+YrCWxBBzDMECRCbAS58mqAd2MtJfG1ENA==
@@ -1646,13 +1646,12 @@
     "@parcel/watcher-win32-ia32" "2.4.1"
     "@parcel/watcher-win32-x64" "2.4.1"
 
-"@pinia/nuxt@^0.5.1":
-  version "0.5.5"
-  resolved "https://registry.yarnpkg.com/@pinia/nuxt/-/nuxt-0.5.5.tgz#0e156bbb86b3ccb087006ff505bc0c1b6522e8c3"
-  integrity sha512-wjxS7YqIesh4OLK+qE3ZjhdOJ5pYZQ+VlEmZNtTwzQn1Kavei/khovx7mzXVXNA/mvSPXVhb9xBzhyS3XMURtw==
+"@pinia/nuxt@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@pinia/nuxt/-/nuxt-0.9.0.tgz#310deb0fb17a5ca0dc603515695aa40be0a9f6e2"
+  integrity sha512-2yeRo7LeyCF68AbNeL3xu2h6uw0617RkcsYxmA8DJM0R0PMdz5wQHnc44KeENQxR/Mrq8T910XVT6buosqsjBQ==
   dependencies:
     "@nuxt/kit" "^3.9.0"
-    pinia "^2.2.3"
 
 "@pinia/testing@^0.1.3":
   version "0.1.3"
@@ -6298,7 +6297,7 @@ ignore@^5.0.4, ignore@^5.1.1, ignore@^5.2.0, ignore@^5.2.4, ignore@^5.3.1:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.3.2.tgz#3cd40e729f3643fd87cb04e50bf0eb722bc596f5"
   integrity sha512-hsBTNUqQTDwkWtcdYI2i06Y/nUBEsNEDJKjWdigLvegy8kDuJAS8uRlpkkcQpyEXL0Z/pjDy5HBmMjRCJ2gq+g==
 
-ignore@^7.0.5:
+ignore@^7.0.3, ignore@^7.0.5:
   version "7.0.5"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-7.0.5.tgz#4cb5f6cd7d4c7ab0365738c7aea888baa6d7efd9"
   integrity sha512-Hs59xBNfUIunMFgWAbGX5cq6893IbWg4KnrjbYwX3tx0ztorVgTDA6B2sxf8ejHJ4wz8BqGUMYlnzNBer5NvGg==
@@ -6979,6 +6978,11 @@ klona@^2.0.6:
   resolved "https://registry.npmjs.org/klona/-/klona-2.0.6.tgz"
   integrity sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==
 
+knitwork@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/knitwork/-/knitwork-1.1.0.tgz"
+  integrity sha512-oHnmiBUVHz1V+URE77PNot2lv3QiYU2zQf1JjOVkMt3YDKGbu8NAFr+c4mcNOhdsGrB/VpVbRwPwhiXrPhxQbw==
+
 knitwork@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/knitwork/-/knitwork-1.2.0.tgz#3cc92e76249aeb35449cfbed3f31c6df8444db3f"
@@ -7576,6 +7580,14 @@ modify-values@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/modify-values/-/modify-values-1.0.1.tgz"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
+
+module-definition@^6.0.1:
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/module-definition/-/module-definition-6.0.1.tgz#47e73144cc5a9aa31f3380166fddf8e962ccb2e4"
+  integrity sha512-FeVc50FTfVVQnolk/WQT8MX+2WVcDnTGiq6Wo+/+lJ2ET1bRVi3HG3YlJUfqagNMc/kUlFSoR96AJkxGpKz13g==
+  dependencies:
+    ast-module-types "^6.0.1"
+    node-source-walk "^7.0.1"
 
 mrmime@^2.0.0:
   version "2.0.0"
