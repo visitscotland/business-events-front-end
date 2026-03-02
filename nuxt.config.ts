@@ -75,4 +75,6 @@ export default defineNuxtConfig({
             '@visitscotland/component-library',
         ],
     },
+
+    compatibilityDate: '2025-11-13',
 });
