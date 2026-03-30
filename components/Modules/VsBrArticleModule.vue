@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable import/no-import-module-exports */
+ 
 
 import {
     VsArticle,
@@ -58,7 +58,7 @@ import VsBrArticleSidebar from '~/components/Modules/VsBrArticleSidebar.vue';
 
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
-const props = defineProps<{ module: Object }>();
+const props = defineProps<{ module: object }>();
 const module: any = props.module;
 
 const articleSections: any[] = [];

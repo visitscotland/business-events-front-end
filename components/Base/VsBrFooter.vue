@@ -101,8 +101,6 @@
 </template>
 
 <script lang="ts" setup>
-/* eslint vuejs-accessibility/aria-props: 0 */
-
 import {
     toRefs, ref, onMounted,
 } from 'vue';
