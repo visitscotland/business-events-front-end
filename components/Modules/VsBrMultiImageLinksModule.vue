@@ -148,7 +148,7 @@
 </template>
 
 <script lang="ts" setup>
-/* eslint-disable import/no-import-module-exports */
+ 
 
 import { inject } from 'vue';
 
@@ -172,7 +172,7 @@ const configStore = useConfigStore();
 
 const page: Page | undefined = inject('page');
 
-const props = defineProps<{ module: Object, theme: string }>();
+const props = defineProps<{ module: object, theme: string }>();
 const module: any = props.module;
 const theme: string = props.theme;
 
