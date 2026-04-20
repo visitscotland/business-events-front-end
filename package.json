@@ -2,7 +2,7 @@
   "name": "nuxt-app",
   "private": true,
   "scripts": {
-    "build": "nuxt build",
+    "build": "npm run lint:lockfile && nuxt build",
     "dev": "nuxt dev",
     "postinstall": "node -p \"require('./node_modules/@visitscotland/component-library/package.json').version\" > .clversion && nuxt prepare",
     "commit": "cz",
@@ -10,7 +10,8 @@
     "release:minor": "standard-version --release-as minor",
     "release:major": "standard-version --release-as major",
     "lint": "eslint ./**/*.{js,vue,ts}",
-    "lint:fix": "yarn lint --fix"
+    "lint:fix": "yarn lint --fix",
+    "lint:lockfile": "lockfile-lint --path package-lock.json --type npm --allowed-hosts npm yarn --validate-https"
   },
   "lint-staged": {
     "*.{js,vue,ts}": "eslint"
@@ -31,8 +32,10 @@
     "axios": "^1.13.5",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
+    "express": "^5.2.1",
     "html-entities": "^2.6.0",
     "lint-staged": "^15.2.10",
+    "lockfile-lint": "^5.0.0",
     "mitt": "^3.0.0",
     "nuxt-jsonld": "^2.0.8",
     "pinia": "^3.0.2",
@@ -55,5 +58,6 @@
       "path": "./node_modules/cz-conventional-changelog"
     }
   },
-  "version": "0.0.24"
+  "version": "0.0.24",
+  "packageManager": "yarn@4.14.1"
 }
