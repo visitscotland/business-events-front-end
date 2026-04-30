@@ -11,7 +11,7 @@
     "release:major": "standard-version --release-as major",
     "lint": "eslint ./**/*.{js,vue,ts}",
     "lint:fix": "yarn lint --fix",
-    "lint:lockfile": "lockfile-lint --path package-lock.json --type npm --allowed-hosts npm yarn --validate-https"
+    "lint:lockfile": "lockfile-lint --path yarn.lock --type yarn --allowed-hosts yarn"
   },
   "lint-staged": {
     "*.{js,vue,ts}": "eslint"
