@@ -82,6 +82,16 @@
             />
         </NuxtLazyHydrate>
 
+        <NuxtLazyHydrate
+            :when-visible="{ rootMargin: '50px' }"
+            v-else-if="item.type === 'SimpleDevModule'"
+        >
+            <VsBrDevModule
+                :module="item"
+                :content="hippoContent[index]"
+            />
+        </NuxtLazyHydrate>
+
         <div
             v-else-if="item.type === 'ErrorModule'"
         >
@@ -110,6 +120,7 @@ import VsBrSingleImageLinksModule from '~/components/Modules/VsBrSingleImageLink
 import VsBrArticleModule from '~/components/Modules/VsBrArticleModule.vue';
 import VsBrLongCopyModule from '~/components/Modules/VsBrLongCopyModule.vue';
 import VsBrForm from '~/components/Modules/VsBrForm.vue';
+import VsBrDevModule from '~/components/Modules/VsBrDevModule.vue';
 import VsBrPreviewError from '~/components/Modules/VsBrPreviewError.vue';
 
 import themeCalculator from '~/composables/themeCalculator.ts';
