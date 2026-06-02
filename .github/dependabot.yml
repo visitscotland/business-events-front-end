@@ -6,3 +6,7 @@ updates:
       interval: "daily"
     cooldown:
       default-days: 7
+    reviewers:
+        - "GemmaLouise"
+    assignees:
+        - "GemmaLouise"
