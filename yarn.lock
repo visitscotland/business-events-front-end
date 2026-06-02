@@ -360,18 +360,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@bloomreach/spa-sdk@npm:^23.4.4":
-  version: 23.4.4
-  resolution: "@bloomreach/spa-sdk@npm:23.4.4"
+"@bloomreach/spa-sdk@npm:^27.3.1":
+  version: 27.3.1
+  resolution: "@bloomreach/spa-sdk@npm:27.3.1"
   dependencies:
-    cookie: "npm:0.4.1"
+    cookie: "npm:0.7.2"
     dom-serializer: "npm:2.0.0"
     domutils: "npm:3.0.1"
     emittery: "npm:0.7.2"
     htmlparser2: "npm:8.0.2"
     inversify: "npm:5.1.1"
     reflect-metadata: "npm:0.1.13"
-  checksum: 10c0/a2cf62258106a565f2d2383356490fb8afdfb55b3ca67f57c93a5db9ed7b24e4bd4c455a28ac0d95dbae5db43bda309a5dd5e8b1951241f65a6ca8e86e4f99cb
+  checksum: 10c0/c2c99af6ef6258902f498d708a4cebbd611b897c13b6833f2bd61d61bc5b2f35a6333719585fda8f148d1d90ccd43ae8af76a1e4feb22bb86b92b62c2e777ee5
   languageName: node
   linkType: hard
 
@@ -5036,14 +5036,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cookie@npm:0.4.1":
-  version: 0.4.1
-  resolution: "cookie@npm:0.4.1"
-  checksum: 10c0/4d7bc798df3d0f34035977949cd6b7d05bbab47d7dcb868667f460b578a550cd20dec923832b8a3a107ef35aba091a3975e14f79efacf6e39282dc0fed6db4a1
-  languageName: node
-  linkType: hard
-
-"cookie@npm:^0.7.1":
+"cookie@npm:0.7.2, cookie@npm:^0.7.1":
   version: 0.7.2
   resolution: "cookie@npm:0.7.2"
   checksum: 10c0/9596e8ccdbf1a3a88ae02cf5ee80c1c50959423e1022e4e60b91dd87c622af1da309253d8abdb258fb5e3eacb4f08e579dc58b4897b8087574eee0fd35dfa5d2
@@ -9720,7 +9713,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "nuxt-app@workspace:."
   dependencies:
-    "@bloomreach/spa-sdk": "npm:^23.4.4"
+    "@bloomreach/spa-sdk": "npm:^27.3.1"
     "@bloomreach/vue3-sdk": "npm:^22.0.5"
     "@nuxt/eslint-config": "npm:^1.15.2"
     "@pinia/nuxt": "npm:^0.5.1"
