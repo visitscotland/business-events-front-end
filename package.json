@@ -28,7 +28,7 @@
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@pinia/nuxt": "^0.5.1",
     "@visitscotland/component-library": "5.59.4",
-    "aws-rum-web": "2.0.0",
+    "aws-rum-web": "3.1.0",
     "axios": "^1.17.0",
     "commitizen": "^4.3.1",
     "cz-conventional-changelog": "^3.3.0",
