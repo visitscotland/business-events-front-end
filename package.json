@@ -20,8 +20,7 @@
     "@nuxt/eslint-config": "^1.15.2",
     "eslint": "^10.4.1",
     "husky": "^9.1.7",
-    "nuxt": "~3.21.2",
-    "nuxt-lazy-hydrate": "^1.0.0"
+    "nuxt": "^4.4.8"
   },
   "dependencies": {
     "@bloomreach/spa-sdk": "^23.4.4",
@@ -41,7 +40,8 @@
     "pinia": "^3.0.2",
     "sass": "^1.99.0",
     "standard-version": "^9.5.0",
-    "typescript": "^5.6.3"
+    "typescript": "^5.6.3",
+    "vue": "^3.5.38"
   },
   "resolutions": {
     "vite": "^7.0.0"
