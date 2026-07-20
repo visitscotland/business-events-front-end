@@ -37,7 +37,12 @@ export default defineNuxtConfig({
     },
 
     experimental: {
+        payloadExtraction: false,
         inlineSSRStyles: false,
+    },
+
+    future: {
+        compatibilityVersion: 4,
     },
 
     vue: {
@@ -51,14 +56,9 @@ export default defineNuxtConfig({
         },
     ],
 
-    buildModules: [
-        '@nuxtjs/dotenv',
-    ],
-
     modules: [
         '@pinia/nuxt',
         'nuxt-jsonld',
-        'nuxt-lazy-hydrate',
     ],
 
     'nuxt-jsonld': {
@@ -76,5 +76,13 @@ export default defineNuxtConfig({
         ],
     },
 
-    compatibilityDate: '2025-11-13',
+    typescript: {
+        tsConfig: {
+            compilerOptions: {
+                noUncheckedIndexedAccess: false,
+            },
+        },
+    },
+
+    compatibilityDate: '2026-06-26',
 });

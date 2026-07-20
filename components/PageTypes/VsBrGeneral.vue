@@ -35,49 +35,33 @@
         :light-background="true"
     />
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <!-- TODO - labels -->
-        <VsBrProductSearch
-            v-if="productSearch && productSearch.position === 'Top'"
-            class="mb-300 mb-lg-600 pt-300"
-        />
-    </NuxtLazyHydrate>
+    <!-- TODO - labels -->
+    <VsBrProductSearch
+        v-if="productSearch && productSearch.position === 'Top'"
+        class="mb-300 mb-lg-600 pt-300"
+    />
 
     <VsBrModuleBuilder
         v-if="pageItems"
         :modules="pageItems"
     />
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <!-- TODO - labels -->
-        <VsBrProductSearch
-            v-if="productSearch && productSearch.position === 'Bottom'"
-            class="mt-300 mt-lg-600"
-        />
-    </NuxtLazyHydrate>
+    <!-- TODO - labels -->
+    <VsBrProductSearch
+        v-if="productSearch && productSearch.position === 'Bottom'"
+        class="mt-300 mt-lg-600"
+    />
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrHorizontalLinksModule
-            v-if="otyml"
-            :module="otyml"
-            theme="light"
-        />
-    </NuxtLazyHydrate>
+    <VsBrHorizontalLinksModule
+        v-if="otyml"
+        :module="otyml"
+        theme="light"
+    />
 
-    <NuxtLazyHydrate
-        :when-visible="{ rootMargin: '50px' }"
-    >
-        <VsBrNewsletterSignpost
-            v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
-            :data="configStore.newsletterSignpost"
-        />
-    </NuxtLazyHydrate>
+    <VsBrNewsletterSignpost
+        v-if="!documentData.hideNewsletter && configStore.newsletterSignpost"
+        :data="configStore.newsletterSignpost"
+    />
 </template>
 
 <script lang="ts" setup>
