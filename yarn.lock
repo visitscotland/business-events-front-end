@@ -10381,7 +10381,7 @@ __metadata:
     mitt: "npm:^3.0.0"
     nuxt: "npm:^4.5.2"
     nuxt-jsonld: "npm:^2.0.8"
-    pinia: "npm:^3.0.2"
+    pinia: "npm:^4.0.2"
     sass: "npm:^1.99.0"
     standard-version: "npm:^9.5.0"
     typescript: "npm:^5.6.3"
@@ -11053,7 +11053,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pinia@npm:^3.0.2, pinia@npm:^3.0.4":
+"pinia@npm:^3.0.4":
   version: 3.0.4
   resolution: "pinia@npm:3.0.4"
   dependencies:
@@ -11065,6 +11065,24 @@ __metadata:
     typescript:
       optional: true
   checksum: 10c0/4123efbf28c6d11f3dd052dbcf08da7ef85747fd3499807b9ca1d32dcda7807b2e68f9a7e31a06148b05093a9ebcd0c3b26e6a31b62775c6421429bd03265949
+  languageName: node
+  linkType: hard
+
+"pinia@npm:^4.0.2":
+  version: 4.0.2
+  resolution: "pinia@npm:4.0.2"
+  dependencies:
+    nostics: "npm:^1.1.4"
+  peerDependencies:
+    "@vue/devtools-api": ^8.1.5
+    typescript: ">=5.6.0"
+    vue: ^3.5.11
+  peerDependenciesMeta:
+    "@vue/devtools-api":
+      optional: false
+    typescript:
+      optional: true
+  checksum: 10c0/210f76c147cadf379437abc0150763add506e0328204f4f42adb14e74967bd60f3036eae5e06b572ee6666047bbfb9158db2f0cf9b9016c1f94c724eba4b30d4
   languageName: node
   linkType: hard
 
