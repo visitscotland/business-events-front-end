@@ -10158,7 +10158,7 @@ __metadata:
     sass: "npm:^1.99.0"
     standard-version: "npm:^9.5.0"
     typescript: "npm:^5.6.3"
-    vue: "npm:^3.5.38"
+    vue: "npm:^3.5.40"
   languageName: unknown
   linkType: soft
 
@@ -14369,7 +14369,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vue@npm:^3.5.35, vue@npm:^3.5.38":
+"vue@npm:^3.5.35":
   version: 3.5.38
   resolution: "vue@npm:3.5.38"
   dependencies:
