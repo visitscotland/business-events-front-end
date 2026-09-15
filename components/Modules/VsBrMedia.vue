@@ -26,6 +26,7 @@
                 :alt="altText"
                 :use-lazy-loading="useLazyLoading"
                 class="vs-br-media__img"
+                :class="imageClasses"
             />
         </div>
         <figcaption>
@@ -70,7 +71,9 @@ const configStore = useConfigStore();
 
 interface IProps {
     image?: any,
+    imageString?: string,
     imageDescription?: string,
+    imageClasses?: string,
     variant?: string,
     isHero?: boolean,
     isVideo?: boolean,
@@ -87,7 +90,9 @@ interface IProps {
 
 const props = withDefaults(defineProps<IProps>(), {
     image: null,
+    imageString: '',
     imageDescription: '',
+    imageClasses: '',
     variant: 'fullwidth',
     isHero: false,
     isVideo: false,
@@ -104,7 +109,9 @@ const props = withDefaults(defineProps<IProps>(), {
 
 const {
     image,
+    imageString,
     imageDescription,
+    imageClasses,
     variant,
     isHero,
     isVideo,
@@ -136,6 +143,10 @@ if (page && image.value) {
             : imageData.altText;
         descriptionString = imageDescription.value || imageData.description;
     }
+}
+
+if (imageString.value) {
+    imageSrc = imageString.value;
 }
 </script>
 
