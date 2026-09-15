@@ -15,8 +15,9 @@
                     :video="section.video"
                 />
 
-                <VsBrImageWithCaption
+                <VsBrMedia
                     :image="section.video.image.cmsImage"
+                    :image-description="section.video.image.description"
                     :is-video="true"
                     :video-id="section.video.youtubeId"
                     :video-title="section.video.label
@@ -30,19 +31,11 @@
             <template
                 v-else-if="section.image"
             >
-                <VsBrImageWithCaption
+                <VsBrMedia
                     :image="section.image.cmsImage"
+                    :image-description="section.image.description"
                 />
             </template>
-        </template>
-
-        <template
-            #vs-article-sidebar-quote
-            v-if="section.quote"
-        >
-            <VsBrQuote
-                :quote="section.quote"
-            />
         </template>
     </VsArticleSidebar>
 </template>
@@ -51,8 +44,7 @@
 import { VsArticleSidebar } from '@visitscotland/component-library/components';
 
 import useConfigStore from '~/stores/configStore.ts';
-import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
-import VsBrQuote from '~/components/Modules/VsBrQuote.vue';
+import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 
 const configStore = useConfigStore();
 
