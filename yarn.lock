@@ -3179,9 +3179,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@visitscotland/component-library@file:.yalc/@visitscotland/component-library::locator=nuxt-app%40workspace%3A.":
-  version: 5.79.3
-  resolution: "@visitscotland/component-library@file:.yalc/@visitscotland/component-library#.yalc/@visitscotland/component-library::hash=56d858&locator=nuxt-app%40workspace%3A."
+"@visitscotland/component-library@npm:5.80.0":
+  version: 5.80.0
+  resolution: "@visitscotland/component-library@npm:5.80.0"
   dependencies:
     "@floating-ui/dom": "npm:^1.7.6"
     "@googlemaps/js-api-loader": "npm:^2.0.1"
@@ -3209,7 +3209,7 @@ __metadata:
   dependenciesMeta:
     husky:
       built: true
-  checksum: 10c0/8b4c8d8e294e07a2cf0cba073875d1e948b61eaa57efb074823942413cf2fa8d21bc7ae2f1fddb1b4e31929d87a3caf2be27faae2e56ff057f1f887b30294c2d
+  checksum: 10c0/d2104f965cbbfdc71044f927062cf8fe75bcb1b1011794a4a3b58584411518670d63663e5acb25abfaaf1d948d1170b720bb7d0727638dbd617ac8857fcac557
   languageName: node
   linkType: hard
 
@@ -9996,7 +9996,7 @@ __metadata:
     "@bloomreach/vue3-sdk": "npm:^22.0.5"
     "@nuxt/eslint-config": "npm:^1.16.0"
     "@pinia/nuxt": "npm:^1.0.2"
-    "@visitscotland/component-library": "file:.yalc/@visitscotland/component-library"
+    "@visitscotland/component-library": "npm:5.80.0"
     "@vue/devtools-api": "npm:^8.1.5"
     aws-rum-web: "npm:3.2.1"
     axios: "npm:^1.19.0"
