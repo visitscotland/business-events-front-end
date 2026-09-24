@@ -35,7 +35,7 @@
     "cz-conventional-changelog": "^3.3.0",
     "express": "^5.2.1",
     "html-entities": "^2.6.0",
-    "lint-staged": "^17.0.8",
+    "lint-staged": "^17.5.1",
     "lockfile-lint": "^5.0.1",
     "mitt": "^3.0.0",
     "nuxt-jsonld": "^2.0.8",
