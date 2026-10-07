@@ -40,9 +40,7 @@
             #vs-article-sidebar-quote
             v-if="section.quote"
         >
-            <VsBrQuote
-                :quote="section.quote"
-            />
+            <VsBrQuote :quote="section.quote" />
         </template>
     </VsArticleSidebar>
 </template>
