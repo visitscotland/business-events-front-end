@@ -7,8 +7,9 @@
             #vs-article-img
             v-if="module.image"
         >
-            <VsBrImageWithCaption
+            <VsBrMedia
                 :image="module.image.cmsImage"
+                :image-description="module.image.description"
             />
         </template>
 
@@ -53,7 +54,7 @@ import {
 
 import formatLink from '~/composables/formatLink.ts';
 
-import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 import VsBrArticleSidebar from '~/components/Modules/VsBrArticleSidebar.vue';
 
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';

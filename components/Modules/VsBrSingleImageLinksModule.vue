@@ -26,12 +26,15 @@
                     #vs-single-image
                     v-if="module.image"
                 >
-                    <VsBrImageWithCaption
+                    <VsBrMedia
+                        ref="media"
                         :mobile-overlap="true"
                         :alignment="module.alternate === true ? 'left' : 'right'"
                         :image="module.image.cmsImage
                             ? module.image.cmsImage
                             : module.image.externalImage"
+                        :image-description="module.image.description"
+                        :style="cssVars"
                     />
                 </template>
 
@@ -85,6 +88,12 @@
 
 <script lang="ts" setup>
 import {
+    computed,
+    onMounted,
+    ref,
+} from 'vue';
+
+import {
     VsMegalinks,
     VsMegalinkSingleImage,
     VsCol,
@@ -95,7 +104,7 @@ import useConfigStore from '~/stores/configStore.ts';
 
 import formatLink from '~/composables/formatLink.ts';
 
-import VsBrImageWithCaption from '~/components/Modules/VsBrImageWithCaption.vue';
+import VsBrMedia from '~/components/Modules/VsBrMedia.vue';
 import VsBrRichText from '~/components/Modules/VsBrRichText.vue';
 
 const configStore = useConfigStore();
@@ -104,7 +113,43 @@ const props = defineProps<{ module: object, theme: string }>();
 const module: any = props.module;
 const theme: string = props.theme;
 
+const media = ref(null);
+const negativeMargin = ref('200px');
+
+const cssVars = computed(() => ({
+    '--negative-margin': `-${negativeMargin.value}`,
+}));
+
+onMounted(() => {
+    if (media.value) {
+        const img = (media.value as any).$el.querySelector('img');
+
+        img.addEventListener('load', () => {
+            const offsetPercentToMiddle = img.clientHeight / 2.5 / img.clientWidth;
+            negativeMargin.value = `${offsetPercentToMiddle * 100}%`;
+        });
+    }
+});
 </script>
 
 <style lang="scss">
+    .vs-megalink-single-image {
+        .vs-br-media {
+            overflow: hidden;
+            margin: 0 -12px;
+        }
+
+        @media (min-width: 576px) {
+            .vs-br-media {
+                margin-bottom: 0;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .vs-br-media {
+                width: 100%;
+                margin: 0 0 calc(var(--negative-margin) - 4rem);
+            }
+        }
+    }
 </style>
