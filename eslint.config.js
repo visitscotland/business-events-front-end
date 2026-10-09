@@ -8,6 +8,9 @@ export default createConfigForNuxt(
         },
     },
     {
+        ignores: ['.yalc/**', '.yarn/**'],
+    },
+    {
         name: 'app/rules',
         rules: {
             '@typescript-eslint/no-explicit-any': 'off',
