@@ -38,7 +38,7 @@
     "lint-staged": "^17.0.8",
     "lockfile-lint": "^5.0.1",
     "mitt": "^3.0.0",
-    "nuxt-jsonld": "^2.0.8",
+    "nuxt-jsonld": "^2.3.0",
     "pinia": "^4.0.3",
     "sass": "^1.104.0",
     "standard-version": "^9.5.0",
