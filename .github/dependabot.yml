@@ -7,6 +7,6 @@ updates:
     cooldown:
       default-days: 7
     reviewers:
-        - "GemmaLouise"
+        - "duncansanderson"
     assignees:
-        - "GemmaLouise"
+        - "duncansanderson"
