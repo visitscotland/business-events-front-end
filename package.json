@@ -1,6 +1,7 @@
 {
   "name": "nuxt-app",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "npm run lint:lockfile && nuxt build",
     "dev": "nuxt dev",
@@ -46,10 +47,7 @@
     "vue": "3.5.44"
   },
   "overrides": {
-    "minimist": "latest",
-    "@visitscotland/component-library": {
-      "vite": "^7.0.0"
-    }
+    "minimist": "latest"
   },
   "config": {
     "commitizen": {
@@ -60,7 +58,6 @@
   "packageManager": "yarn@4.14.1",
   "resolutions": {
     "simple-git": "4.0.2",
-    "vite": "8.2.2",
     "rolldown": "1.2.9",
     "vue": "3.5.44",
     "@vue/compiler-core": "3.5.42",
