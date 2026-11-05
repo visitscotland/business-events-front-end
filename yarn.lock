@@ -3472,9 +3472,9 @@ __metadata:
   linkType: hard
 
 "ansi-regex@npm:^6.2.2":
-  version: 6.4.0
-  resolution: "ansi-regex@npm:6.4.0"
-  checksum: 10c0/e42f68ffa21aac4c4de27aad601bb5ea415b5a07b127681ef44728195f22231b77bc39230ce0c976420d84650b7bf5a5b60eb4e7500c1f74e9a3f3cd4a68f3f6
+  version: 6.5.0
+  resolution: "ansi-regex@npm:6.5.0"
+  checksum: 10c0/778908f1af800e39f6da2167e515ecef5d7c912fd7e383520dcd80052cf1f8d57b89b6b1f31f58480a5579ab7cc48e401ac194125362d92bdeb8569ac678e3aa
   languageName: node
   linkType: hard
 
@@ -9970,7 +9970,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.4.38, postcss@npm:^8.5.19, postcss@npm:^8.5.26, postcss@npm:^8.5.31":
+"postcss@npm:^8.4.38, postcss@npm:^8.5.19, postcss@npm:^8.5.30, postcss@npm:^8.5.31":
   version: 8.5.32
   resolution: "postcss@npm:8.5.32"
   dependencies:
@@ -10972,9 +10972,9 @@ __metadata:
   linkType: hard
 
 "seroval@npm:^1.7.2":
-  version: 1.7.3
-  resolution: "seroval@npm:1.7.3"
-  checksum: 10c0/4927f4c3296e3503fe029afae1d79d516fbf1bbef786dfc92d37844fe79bfe4b0c143352a61e0571fd918ad9e49ea2461b2069e7d452d5a71ae40abef383948e
+  version: 1.7.4
+  resolution: "seroval@npm:1.7.4"
+  checksum: 10c0/aebae101cbccd9d4d986ec56b030b01ead58c5fd069b0dbf65cbc362df6da0f63fe74eefa74b69096f74aac325456b6a47615347aff888c4062d5ed1df37bf3a
   languageName: node
   linkType: hard
 
@@ -12656,19 +12656,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vite@npm:8.2.2":
-  version: 8.2.2
-  resolution: "vite@npm:8.2.2"
+"vite@npm:^8.0.0, vite@npm:^8.3.5":
+  version: 8.3.5
+  resolution: "vite@npm:8.3.5"
   dependencies:
     fsevents: "npm:~2.3.3"
     lightningcss: "npm:^1.33.0"
-    picomatch: "npm:^4.0.5"
-    postcss: "npm:^8.5.26"
-    rolldown: "npm:~1.2.4"
+    picomatch: "npm:^4.0.7"
+    postcss: "npm:^8.5.30"
+    rolldown: "npm:~1.2.14"
     tinyglobby: "npm:^0.2.17"
   peerDependencies:
     "@types/node": ^20.19.0 || >=22.12.0
-    "@vitejs/devtools": ^0.4.0 || ^0.5.0
+    "@vitejs/devtools": ^0.7.1 || ^0.8.0
     esbuild: ^0.27.0 || ^0.28.0
     jiti: ">=1.21.0"
     less: ^4.0.0
@@ -12709,7 +12709,7 @@ __metadata:
       optional: true
   bin:
     vite: bin/vite.js
-  checksum: 10c0/94cbbbdc38ad500dcb86b6202ddd14aa41d05c80739766cada9bbe250b410d1a27be433c9c491ed39744019471ac1e27a59908616a88c42f9787bdb6bdca49d2
+  checksum: 10c0/33991600925b6717429c14a2c2907554aed077489ee6ff7815f9f49d5de559f5173ccb0472f2b3f9eef2a49e2e014f6cb624db8d4adebb37baad3a8cbc15065a
   languageName: node
   linkType: hard
 
