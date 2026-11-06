@@ -2997,9 +2997,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@visitscotland/component-library@npm:5.81.1":
-  version: 5.81.1
-  resolution: "@visitscotland/component-library@npm:5.81.1"
+"@visitscotland/component-library@npm:5.83.0":
+  version: 5.83.0
+  resolution: "@visitscotland/component-library@npm:5.83.0"
   dependencies:
     "@floating-ui/dom": "npm:^1.7.6"
     "@googlemaps/js-api-loader": "npm:^2.0.1"
@@ -3027,7 +3027,7 @@ __metadata:
   dependenciesMeta:
     husky:
       built: true
-  checksum: 10c0/cc26c33a9e723dc042f29ad600dca81d432969d47797481ee11657bf0e0ff82b6d3a6dec23ad8b3c7f7ad8784167003f9581bf9eac93f16e03787c8086370bd9
+  checksum: 10c0/b5e062f3a3038948774b1c330c109e3388551e55dc3374fa743f3cd7a4577f5e5730e469a394a343cf99daacf63d3179eecdb35e0dee310078568381854bf4c3
   languageName: node
   linkType: hard
 
@@ -9262,7 +9262,7 @@ __metadata:
     "@bloomreach/vue3-sdk": "npm:^22.0.5"
     "@nuxt/eslint-config": "npm:^1.17.0"
     "@pinia/nuxt": "npm:^1.0.2"
-    "@visitscotland/component-library": "npm:5.81.1"
+    "@visitscotland/component-library": "npm:5.83.0"
     "@vue/devtools-api": "npm:^8.1.5"
     aws-rum-web: "npm:3.2.1"
     axios: "npm:^1.20.0"
