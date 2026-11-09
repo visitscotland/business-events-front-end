@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.17.0",
-    "eslint": "^10.10.0",
+    "eslint": "^10.14.0",
     "husky": "^9.1.7",
     "nuxt": "^4.5.2",
     "rolldown": "1.2.9"
