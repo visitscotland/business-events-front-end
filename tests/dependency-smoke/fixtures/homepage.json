@@ -1,0 +1,194 @@
+{
+  "channel": {
+    "info": {
+      "props": {}
+    }
+  },
+  "meta": {
+    "version": "1.0",
+    "locale": "en_GB",
+    "preview": false
+  },
+  "links": {
+    "site": {
+      "href": "__APP_ORIGIN__/",
+      "type": "external"
+    },
+    "self": {
+      "href": "__CMS_ORIGIN__/resourceapi",
+      "type": "external"
+    }
+  },
+  "root": {
+    "$ref": "/page/root"
+  },
+  "document": {
+    "$ref": "/page/document"
+  },
+  "page": {
+    "root": {
+      "id": "root",
+      "type": "component",
+      "name": "general-page",
+      "meta": {},
+      "links": {},
+      "models": {
+        "breadcrumb": {
+          "items": []
+        }
+      },
+      "children": [
+        {
+          "$ref": "/page/menu"
+        },
+        {
+          "$ref": "/page/main"
+        },
+        {
+          "$ref": "/page/footer"
+        }
+      ]
+    },
+    "menu": {
+      "id": "menu",
+      "type": "component",
+      "name": "menu",
+      "meta": {},
+      "links": {},
+      "models": {
+        "menu": {
+          "$ref": "/page/navigation"
+        }
+      }
+    },
+    "main": {
+      "id": "main",
+      "type": "component",
+      "name": "main",
+      "meta": {},
+      "links": {},
+      "models": {
+        "metadata": {
+          "version": "smoke-fixture"
+        },
+        "site-id": "business-events",
+        "psrWidget": {},
+        "newsletterSignpost": null,
+        "gtm": null,
+        "pageConfiguration": {
+          "language": "en",
+          "cludo.customer-id": "not-defined"
+        },
+        "labels": {
+          "seo": {
+            "title-suffix": "| VisitScotland"
+          },
+          "navigation.static": {
+            "meganav-toggle-btn-alt-text": "Open menu",
+            "meganav.logo-alt-text": "Business events home",
+            "footer.logo-alt-text": "Scotland"
+          },
+          "search": {
+            "search": "Search",
+            "search-label": "Search business events",
+            "close-form": "Close search"
+          },
+          "essentials.global": {
+            "back-to-top": "Back to top"
+          },
+          "navigation.social-media": {}
+        },
+        "pageItems": [
+          {
+            "type": "ArticleModule",
+            "layout": "standard",
+            "title": "Business events guidance",
+            "anchor": "guidance",
+            "introduction": {
+              "value": "Discover Scotland for your next event."
+            },
+            "nested": false,
+            "sections": [
+              {
+                "heading": "How can we help?",
+                "copy": {
+                  "value": "<p>Explore venues, advice and practical resources for your event.</p>"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "footer": {
+      "id": "footer",
+      "type": "component",
+      "name": "footer",
+      "meta": {},
+      "links": {},
+      "models": {
+        "menu": {
+          "$ref": "/page/footer-navigation"
+        }
+      }
+    },
+    "navigation": {
+      "type": "menu",
+      "meta": {},
+      "data": {
+        "name": "Main navigation",
+        "siteMenuItems": [
+          {
+            "name": "Business advice",
+            "title": "Business advice",
+            "depth": 1,
+            "expanded": false,
+            "repositoryBased": false,
+            "selected": false,
+            "parameters": {},
+            "childMenuItems": [],
+            "links": {
+              "site": {
+                "href": "__APP_ORIGIN__/#guidance",
+                "type": "external"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "footer-navigation": {
+      "type": "menu",
+      "meta": {},
+      "data": {
+        "name": "Footer navigation",
+        "siteMenuItems": []
+      }
+    },
+    "document": {
+      "type": "document",
+      "meta": {},
+      "links": {
+        "site": {
+          "href": "__APP_ORIGIN__/",
+          "type": "external"
+        }
+      },
+      "data": {
+        "id": "smoke-home",
+        "name": "Home",
+        "localeString": "en",
+        "theme": "Simple",
+        "title": "Plan your business event in Scotland",
+        "teaser": "Advice and resources from VisitScotland.",
+        "seoTitle": "Business events",
+        "seoDescription": "Tourism business advice and resources.",
+        "hideNewsletter": true,
+        "noIndex": true,
+        "introduction": {
+          "value": "Practical advice for your business event."
+        }
+      }
+    }
+  }
+}
