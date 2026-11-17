@@ -191,7 +191,7 @@ test('security candidates use the smallest forward patch independently for affec
     const candidates = releaseCandidates('undici', release(['0.1.0', '6.29.0', '6.29.1', '6.29.2', '7.30.1', '8.12.1', '8.12.2', '8.12.3']),
         ['6.29.0', '8.12.1'], ['>=4 <6.29.1', '>=7 <7.30.1', '>=8 <8.12.2'], {
             now,
-            nodeVersion: '24.22.2',
+            nodeVersion: '24.4.1',
             parents: [path('node-gyp', '^6.25.0', '6.29.0'), path('nuxt', '^8.12.1', '8.12.1')],
         });
     assert.deepEqual(candidates.map((c) => c.version), ['6.29.1', '8.12.2']);
@@ -203,7 +203,7 @@ test('security candidates use the smallest forward patch independently for affec
 test('deepmerge historical downgrades are never emitted as fixes', () => {
     const candidates = releaseCandidates('deepmerge', release(['0.2.1', '4.0.0', '4.1.2', '4.3.1']), ['4.3.1'], ['>=4.2.0 <=4.3.1'], {
         now,
-        nodeVersion: '24.22.2',
+        nodeVersion: '24.4.1',
         parents: [path('@rollup/plugin-node-resolve', '^4.2.2', '4.3.1', 'deepmerge')],
     });
     assert.deepEqual(candidates, []);
@@ -212,7 +212,7 @@ test('deepmerge historical downgrades are never emitted as fixes', () => {
 test('existing safe branch reuse preserves the parent-update disclosure for the vulnerable branch', () => {
     const candidates = releaseCandidates('nanoid', release(['2.1.11', '3.3.18', '3.3.20', '6.0.2']), ['2.1.11', '3.3.20'], ['<3.3.18'], {
         now,
-        nodeVersion: '24.22.2',
+        nodeVersion: '24.4.1',
         parents: [path('shortid', '^2.1.0', '2.1.11', 'nanoid')],
     });
     assert.deepEqual(candidates.map((c) => c.version), ['3.3.20']);
@@ -223,7 +223,7 @@ test('existing safe branch reuse preserves the parent-update disclosure for the 
 test('pre-1.0 minor boundaries are separate branches and parent overrides stay explicit', () => {
     const candidates = releaseCandidates('tmp', release(['0.0.33', '0.2.6', '0.2.7', '0.3.0']), ['0.2.6'], ['>=0.2.6 <0.2.7'], {
         now,
-        nodeVersion: '24.22.2',
+        nodeVersion: '24.4.1',
         parents: [path('external-editor', '^0.0.33', '0.2.6', 'tmp')],
     });
     assert.deepEqual(candidates.map((c) => c.version), ['0.2.7']);

@@ -28,13 +28,13 @@
     "@playwright/test": "1.64.1",
     "eslint": "^10.14.0",
     "husky": "^9.1.7",
-    "nuxt": "^4.5.2",
+    "nuxt": "4.4.5",
     "rolldown": "1.2.18",
     "semver": "7.8.5",
     "yaml": "2.9.1"
   },
   "dependencies": {
-    "@bloomreach/spa-sdk": "^23.4.4",
+    "@bloomreach/spa-sdk": "^28.1.0",
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@pinia/nuxt": "^1.0.2",
     "@visitscotland/component-library": "5.83.3",
@@ -77,6 +77,12 @@
     "@vue/runtime-core": "3.5.42",
     "@vue/runtime-dom": "3.5.42",
     "@vue/server-renderer": "3.5.42",
-    "@vue/shared": "3.5.42"
+    "@vue/shared": "3.5.42",
+    "vue-router": "5.3.1",
+    "eslint-plugin-regexp": "3.1.1",
+    "node-gyp": "12.4.0"
+  },
+  "engines": {
+    "node": "24.4.1"
   }
 }
