@@ -12,17 +12,26 @@
     "release:major": "standard-version --release-as major",
     "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
-    "lint:lockfile": "lockfile-lint --path yarn.lock --type yarn --allowed-hosts yarn"
+    "lint:lockfile": "lockfile-lint --path yarn.lock --type yarn --allowed-hosts yarn",
+    "test:smoke": "node ci/dependency-smoke.mjs",
+    "test:smoke:browser": "node ci/dependency-smoke.mjs --skip-build",
+    "test:smoke:harness": "node ci/dependency-smoke.mjs --skip-build --harness",
+    "test:smoke:unit": "node --test tests/dependency-smoke/harness.test.mjs",
+    "test:smoke:install": "playwright install chromium",
+    "test:smoke:diagnostics": "node ci/smoke-diagnostics.mjs"
   },
   "lint-staged": {
     "*.{js,vue,ts}": "eslint"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.17.0",
+    "@playwright/test": "1.64.1",
     "eslint": "^10.10.0",
     "husky": "^9.1.7",
     "nuxt": "^4.5.2",
-    "rolldown": "1.2.9"
+    "rolldown": "1.2.9",
+    "semver": "7.8.5",
+    "yaml": "2.9.1"
   },
   "dependencies": {
     "@bloomreach/spa-sdk": "^23.4.4",
