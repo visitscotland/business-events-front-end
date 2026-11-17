@@ -1,6 +1,7 @@
 {
   "name": "nuxt-app",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "npm run lint:lockfile && nuxt build",
     "dev": "nuxt dev",
@@ -11,23 +12,32 @@
     "release:major": "standard-version --release-as major",
     "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
-    "lint:lockfile": "lockfile-lint --path yarn.lock --type yarn --allowed-hosts yarn"
+    "lint:lockfile": "lockfile-lint --path yarn.lock --type yarn --allowed-hosts yarn",
+    "test:smoke": "node ci/dependency-smoke.mjs",
+    "test:smoke:browser": "node ci/dependency-smoke.mjs --skip-build",
+    "test:smoke:harness": "node ci/dependency-smoke.mjs --skip-build --harness",
+    "test:smoke:unit": "node --test tests/dependency-smoke/harness.test.mjs",
+    "test:smoke:install": "playwright install chromium",
+    "test:smoke:diagnostics": "node ci/smoke-diagnostics.mjs"
   },
   "lint-staged": {
     "*.{js,vue,ts}": "eslint"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.17.0",
-    "eslint": "^10.10.0",
+    "@playwright/test": "1.64.1",
+    "eslint": "^10.14.0",
     "husky": "^9.1.7",
     "nuxt": "^4.5.2",
-    "rolldown": "1.2.15"
+    "rolldown": "1.2.18",
+    "semver": "7.8.5",
+    "yaml": "2.9.1"
   },
   "dependencies": {
     "@bloomreach/spa-sdk": "^23.4.4",
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@pinia/nuxt": "^1.0.2",
-    "@visitscotland/component-library": "5.80.0",
+    "@visitscotland/component-library": "5.83.3",
     "@vue/devtools-api": "^8.1.5",
     "aws-rum-web": "3.2.1",
     "axios": "^1.20.0",
@@ -35,21 +45,18 @@
     "cz-conventional-changelog": "^3.3.0",
     "express": "^5.2.1",
     "html-entities": "^2.6.0",
-    "lint-staged": "^17.0.8",
+    "lint-staged": "^17.6.0",
     "lockfile-lint": "^5.0.1",
     "mitt": "^3.0.0",
-    "nuxt-jsonld": "^2.0.8",
+    "nuxt-jsonld": "^3.0.0",
     "pinia": "^4.0.3",
-    "sass": "^1.104.0",
+    "sass": "^1.106.1",
     "standard-version": "^9.5.0",
     "typescript": "^5.6.3",
-    "vue": "3.5.42"
+    "vue": "3.5.44"
   },
   "overrides": {
-    "minimist": "latest",
-    "@visitscotland/component-library": {
-      "vite": "^7.0.0"
-    }
+    "minimist": "latest"
   },
   "config": {
     "commitizen": {
@@ -59,9 +66,9 @@
   "version": "0.0.24",
   "packageManager": "yarn@4.14.1",
   "resolutions": {
-    "vite": "8.2.2",
-    "rolldown": "1.2.15",
-    "vue": "3.5.42",
+    "simple-git": "4.0.2",
+    "rolldown": "1.2.18",
+    "vue": "3.5.44",
     "@vue/compiler-core": "3.5.42",
     "@vue/compiler-dom": "3.5.42",
     "@vue/compiler-sfc": "3.5.42",
