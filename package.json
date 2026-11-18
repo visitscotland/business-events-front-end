@@ -28,8 +28,8 @@
     "@playwright/test": "1.64.1",
     "eslint": "^10.14.0",
     "husky": "^9.1.7",
-    "nuxt": "4.4.5",
-    "rolldown": "1.2.18",
+    "nuxt": "4.6.4",
+    "rolldown": "1.2.16",
     "semver": "7.8.5",
     "yaml": "2.9.1"
   },
@@ -67,7 +67,7 @@
   "packageManager": "yarn@4.14.1",
   "resolutions": {
     "simple-git": "4.0.2",
-    "rolldown": "1.2.18",
+    "rolldown": "1.2.16",
     "vue": "3.5.44",
     "@vue/compiler-core": "3.5.42",
     "@vue/compiler-dom": "3.5.42",
