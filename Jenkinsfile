@@ -162,13 +162,7 @@ pipeline {
                     export HOME=$WORKSPACE
                     export npm_config_cache=$HOME/.npm
                     if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
-                    install_status=0
-                    yarn install --inline-builds || install_status=$?
-                    if [ "$install_status" -ne 0 ]; then
-                        echo "Install failed; diagnosing nuxt prepare termination"
-                        node ci/diagnose-nuxt-prepare.mjs
-                        exit "$install_status"
-                    fi
+                    yarn
                 '''
             }
         } //end stage

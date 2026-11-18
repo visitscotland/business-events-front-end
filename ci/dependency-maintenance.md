@@ -97,7 +97,8 @@ The component
 library remains at 5.83.3 for verification on this runtime despite its
 declared Node >=24.15.0 requirement. The vue-router, eslint-plugin-regexp and node-gyp
 resolutions keep their transitive dependencies compatible with this runtime.
-Retain Rolldown 1.2.18 for compatibility with Vite's preload generation.
+Retain Rolldown 1.2.16 to match BSH's resolved version. The Linux x64 native
+binding in 1.2.18 crashes with SIGILL while loading on the Jenkins builder.
 Reassess these pins together when Jenkins can upgrade Node.
 
 Before enabling hosted maintenance, configure these GitHub repository settings:
