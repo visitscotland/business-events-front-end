@@ -162,7 +162,7 @@ pipeline {
                     export HOME=$WORKSPACE
                     export npm_config_cache=$HOME/.npm
                     if [ ! -d $npm_config_cache ]; then mkdir -p $npm_config_cache; fi
-                    yarn
+                    yarn install --inline-builds
                 '''
             }
         } //end stage
