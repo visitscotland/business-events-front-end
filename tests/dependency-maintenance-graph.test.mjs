@@ -267,7 +267,18 @@ test('runtime setup regenerates the marker from the installed library without ru
                 node: '>=99',
             },
         }));
-        await assert.rejects(checkInstalledRuntime(root), /requires Node/);
+        const warnings = [];
+        const originalWarn = console.warn;
+        console.warn = (message) => warnings.push(message);
+        try {
+            const runtime = await checkInstalledRuntime(root);
+            assert.equal(runtime.requiredNode, '>=99');
+            assert.equal(runtime.node, process.versions.node);
+            assert.equal(warnings.length, 1);
+            assert.match(warnings[0], /requires Node >=99.*Continuing with the Jenkins runtime/);
+        } finally {
+            console.warn = originalWarn;
+        }
     } finally { await rm(root, {
         recursive: true,
         force: true,

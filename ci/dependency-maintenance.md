@@ -89,8 +89,11 @@ message checks, immutable review snapshots and durable pre-install failures.
 Use Node from .nvmrc (24.4.1) and the checked-in Yarn release. Install with
 `node .yarn/releases/yarn-4.14.1.cjs install --immutable`.
 
-Node 24.4.1 matches the fixed Jenkins builder runtime. Nuxt is pinned to
-4.4.5 because newer releases require newer Node versions. The component
+Node 24.4.1 matches the fixed Jenkins builder runtime. The runtime preflight
+warns when Nuxt's declared Node range excludes this version and continues,
+matching Jenkins' warning-only behaviour. Build and smoke tests must verify
+updates on this pinned runtime; the warning does not establish upstream support.
+The component
 library remains at 5.83.3 for verification on this runtime despite its
 declared Node >=24.15.0 requirement. The vue-router, eslint-plugin-regexp and node-gyp
 resolutions keep their transitive dependencies compatible with this runtime.
