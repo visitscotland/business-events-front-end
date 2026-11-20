@@ -37,7 +37,7 @@
     "@bloomreach/spa-sdk": "^28.2.0",
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@pinia/nuxt": "^1.0.2",
-    "@visitscotland/component-library": "5.83.3",
+    "@visitscotland/component-library": "5.84.0",
     "@vue/devtools-api": "^8.1.5",
     "aws-rum-web": "3.2.1",
     "axios": "^1.21.1",
