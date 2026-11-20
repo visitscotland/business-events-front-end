@@ -74,6 +74,8 @@ const hideSkeleton = ref(false);
 
 onMounted(() => {
     isMounted.value = true;
+    hideSkeleton.value = true;
+    window.dispatchEvent(new Event('vs-app-hydrated'));
 });
 
 // implement AWS RUM scripts

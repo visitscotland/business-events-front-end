@@ -12,26 +12,35 @@
     "release:major": "standard-version --release-as major",
     "lint": "eslint .",
     "lint:fix": "yarn lint --fix",
-    "lint:lockfile": "lockfile-lint --path yarn.lock --type yarn --allowed-hosts yarn"
+    "lint:lockfile": "lockfile-lint --path yarn.lock --type yarn --allowed-hosts yarn",
+    "test:smoke": "node ci/dependency-smoke.mjs",
+    "test:smoke:browser": "node ci/dependency-smoke.mjs --skip-build",
+    "test:smoke:harness": "node ci/dependency-smoke.mjs --skip-build --harness",
+    "test:smoke:unit": "node --test tests/dependency-smoke/harness.test.mjs",
+    "test:smoke:install": "playwright install chromium",
+    "test:smoke:diagnostics": "node ci/smoke-diagnostics.mjs"
   },
   "lint-staged": {
     "*.{js,vue,ts}": "eslint"
   },
   "devDependencies": {
     "@nuxt/eslint-config": "^1.17.0",
-    "eslint": "^10.10.0",
+    "@playwright/test": "1.65.0",
+    "eslint": "^10.14.0",
     "husky": "^9.1.7",
-    "nuxt": "^4.5.2",
-    "rolldown": "1.2.9"
+    "nuxt": "4.6.4",
+    "rolldown": "1.2.16",
+    "semver": "7.8.6",
+    "yaml": "2.9.1"
   },
   "dependencies": {
-    "@bloomreach/spa-sdk": "^23.4.4",
+    "@bloomreach/spa-sdk": "^28.2.0",
     "@bloomreach/vue3-sdk": "^22.0.5",
     "@pinia/nuxt": "^1.0.2",
     "@visitscotland/component-library": "5.84.0",
     "@vue/devtools-api": "^8.1.5",
     "aws-rum-web": "3.2.1",
-    "axios": "^1.20.0",
+    "axios": "^1.21.1",
     "commitizen": "^4.3.2",
     "cz-conventional-changelog": "^3.3.0",
     "express": "^5.2.1",
@@ -39,12 +48,12 @@
     "lint-staged": "^17.6.0",
     "lockfile-lint": "^5.0.1",
     "mitt": "^3.0.0",
-    "nuxt-jsonld": "^2.3.0",
+    "nuxt-jsonld": "^3.0.0",
     "pinia": "^4.0.3",
-    "sass": "^1.104.1",
+    "sass": "^1.108.2",
     "standard-version": "^9.5.0",
     "typescript": "^5.6.3",
-    "vue": "3.5.44"
+    "vue": "3.5.45"
   },
   "overrides": {
     "minimist": "latest"
@@ -58,8 +67,8 @@
   "packageManager": "yarn@4.14.1",
   "resolutions": {
     "simple-git": "4.0.2",
-    "rolldown": "1.2.9",
-    "vue": "3.5.44",
+    "rolldown": "1.2.16",
+    "vue": "3.5.45",
     "@vue/compiler-core": "3.5.42",
     "@vue/compiler-dom": "3.5.42",
     "@vue/compiler-sfc": "3.5.42",
@@ -68,6 +77,12 @@
     "@vue/runtime-core": "3.5.42",
     "@vue/runtime-dom": "3.5.42",
     "@vue/server-renderer": "3.5.42",
-    "@vue/shared": "3.5.42"
+    "@vue/shared": "3.5.42",
+    "vue-router": "5.3.1",
+    "eslint-plugin-regexp": "3.1.1",
+    "node-gyp": "12.4.0"
+  },
+  "engines": {
+    "node": "24.4.1"
   }
 }
