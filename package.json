@@ -66,7 +66,6 @@
   "version": "0.0.24",
   "packageManager": "yarn@4.14.1",
   "resolutions": {
-    "simple-git": "4.0.2",
     "rolldown": "1.2.16",
     "vue": "3.5.45",
     "@vue/compiler-core": "3.5.42",
